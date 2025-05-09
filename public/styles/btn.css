@@ -1,0 +1,29 @@
+.btn {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn--secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-top: 0.5rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.btn--danger {
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}
