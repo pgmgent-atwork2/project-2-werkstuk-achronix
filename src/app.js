@@ -6,6 +6,7 @@ import path from "path";
 //import controllers
 import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
+import * as API_UserController from "./controllers/api/UserController.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -30,6 +31,10 @@ app.get("/", PageController.home);
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/logout", AuthController.logout);
+
+
+app.get("/api/users", API_UserController.index);
+app.get("/api/users/:id", API_UserController.show);
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
