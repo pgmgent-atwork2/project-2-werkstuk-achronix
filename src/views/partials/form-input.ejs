@@ -1,0 +1,18 @@
+<label class="form__group">
+  <span class="form__group__label"><%= label %></span>
+  <% if(type === 'textarea') { %>
+  <textarea class="input form__group__input" name="<%= name %>" required>
+<%= locals.value %></textarea
+  >
+  <% } else { %>
+  <input
+    class="input form__group__input <% if (locals.err) { %>input--danger<% } %>"
+    type="<%= type %>"
+    name="<%= name %>"
+    value="<%= locals.value %>"
+   
+  />
+  <% } %> <% if (locals.err) { %>
+  <div class="error"><%= err %></div>
+  <% } %>
+</label>
