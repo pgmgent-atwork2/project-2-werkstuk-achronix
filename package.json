@@ -15,7 +15,10 @@
   "type": "module",
   "main": "/src/app.js",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "db:up": "knex migrate:latest",
+    "db:down": "knex migrate:rollback",
+    "db:seed": "knex seed:run"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
