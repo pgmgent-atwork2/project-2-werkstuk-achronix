@@ -1,0 +1,28 @@
+{
+  "name": "pingpong-tool",
+  "version": "1.0.0",
+  "description": "Developed by Quinten, Pieter and Daan",
+  "homepage": "https://github.com/pgmgent-atwork2/project-2-werkstuk-achronix#readme",
+  "bugs": {
+    "url": "https://github.com/pgmgent-atwork2/project-2-werkstuk-achronix/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgmgent-atwork2/project-2-werkstuk-achronix.git"
+  },
+  "license": "ISC",
+  "author": "Quinten Claes, Pieter Luypaert, Daan Houbrechts",
+  "type": "module",
+  "main": "/src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "nodemon": "^3.1.10",
+    "objection": "^3.1.5",
+    "sqlite3": "^5.1.7"
+  }
+}
