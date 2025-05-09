@@ -1,4 +1,4 @@
-const tableName = "TABLENAME";
+const tableName = "categories";
 
 export function up(knex) {
   return knex.schema.createTable(tableName, function (table) {
