@@ -1,4 +1,6 @@
-database.sqlite3
+*.sql
+*.sqlite
+*.sqlite3
 node_modules
 .env
 
