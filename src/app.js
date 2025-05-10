@@ -27,6 +27,13 @@ app.use(express.static("public"));
 // Voeg de currentPath middleware toe aan alle routes
 app.use(PageController.addCurrentPath);
 
+
+// zorgt ervoor dat localhost dashboard laadt
+app.get("/", (req, res) => {
+  res.redirect("/dashboard");
+});
+
+
 // Page routes
 app.get("/dashboard", PageController.dashboard);
 app.get("/bestellen", PageController.bestellen);
