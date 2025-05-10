@@ -1,1 +1,2 @@
-// main.js
+import './sidebar.js';
+

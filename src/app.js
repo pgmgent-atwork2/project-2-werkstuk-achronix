@@ -23,12 +23,19 @@ app.use(express.static("public"));
 
 // ---------------------- App routes ----------------------
 
+// Voeg de currentPath middleware toe aan alle routes
+app.use(PageController.addCurrentPath);
+
 // Page routes
-app.get("/", PageController.home);
+app.get("/dashboard", PageController.dashboard);
+app.get("/bestellen", PageController.bestellen);
+app.get("/wedstrijden", PageController.wedstrijden);
+app.get("/profiel", PageController.profiel);
 
 // Auth routes
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
+app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
 
 // ---------------------- Start the app ----------------------

@@ -2,6 +2,7 @@
 @import url("variables.css");
 @import url("login.css");
 @import url("btn.css");
+@import url("sidebar.css");
 
 @font-face {
   font-family: "Inter";

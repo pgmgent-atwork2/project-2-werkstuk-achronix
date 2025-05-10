@@ -1,0 +1,31 @@
+<% const menuItems=[ { href: '/dashboard' , icon: 'fa-home' , label: 'Overzicht' }, 
+{ href: '/bestellen' , icon: 'fa-shopping-cart' , label: 'Bestellen' }, 
+    { href: '/wedstrijden' , icon: 'fa-trophy' , label: 'Wedstrijden'}, 
+    { href: '/profiel' , icon: 'fa-user' , label: 'Profiel' }, 
+    { href: '/uitloggen' , icon: 'fa-sign-out-alt' , label: 'Uitloggen' } 
+    ]; const currentPath=locals?.currentPath || '' ; const title=locals?.siteTitle || 'Ping Pong Tool' ; %>
+
+    <div class="hamburger" id="hamburger"><span></span></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-header__logo">
+                <img src="/styles/logo.png" alt="Logo">
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+                <% menuItems.forEach(item=> { %>
+                    <li>
+                        <a href="<%= item.href %>" class="<%= currentPath === item.href ? 'active' : '' %>">
+                            <i class="fas <%= item.icon %>"></i>
+                            <span>
+                                <%= item.label %>
+                            </span>
+                        </a>
+                    </li>
+                    <% }); %>
+            </ul>
+        </nav>
+    </div>
