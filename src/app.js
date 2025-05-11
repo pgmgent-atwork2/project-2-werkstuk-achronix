@@ -9,6 +9,7 @@ import * as AuthController from "./controllers/AuthController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
+import * as API_TeamController from "./controllers/api/TeamController.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -63,6 +64,13 @@ app.get("/api/categories/:id", API_CategoryController.show);
 app.post("/api/categories", API_CategoryController.store);
 app.put("/api/categories/:id", API_CategoryController.update);
 app.delete("/api/categories/:id", API_CategoryController.destroy);
+
+//Team
+app.get("/api/teams", API_TeamController.index);
+app.get("/api/teams/:id", API_TeamController.show);
+app.post("/api/teams", API_TeamController.store);
+app.put("/api/teams/:id", API_TeamController.update);
+app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
