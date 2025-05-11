@@ -8,6 +8,7 @@ import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
+import * as API_CategoryController from "./controllers/api/CategoryController.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -55,6 +56,13 @@ app.get("/api/consumables/:id", API_ConsumableController.show);
 app.post("/api/consumables", API_ConsumableController.store);
 app.put("/api/consumables/:id", API_ConsumableController.update);
 app.delete("/api/consumables/:id", API_ConsumableController.destroy);
+
+// Categories
+app.get("/api/categories", API_CategoryController.index);
+app.get("/api/categories/:id", API_CategoryController.show);
+app.post("/api/categories", API_CategoryController.store);
+app.put("/api/categories/:id", API_CategoryController.update);
+app.delete("/api/categories/:id", API_CategoryController.destroy);
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
