@@ -10,6 +10,7 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
+import * as API_PasswordResetController from "./controllers/api/PasswordResetController.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -72,6 +73,11 @@ app.get("/api/teams/:id", API_TeamController.show);
 app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
+
+// Password Reset
+app.post("/api/password-reset", API_PasswordResetController.requestPasswordReset);
+app.get("/token", API_PasswordResetController.checkValidToken);
+
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
