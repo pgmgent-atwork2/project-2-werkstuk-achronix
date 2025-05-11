@@ -47,7 +47,6 @@ app.get("/", (req, res) => {
 });
 
 // Page routes
-app.get("/", jwtAuth, PageController.home);
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
