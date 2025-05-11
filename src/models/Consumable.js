@@ -28,4 +28,4 @@ class Consumable extends Model {
   }
 }
 
-export default User;
+export default Consumable;

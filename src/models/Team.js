@@ -24,4 +24,4 @@ class Team extends Model {
   }
 }
 
-export default User;
+export default Team;

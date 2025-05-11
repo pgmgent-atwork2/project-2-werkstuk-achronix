@@ -15,9 +15,11 @@ class User extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["email", "password"],
+      required: ["firstname", "lastname","email", "password"],
       properties: {
         id: { type: "integer" },
+        firstname: { type: "string", minLength: 1, maxLength: 255 },
+        lastname: { type: "string", minLength: 1, maxLength: 255 },
         email: { type: "string", minLength: 1, maxLength: 255 },
         password: { type: "string", minLength: 1, maxLength: 255 },
         is_admin: { type: "boolean", default: false },
