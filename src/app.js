@@ -7,6 +7,7 @@ import path from "path";
 import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
+import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -27,12 +28,10 @@ app.use(express.static("public"));
 // Voeg de currentPath middleware toe aan alle routes
 app.use(PageController.addCurrentPath);
 
-
 // zorgt ervoor dat localhost dashboard laadt
 app.get("/", (req, res) => {
   res.redirect("/dashboard");
 });
-
 
 // Page routes
 app.get("/dashboard", PageController.dashboard);
@@ -46,9 +45,16 @@ app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
 
-
+// Users
 app.get("/api/users", API_UserController.index);
 app.get("/api/users/:id", API_UserController.show);
+
+// Consumables
+app.get("/api/consumables", API_ConsumableController.index);
+app.get("/api/consumables/:id", API_ConsumableController.show);
+app.post("/api/consumables", API_ConsumableController.store);
+app.put("/api/consumables/:id", API_ConsumableController.update);
+app.delete("/api/consumables/:id", API_ConsumableController.destroy);
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {

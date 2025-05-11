@@ -24,4 +24,4 @@ class Category extends Model {
   }
 }
 
-export default User;
+export default Category;
