@@ -13,9 +13,6 @@ import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_PasswordResetController from "./controllers/api/PasswordResetController.js";
 import { sendMail } from "./utils/mailer.js";
 
-
-
-
 // ---------------------- App configuration ----------------------
 const port = 3000;
 const app = express();
@@ -57,7 +54,6 @@ app.get("/api/users", API_UserController.index);
 app.get("/api/users/:id", API_UserController.show);
 app.put("/api/users/:id", API_UserController.update);
 
-
 // Consumables
 app.get("/api/consumables", API_ConsumableController.index);
 app.get("/api/consumables/:id", API_ConsumableController.show);
@@ -80,12 +76,11 @@ app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // Password Reset
-app.post("/api/password-reset", API_PasswordResetController.requestPasswordReset);
+app.post(
+  "/api/password-reset",
+  API_PasswordResetController.requestPasswordReset
+);
 app.get("/password-reset", API_PasswordResetController.checkValidToken);
-
-
-
-sendMail("Quintenclaes@gmail.com" , "Test mail", "<h1>Test</h1>")
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {

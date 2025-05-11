@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendMail = async (to, subject, html) => {
   return await transporter.sendMail({
-    from: `"Your App Name" <noreply@localhost>`,
+    from: `"Pingpong club" <noreply@localhost>`,
     to,
     subject,
     html,
