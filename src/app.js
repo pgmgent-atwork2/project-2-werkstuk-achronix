@@ -51,7 +51,8 @@ app.get("/logout", AuthController.logout);
 // Users
 app.get("/api/users", API_UserController.index);
 app.get("/api/users/:id", API_UserController.show);
-app.get("/api/users/email/:email", API_UserController.getUserByEmail);
+app.put("/api/users/:id", API_UserController.update);
+
 
 // Consumables
 app.get("/api/consumables", API_ConsumableController.index);
