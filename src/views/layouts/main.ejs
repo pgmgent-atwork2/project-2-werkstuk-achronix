@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ping Pong Tool</title>
+    <title>
+        <%= typeof pageTitle !=='undefined' ? pageTitle : 'PING PONG TOOL' %>
+    </title>
     <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
-    <h1>Test</h1>
-    <%- body %>
+    <%- include('../partials/sidebar') %>
+        <div class="main-container">
+            <%- body %>
+        </div>
+
+        <script type="module" src="scripts/main.js"></script>
 </body>
 
 </html>

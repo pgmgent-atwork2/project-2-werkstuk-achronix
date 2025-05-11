@@ -9,6 +9,7 @@ export function up(knex) {
     table.string("password").notNullable();
     table.boolean("is_admin").defaultTo(false);
   });
+
 }
 
 export function down(knex) {

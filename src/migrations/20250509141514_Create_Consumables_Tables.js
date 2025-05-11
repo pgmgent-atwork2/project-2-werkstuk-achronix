@@ -8,6 +8,8 @@ export function up(knex) {
     table.double("price").notNullable();
     table.string("image_url");
     table.integer("category_id").notNullable();
+
+    table.foreign("category_id").references("categories.id");
   });
 }
 

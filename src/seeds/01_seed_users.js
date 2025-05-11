@@ -8,22 +8,23 @@ const seed = async function (knex) {
       firstname: "admin",
       lastname: "admin",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
-    },
-    {
-      email: "user@example.com",
-      firstname: "John",
-      lastname: "Doe",
-      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu",
-      is_admin: false,
-    },
-    {
-      email: "admin@example.com",
-      firstname: "Jane",
-      lastname: "Doe",
-      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu",
       is_admin: true,
     },
+    { 
+      firstname: "John",
+      lastname: "Doe",
+      email: "user@example.com", 
+      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu", 
+      is_admin: false,
+    },
+    { 
+      firstname: "Jane",
+      lastname: "Doe",
+      email: "admin@example.com", 
+      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu", 
+      is_admin: true
+    }
+
   ]);
 };
 
