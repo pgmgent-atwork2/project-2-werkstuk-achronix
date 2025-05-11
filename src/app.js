@@ -11,6 +11,10 @@ import * as API_ConsumableController from "./controllers/api/ConsumableControlle
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_PasswordResetController from "./controllers/api/PasswordResetController.js";
+import { sendMail } from "./utils/mailer.js";
+
+
+
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -77,8 +81,11 @@ app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // Password Reset
 app.post("/api/password-reset", API_PasswordResetController.requestPasswordReset);
-app.get("/token", API_PasswordResetController.checkValidToken);
+app.get("/password-reset", API_PasswordResetController.checkValidToken);
 
+
+
+sendMail("Quintenclaes@gmail.com" , "Test mail", "<h1>Test</h1>")
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
