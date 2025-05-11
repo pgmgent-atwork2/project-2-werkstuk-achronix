@@ -1,7 +1,12 @@
+//environment variables
+import dotenv from "dotenv";
+dotenv.config();
+
 // ---------------------- Import modules ----------------------
 import express from "express";
 import expressLayouts from "express-ejs-layouts";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 //import controllers
 import * as PageController from "./controllers/PageController.js";
@@ -13,12 +18,16 @@ import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_PasswordResetController from "./controllers/api/PasswordResetController.js";
 import { sendMail } from "./utils/mailer.js";
 
+//import middleware
+import jwtAuth from "./middleware/jwtAuth.js";
+
 // ---------------------- App configuration ----------------------
 const port = 3000;
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Add cookie-parser middleware
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -38,10 +47,11 @@ app.get("/", (req, res) => {
 });
 
 // Page routes
-app.get("/dashboard", PageController.dashboard);
-app.get("/bestellen", PageController.bestellen);
-app.get("/wedstrijden", PageController.wedstrijden);
-app.get("/profiel", PageController.profiel);
+app.get("/", jwtAuth, PageController.home);
+app.get("/dashboard", jwtAuth, PageController.dashboard);
+app.get("/bestellen", jwtAuth, PageController.bestellen);
+app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
+app.get("/profiel", jwtAuth, PageController.profiel);
 
 // Auth routes
 app.get("/login", AuthController.login);
