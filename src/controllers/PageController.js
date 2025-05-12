@@ -3,6 +3,7 @@
  */
 export const addCurrentPath = (req, res, next) => {
   res.locals.currentPath = req.path;
+
   next();
 };
 
@@ -11,9 +12,9 @@ export const addCurrentPath = (req, res, next) => {
 export const dashboard = (req, res) => {
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
+    user: req.user,
   });
 };
-
 
 export const bestellen = (req, res) => {
   res.render("pages/bestellen", {
@@ -21,13 +22,11 @@ export const bestellen = (req, res) => {
   });
 };
 
-
 export const wedstrijden = (req, res) => {
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
   });
 };
-
 
 export const profiel = (req, res) => {
   res.render("pages/profiel", {
@@ -35,3 +34,21 @@ export const profiel = (req, res) => {
   });
 };
 
+export const beheerderspaneel = async (req, res) => {
+  try {
+    const User = (await import("../models/User.js")).default;
+    const users = await User.query();
+
+    res.render("pages/beheerderspaneel", {
+      pageTitle: "Beheerderspaneel | Ping Pong Tool",
+      users: users,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.render("pages/beheerderspaneel", {
+      pageTitle: "Beheerderspaneel | Ping Pong Tool",
+      users: [],
+      error: "Er is een probleem opgetreden bij het ophalen van gebruikers.",
+    });
+  }
+};
