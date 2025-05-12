@@ -15,8 +15,9 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
-import * as API_PasswordResetController from "./controllers/api/PasswordResetController.js";
-import { sendMail } from "./utils/mailer.js";
+
+import { checkValidToken } from "./middleware/ValidateResetToken.js";
+import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -27,7 +28,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Add cookie-parser middleware
+app.use(cookieParser());
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -51,17 +52,26 @@ app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
 app.get("/profiel", jwtAuth, PageController.profiel);
+app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
 
 // Auth routes
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
+app.get("/forgot-password", AuthController.forgotPassword);
+app.post(
+  "/forgot-password",
+  handleRequestPasswordReset,
+  AuthController.forgotPassword
+);
 
 // Users
 app.get("/api/users", API_UserController.index);
+app.post("/api/users", API_UserController.store);
 app.get("/api/users/:id", API_UserController.show);
 app.put("/api/users/:id", API_UserController.update);
+app.delete("/api/users/:id", API_UserController.destroy);
 
 // Consumables
 app.get("/api/consumables", API_ConsumableController.index);
@@ -84,12 +94,13 @@ app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
-// Password Reset
+// Password reset
+app.get("/reset-password", AuthController.resetPassword, checkValidToken);
 app.post(
-  "/api/password-reset",
-  API_PasswordResetController.requestPasswordReset
+  "/reset-password",
+  AuthController.postResetPassword,
+  AuthController.resetPassword
 );
-app.get("/password-reset", API_PasswordResetController.checkValidToken);
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
