@@ -2,6 +2,7 @@ import PasswordReset from "../models/PasswordReset.js";
 import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import { sendMail } from "../utils/mailer.js";
+import { cleanupExpiredTokens } from "../utils/cleanupExpiredTokens.js";
 
 export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
@@ -14,7 +15,7 @@ export const handleRequestPasswordReset = async (req, res) => {
 
     const token = generateToken();
     const createdAt = new Date();
-    const expiresAt = new Date(createdAt + 15 * 60 * 1000);
+    const expiresAt = new Date(createdAt.getTime() + 15 * 60 * 1000);
 
     const addToken = await PasswordReset.query().insert({
       user_id: user.id,
@@ -30,6 +31,7 @@ export const handleRequestPasswordReset = async (req, res) => {
         `<p>Click <a href="localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
       );
 
+      await cleanupExpiredTokens();
       return res.redirect("/email-sent");
     }
   } catch (error) {
