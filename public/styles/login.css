@@ -72,7 +72,6 @@
 .form-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--login-text);
   margin-bottom: 0.5rem;
 }
 
@@ -177,4 +176,4 @@
   .login-subtitle {
     font-size: 1.125rem;
   }
-} 
+}
