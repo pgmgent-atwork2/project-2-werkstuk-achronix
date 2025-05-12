@@ -32,7 +32,7 @@ export const handleRequestPasswordReset = async (req, res) => {
       );
 
       await cleanupExpiredTokens();
-      return res.redirect("/email-sent");
+      return res.redirect("/forgot-password-confirmation");
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });

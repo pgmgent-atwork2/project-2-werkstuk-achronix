@@ -58,7 +58,7 @@ app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
-app.get("/forgot-wachtwoord", AuthController.forgotPassword);
+app.get("/forgot-password", AuthController.forgotPassword);
 app.post(
   "/forgot-password",
   handleRequestPasswordReset,

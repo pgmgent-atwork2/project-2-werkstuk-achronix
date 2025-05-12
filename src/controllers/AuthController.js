@@ -117,7 +117,7 @@ export const forgotPassword = async (req, res) => {
 
   const flash = req.flash || {};
 
-  res.render("pages/requestResetPassword", {
+  res.render("pages/forgotPassword", {
     layout: "layouts/authentication",
     inputs,
     flash,
