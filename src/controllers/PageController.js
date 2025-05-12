@@ -22,10 +22,31 @@ export const bestellen = (req, res) => {
   });
 };
 
-export const wedstrijden = (req, res) => {
-  res.render("pages/wedstrijden", {
-    pageTitle: "Wedstrijden | Ping Pong Tool",
-  });
+export const wedstrijden = async (req, res) => {
+  try {
+    const Match = (await import("../models/Match.js")).default;
+    const Team = (await import("../models/Team.js")).default;
+
+    // Get matches and teams for the dropdown
+    const matches = await Match.query().orderBy("date", "asc");
+    const teams = await Team.query().orderBy("name", "asc");
+
+    res.render("pages/wedstrijden", {
+      pageTitle: "Wedstrijden | Ping Pong Tool",
+      title: "Wedstrijden",
+      matches: matches,
+      teams: teams,
+    });
+  } catch (error) {
+    console.error("Error fetching match data:", error);
+    res.render("pages/wedstrijden", {
+      pageTitle: "Wedstrijden | Ping Pong Tool",
+      title: "Wedstrijden",
+      matches: [],
+      teams: [],
+      error: "Er is een probleem opgetreden bij het ophalen van wedstrijden.",
+    });
+  }
 };
 
 export const profiel = (req, res) => {
