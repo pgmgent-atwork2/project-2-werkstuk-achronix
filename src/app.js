@@ -15,6 +15,7 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
+import MatchController from "./controllers/MatchController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
@@ -35,12 +36,38 @@ app.use(express.static("public"));
 app.set("views", path.resolve("src", "views"));
 app.set("layout", "layouts/main");
 
+// Import modules for file uploads, sessions and flash messages
+import fileUpload from "express-fileupload";
+import session from "express-session";
+import flash from "connect-flash";
+
+// Set up file upload middleware
+app.use(fileUpload());
+
+// Set up session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "pingpong-secret-key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Set up flash messages
+app.use(flash());
+
 app.use(express.static("public"));
 
 // ---------------------- App routes ----------------------
 
-// Voeg de currentPath middleware toe aan alle routes
+// Add the currentPath middleware to all routes
 app.use(PageController.addCurrentPath);
+
+// Add flash messages to all routes
+app.use((req, res, next) => {
+  res.locals.flash = req.flash();
+  next();
+});
 
 // zorgt ervoor dat localhost dashboard laadt
 app.get("/", (req, res) => {
@@ -51,6 +78,7 @@ app.get("/", (req, res) => {
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
+app.post("/wedstrijden/import", jwtAuth, MatchController.importIcs);
 app.get("/profiel", jwtAuth, PageController.profiel);
 app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
 
