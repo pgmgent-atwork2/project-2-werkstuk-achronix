@@ -1,8 +1,9 @@
-import PasswordReset from "../../models/PasswordReset.js";
-import User from "../../models/User.js";
-import generateToken from "../../utils/generateToken.js";
+import PasswordReset from "../models/PasswordReset.js";
+import User from "../models/User.js";
+import generateToken from "../utils/generateToken.js";
+import { sendMail } from "../utils/mailer.js";
 
-export const requestPasswordReset = async (req, res) => {
+export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -23,6 +24,11 @@ export const requestPasswordReset = async (req, res) => {
     });
 
     if (addToken) {
+      sendMail(
+        email,
+        "Password Reset Request",
+        `<p>Click <a href="localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
+      );
       return res.status(200).json({
         message: "Password reset token generated successfully",
         token,
@@ -31,21 +37,5 @@ export const requestPasswordReset = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });
-  }
-};
-
-export const checkValidToken = async (req, res) => {
-  const resetToken = req.query.token;
-  const passwordReset = await PasswordReset.findOne({
-    where: { token: resetToken },
-  });
-
-  if (!passwordReset) {
-    return res.status(400).json({ message: "Invalid or expired token" });
-  }
-
-  if (passwordReset) {
-    const currentDate = new Date();
-    await PasswordReset.where("expires_at", "<", currentDate).del();
   }
 };
