@@ -4,6 +4,7 @@ import PasswordReset from "../models/PasswordReset.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { checkValidToken } from "../middleware/ValidateResetToken.js";
+import { handleRequestPasswordReset } from "./PasswordResetController.js";
 
 export const login = async (req, res) => {
   const inputs = [
@@ -154,6 +155,7 @@ export const postForgotPassword = async (req, res, next) => {
       };
 
       if (user) {
+        handleRequestPasswordReset(req, res);
         req.flash = {
           type: "success",
           message: "Check your email for the reset link.",

@@ -29,11 +29,8 @@ export const handleRequestPasswordReset = async (req, res) => {
         "Password Reset Request",
         `<p>Click <a href="localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
       );
-      return res.status(200).json({
-        message: "Password reset token generated successfully",
-        token,
-        expires_at: expiresAt.toISOString(),
-      });
+
+      return res.redirect("/email-sent");
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });
