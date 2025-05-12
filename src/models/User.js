@@ -28,6 +28,7 @@ class User extends Model {
         lastname: { type: "string", minLength: 1, maxLength: 255 },
         password: { type: "string", minLength: 6, maxLength: 255 },
         is_admin: { type: "boolean", default: false },
+        receive_notifications: { type: "boolean", default: true },
       },
     };
   }
