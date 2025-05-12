@@ -8,8 +8,8 @@ export function up(knex) {
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
     table.boolean("is_admin").defaultTo(false);
+    table.boolean("receive_notifications").defaultTo(true);
   });
-
 }
 
 export function down(knex) {
