@@ -3,6 +3,7 @@
 @import url("login.css");
 @import url("btn.css");
 @import url("sidebar.css");
+@import url("modal.css");
 
 @font-face {
   font-family: "Inter";
@@ -24,4 +25,19 @@
 
 body {
   font-family: "Inter", sans-serif;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.hidden {
+  display: none;
 }
