@@ -51,6 +51,7 @@ app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
 app.get("/profiel", jwtAuth, PageController.profiel);
+app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
 
 // Auth routes
 app.get("/login", AuthController.login);
@@ -60,8 +61,10 @@ app.get("/logout", AuthController.logout);
 
 // Users
 app.get("/api/users", API_UserController.index);
+app.post("/api/users", API_UserController.store);
 app.get("/api/users/:id", API_UserController.show);
 app.put("/api/users/:id", API_UserController.update);
+app.delete("/api/users/:id", API_UserController.destroy);
 
 // Consumables
 app.get("/api/consumables", API_ConsumableController.index);
