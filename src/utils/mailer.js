@@ -7,10 +7,18 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendMail = async (to, subject, html) => {
-  return await transporter.sendMail({
-    from: `"Pingpong club" <noreply@localhost>`,
-    to,
-    subject,
-    html,
-  });
+  try {
+    if (await transporter.verify()) {
+      return await transporter.sendMail({
+        from: `"Pingpong club" <noreply@localhost>`,
+        to,
+        subject,
+        html,
+      });
+    } else{
+      return false
+    }
+  } catch (error) {
+    return false;
+  }
 };

@@ -17,7 +17,7 @@ import * as API_CategoryController from "./controllers/api/CategoryController.js
 import * as API_TeamController from "./controllers/api/TeamController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
-import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
+import * as PasswordResetController  from "./controllers/PasswordResetController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -78,11 +78,11 @@ app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
-app.get("/forgot-password", AuthController.forgotPassword);
+app.get("/forgot-password", PasswordResetController.forgotPassword);
 app.post(
   "/forgot-password",
-  handleRequestPasswordReset,
-  AuthController.forgotPassword
+  PasswordResetController.postForgotPassword,
+  PasswordResetController.forgotPassword
 );
 
 // Users
@@ -114,11 +114,11 @@ app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // Password reset
-app.get("/reset-password", AuthController.resetPassword, checkValidToken);
+app.get("/reset-password", PasswordResetController.resetPassword, checkValidToken);
 app.post(
   "/reset-password",
-  AuthController.postResetPassword,
-  AuthController.resetPassword
+  PasswordResetController.postResetPassword,
+  PasswordResetController.resetPassword
 );
 
 // ---------------------- Start the app ----------------------

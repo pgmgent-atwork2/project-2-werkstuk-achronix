@@ -1,10 +1,12 @@
 import PasswordReset from "../models/PasswordReset.js";
 export const checkValidToken = async (req, res) => {
   const resetToken = req.query.token || req.body.token;
-  const passwordReset = await PasswordReset.query().where("token", resetToken);
+  const passwordReset = await PasswordReset.query()
+    .where("token", resetToken)
+    .first();
 
   if (!passwordReset) {
-    return res.status(400).json({ message: "Invalid or expired token" });
+    return res.redirect("/password-reset/expired-token");
   }
 
   const currentDate = new Date();
@@ -15,5 +17,7 @@ export const checkValidToken = async (req, res) => {
 
   if (await PasswordReset.query().where("expires_at", ">", currentDate)) {
     return true;
+  } else {
+    return res.redirect("/password-reset/expired-token");
   }
 };
