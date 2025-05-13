@@ -2,95 +2,84 @@
     <h1>Wedstrijden</h1>
 
     <% if (locals.flash) { %>
-        <% if (flash.success) { %>
-            <div>
-                <%= flash.success %>
-            </div>
-            <% } %>
-                <% if (flash.error) { %>
-                    <div>
-                        <%= flash.error %>
-                    </div>
-                    <% } %>
-                        <% if (flash.warning) { %>
+        <% ['success', 'error' , 'warning' ].forEach(type=> { %>
+            <% if (flash[type]) { %>
+                <div>
+                    <%= flash[type] %>
+                </div>
+                <% } %>
+                    <% }) %>
+                        <% } %>
+
                             <div>
-                                <%= flash.warning %>
-                            </div>
-                            <% } %>
-                                <% } %>
-
-                                    <!-- Import ICS Form -->
-                                    <div>
+                                <div>
+                                    <h3>Importeer Wedstrijden</h3>
+                                </div>
+                                <div>
+                                    <form action="/wedstrijden/import" method="POST" enctype="multipart/form-data">
                                         <div>
-                                            <h3>Importeer Wedstrijden</h3>
+                                            <label for="icsFile">ICS Bestand</label>
+                                            <input type="file" name="icsFile" id="icsFile" accept=".ics" required>
+                                            <small>Upload een .ics bestand met
+                                                wedstrijdinformatie</small>
                                         </div>
+
                                         <div>
-                                            <form action="/wedstrijden/import" method="POST"
-                                                enctype="multipart/form-data">
-                                                <div>
-                                                    <label for="icsFile">ICS Bestand</label>
-                                                    <input type="file" name="icsFile" id="icsFile" accept=".ics"
-                                                        required>
-                                                    <small>Upload een .ics bestand met
-                                                        wedstrijdinformatie</small>
-                                                </div>
-
-                                                <div>
-                                                    <label for="teamId">Team</label>
-                                                    <select name="teamId" id="teamId">
-                                                        <% if(locals.teams && teams.length> 0) { %>
-                                                            <% teams.forEach(team=> { %>
-                                                                <option value="<%= team.id %>">
-                                                                    <%= team.name %>
-                                                                </option>
-                                                                <% }) %>
-                                                                    <% } else { %>
-                                                                        <option value="">Geen teams beschikbaar
-                                                                        </option>
-                                                                        <% } %>
-                                                    </select>
-                                                </div>
-
-                                                <button type="submit" class="btn">Importeren</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <h3>Geplande Wedstrijden</h3>
-
-                                        <% if (locals.matches && matches.length> 0) { %>
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Datum</th>
-                                                        <th>Locatie</th>
-                                                        <th>Thuis/Uit</th>
-                                                        <th>Spelers nodig</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% matches.forEach(match=> { %>
-                                                        <tr>
-                                                            <td>
-                                                                <%= new Date(match.date).toLocaleDateString('nl-BE') %>
-                                                            </td>
-                                                            <td>
-                                                                <%= match.location %>
-                                                            </td>
-                                                            <td>
-                                                                <%= match.home_away %>
-                                                            </td>
-                                                            <td>
-                                                                <%= match.players_needed %>
-                                                            </td>
-                                                        </tr>
+                                            <label for="teamId">Team</label>
+                                            <select name="teamId" id="teamId">
+                                                <% if(locals.teams && teams.length> 0) { %>
+                                                    <% teams.forEach(team=> { %>
+                                                        <option value="<%= team.id %>">
+                                                            <%= team.name %>
+                                                        </option>
                                                         <% }) %>
-                                                </tbody>
-                                            </table>
-                                            <% } else { %>
-                                                <p>Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
-                                                    hierboven.</p>
-                                                <% } %>
-                                    </div>
+                                                            <% } else { %>
+                                                                <option value="">Geen teams beschikbaar
+                                                                </option>
+                                                                <% } %>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn">Importeren</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3>Geplande Wedstrijden</h3>
+
+                                <% if (locals.matches && matches.length> 0) { %>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Datum</th>
+                                                <th>Locatie</th>
+                                                <th>Thuis/Uit</th>
+                                                <th>Team</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% matches.forEach(match=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.location %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.home_away %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.team_id %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <p>Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
+                                            hierboven.</p>
+                                        <% } %>
+                            </div>
 </div>
