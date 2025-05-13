@@ -38,7 +38,12 @@ export function parseIcsToMatches(icsContent, teamId) {
           }
 
           // Determine if home or away
-          const isHome = teams.length > 0 && teams[0].includes("HNO Assenede");
+          let isHome = false;
+          if (event.location && event.location.includes("Assenede")) {
+            isHome = true;
+          }
+
+          console.log("Teams found:", teams);
           console.log("Match: " + matchDetails + ", isHome: " + isHome);
 
           const match = {
