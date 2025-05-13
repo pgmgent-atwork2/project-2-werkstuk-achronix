@@ -42,6 +42,7 @@ export const handleRequestPasswordReset = async (req, res) => {
           layout: "layouts/authentication",
           smtp_error:
             "Fout bij het verzenden van de e-mail. Probeer het later opnieuw.",
+          pageTitle: "Wachtwoord vergeten | Ping Pong Tool",
         });
       }
     }
@@ -67,6 +68,7 @@ export const forgotPassword = async (req, res) => {
     layout: "layouts/authentication",
     inputs,
     flash,
+    pageTitle: "Wachtwoord vergeten | Ping Pong Tool",
   });
 };
 
@@ -94,7 +96,7 @@ export const postForgotPassword = async (req, res, next) => {
     });
 
     if (!user) {
-      req.formErrorFields = { email: "Deze gebruiker bestaat niet." };
+      req.formErrorFields = { email: "Dit email bestaat niet." };
       req.flash = {
         type: "danger",
         message: "Errors occurred.",
@@ -112,14 +114,13 @@ export const postForgotPassword = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res) => {
-
-  if(!req.query.token) {
+  if (!req.query.token) {
     return res.redirect("/password-reset/expired-token");
   }
 
   const isvalid = await checkValidToken(req, res);
 
-  if (isvalid ) {
+  if (isvalid) {
     const inputs = [
       {
         name: "token",
@@ -144,6 +145,7 @@ export const resetPassword = async (req, res) => {
       layout: "layouts/authentication",
       inputs,
       flash,
+      pageTitle: "Wachtwoord resetten | Ping Pong Tool",
     });
   } else {
     return res.redirect("/password-reset/expired-token");

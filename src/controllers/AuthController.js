@@ -27,6 +27,7 @@ export const login = async (req, res) => {
     layout: "layouts/authentication",
     inputs,
     flash,
+    pageTitle: "Inloggen | Ping Pong Tool",
   });
 };
 
