@@ -28,14 +28,22 @@ export const handleRequestPasswordReset = async (req, res) => {
     });
 
     if (addToken) {
-      sendMail(
+      const emailSent = await sendMail(
         email,
         "Password Reset Request",
-        `<p>Click <a href="localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
+        `<p>Click <a href="http://localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
       );
 
-      await cleanupExpiredTokens();
-      return res.redirect("/forgot-password-confirmation");
+      if (emailSent) {
+        await cleanupExpiredTokens();
+        return res.redirect("/forgot-password-confirmation");
+      } else {
+        return res.render("pages/forgotPassword", {
+          layout: "layouts/authentication",
+          smtp_error:
+            "Fout bij het verzenden van de e-mail. Probeer het opnieuw.",
+        });
+      }
     }
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });
