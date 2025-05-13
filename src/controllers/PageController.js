@@ -1,3 +1,7 @@
+import Match from "../models/Match.js";
+import Team from "../models/Team.js";
+import User from "../models/User.js";
+
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
  */
@@ -24,10 +28,6 @@ export const bestellen = (req, res) => {
 
 export const wedstrijden = async (req, res) => {
   try {
-    const Match = (await import("../models/Match.js")).default;
-    const Team = (await import("../models/Team.js")).default;
-
-    // Get matches and teams for the dropdown
     const matches = await Match.query().orderBy("date", "asc");
     const teams = await Team.query().orderBy("name", "asc");
 
@@ -57,7 +57,6 @@ export const profiel = (req, res) => {
 
 export const beheerderspaneel = async (req, res) => {
   try {
-    const User = (await import("../models/User.js")).default;
     const users = await User.query();
 
     res.render("pages/beheerderspaneel", {
