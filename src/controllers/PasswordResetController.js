@@ -104,7 +104,8 @@ export const postForgotPassword = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res) => {
-  if ((await checkValidToken(req, res))) {
+  const isvalid = await checkValidToken(req, res);
+  if (isvalid) {
     const inputs = [
       {
         name: "token",
