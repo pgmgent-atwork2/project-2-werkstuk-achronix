@@ -103,13 +103,6 @@
   border-color: red;
 }
 
-.error-message {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.5rem;
-}
-
-
 .login-button {
   padding: 0.75rem 1.5rem;
   font-weight: 500;
