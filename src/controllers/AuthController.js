@@ -1,10 +1,7 @@
 import { validationResult } from "express-validator";
 import User from "../models/User.js";
-import PasswordReset from "../models/PasswordReset.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkValidToken } from "../middleware/ValidateResetToken.js";
-import { handleRequestPasswordReset } from "./PasswordResetController.js";
 
 export const login = async (req, res) => {
   const inputs = [
@@ -103,4 +100,3 @@ export const logout = async (req, res, next) => {
     next(e);
   }
 };
-

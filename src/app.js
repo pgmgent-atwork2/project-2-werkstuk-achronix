@@ -59,10 +59,10 @@ app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);
 app.get("/uitloggen", AuthController.logout);
 app.get("/logout", AuthController.logout);
-app.get("/forgot-password", AuthController.forgotPassword);
+app.get("/forgot-password", PasswordResetController.forgotPassword);
 app.post(
   "/forgot-password",
-  PasswordResetController.handleRequestPasswordReset,
+  PasswordResetController.postForgotPassword,
   PasswordResetController.forgotPassword
 );
 
@@ -95,7 +95,7 @@ app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // Password reset
-app.get("/reset-password", AuthController.resetPassword, checkValidToken);
+app.get("/reset-password", PasswordResetController.resetPassword, checkValidToken);
 app.post(
   "/reset-password",
   PasswordResetController.postResetPassword,

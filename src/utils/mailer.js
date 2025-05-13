@@ -7,10 +7,18 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendMail = async (to, subject, html) => {
-  return await transporter.sendMail({
-    from: `"Pingpong club" <noreply@localhost>`,
-    to,
-    subject,
-    html,
-  });
+  try {
+    return await transporter.sendMail({
+      from: `"Pingpong club" <noreply@localhost>`,
+      to,
+      subject,
+      html,
+    });
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed to send email",
+      error: error.message,
+    };
+  }
 };

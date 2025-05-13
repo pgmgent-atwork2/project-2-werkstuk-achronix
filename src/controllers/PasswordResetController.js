@@ -3,6 +3,8 @@ import User from "../models/User.js";
 import generateToken from "../utils/generateToken.js";
 import { sendMail } from "../utils/mailer.js";
 import { cleanupExpiredTokens } from "../utils/cleanupExpiredTokens.js";
+import { checkValidToken } from "../middleware/ValidateResetToken.js";
+import { validationResult } from "express-validator";
 
 export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
@@ -83,18 +85,14 @@ export const postForgotPassword = async (req, res, next) => {
     });
 
     if (!user) {
-      req.formErrorFields = { email: "This user does not exist." };
+      req.formErrorFields = { email: "Deze gebruiker bestaat niet." };
       req.flash = {
         type: "danger",
         message: "Errors occurred.",
       };
 
       if (user) {
-        handleRequestPasswordReset(req, res);
-        req.flash = {
-          type: "success",
-          message: "Check your email for the reset link.",
-        };
+       await handleRequestPasswordReset(req, res);
       }
 
       return next();
@@ -134,8 +132,6 @@ export const postResetPassword = async (req, res, next) => {
   console.log("postResetPassword");
   try {
     const isValid = await checkValidToken(req, res);
-
-    console.log(isValid);
 
     if (isValid) {
       const errors = validationResult(req);
