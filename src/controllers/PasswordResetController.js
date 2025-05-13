@@ -41,7 +41,7 @@ export const handleRequestPasswordReset = async (req, res) => {
         return res.render("pages/forgotPassword", {
           layout: "layouts/authentication",
           smtp_error:
-            "Fout bij het verzenden van de e-mail. Probeer het opnieuw.",
+            "Fout bij het verzenden van de e-mail. Probeer het later opnieuw.",
         });
       }
     }
@@ -112,8 +112,14 @@ export const postForgotPassword = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res) => {
+
+  if(!req.query.token) {
+    return res.redirect("/password-reset/expired-token");
+  }
+
   const isvalid = await checkValidToken(req, res);
-  if (isvalid) {
+
+  if (isvalid ) {
     const inputs = [
       {
         name: "token",
@@ -187,6 +193,8 @@ export const postResetPassword = async (req, res, next) => {
         };
         return res.redirect("/login");
       }
+    } else {
+      return res.redirect("/password-reset/expired-token");
     }
   } catch (e) {
     next(e);
