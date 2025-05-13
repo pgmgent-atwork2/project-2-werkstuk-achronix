@@ -6,7 +6,7 @@ export const checkValidToken = async (req, res) => {
     .first();
 
   if (!passwordReset) {
-    return res.redirect("/password-reset/expired-token");
+    return false;
   }
 
   const currentDate = new Date();
@@ -15,9 +15,9 @@ export const checkValidToken = async (req, res) => {
     await PasswordReset.query().where("expires_at", "<", currentDate).del();
   }
 
-  if (await PasswordReset.query().where("expires_at", ">", currentDate)) {
+  if (passwordReset && await PasswordReset.query().where("expires_at", ">", currentDate)) {
     return true;
   } else {
-    return res.redirect("/password-reset/expired-token");
+    return false;
   }
 };
