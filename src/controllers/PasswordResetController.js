@@ -5,6 +5,7 @@ import { sendMail } from "../utils/mailer.js";
 import { cleanupExpiredTokens } from "../utils/cleanupExpiredTokens.js";
 import { checkValidToken } from "../middleware/ValidateResetToken.js";
 import { validationResult } from "express-validator";
+import bcrypt from "bcrypt";
 
 export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
@@ -91,11 +92,11 @@ export const postForgotPassword = async (req, res, next) => {
         message: "Errors occurred.",
       };
 
-      if (user) {
-       await handleRequestPasswordReset(req, res);
-      }
-
       return next();
+    }
+
+    if (user) {
+      await handleRequestPasswordReset(req, res);
     }
   } catch (e) {
     next(e);
@@ -103,33 +104,38 @@ export const postForgotPassword = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res) => {
-  const inputs = [
-    {
-      name: "token",
-      label: "",
-      type: "hidden",
-      value: req.query.token,
-    },
-    {
-      name: "password",
-      label: "Password",
-      type: "password",
-      value: req.body?.password ? req.body.password : "",
-      err: req.formErrorFields?.password ? req.formErrorFields["password"] : "",
-    },
-  ];
+  if ((isValid = await checkValidToken(req, res))) {
+    const inputs = [
+      {
+        name: "token",
+        label: "",
+        type: "hidden",
+        value: req.query.token,
+      },
+      {
+        name: "password",
+        label: "Password",
+        type: "password",
+        value: req.body?.password ? req.body.password : "",
+        err: req.formErrorFields?.password
+          ? req.formErrorFields["password"]
+          : "",
+      },
+    ];
 
-  const flash = req.flash || {};
+    const flash = req.flash || {};
 
-  res.render("pages/resetPassword", {
-    layout: "layouts/authentication",
-    inputs,
-    flash,
-  });
+    res.render("pages/resetPassword", {
+      layout: "layouts/authentication",
+      inputs,
+      flash,
+    });
+  } else {
+    return res.redirect("/password-reset/expired-token");
+  }
 };
 
 export const postResetPassword = async (req, res, next) => {
-  console.log("postResetPassword");
   try {
     const isValid = await checkValidToken(req, res);
 
