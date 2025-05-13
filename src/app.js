@@ -1,27 +1,30 @@
-//environment variables
-import dotenv from "dotenv";
-dotenv.config();
-
 // ---------------------- Import modules ----------------------
 import express from "express";
 import expressLayouts from "express-ejs-layouts";
 import path from "path";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
+import session from "express-session";
+import flash from "connect-flash";
 
 //import controllers
 import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
+import * as MatchController from "./controllers/MatchController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
-import * as MatchController from "./controllers/MatchController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
+
+//environment variables
+import dotenv from "dotenv";
+dotenv.config();
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -35,16 +38,9 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.set("views", path.resolve("src", "views"));
 app.set("layout", "layouts/main");
-
-// Import modules for file uploads, sessions and flash messages
-import fileUpload from "express-fileupload";
-import session from "express-session";
-import flash from "connect-flash";
-
-// Set up file upload middleware
 app.use(fileUpload());
-
-// Set up session middleware
+app.use(flash());
+app.use(express.static("public"));
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "pingpong-secret-key",
@@ -52,11 +48,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
-// Set up flash messages
-app.use(flash());
-
-app.use(express.static("public"));
 
 // ---------------------- App routes ----------------------
 
