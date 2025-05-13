@@ -3,6 +3,7 @@
 @import url("login.css");
 @import url("sidebar.css");
 @import url("modal.css");
+@import url("btn.css");
 
 @font-face {
   font-family: "Inter";
