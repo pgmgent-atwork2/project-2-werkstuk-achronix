@@ -15,7 +15,7 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
-import MatchController from "./controllers/MatchController.js";
+import * as MatchController from "./controllers/MatchController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
