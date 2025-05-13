@@ -17,7 +17,7 @@ import * as API_CategoryController from "./controllers/api/CategoryController.js
 import * as API_TeamController from "./controllers/api/TeamController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
-import * as PasswordResetController  from "./controllers/PasswordResetController.js";
+import * as PasswordResetController from "./controllers/PasswordResetController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -114,7 +114,11 @@ app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
 // Password reset
-app.get("/reset-password", PasswordResetController.resetPassword, checkValidToken);
+app.get(
+  "/reset-password",
+  PasswordResetController.resetPassword,
+  checkValidToken
+);
 app.post(
   "/reset-password",
   PasswordResetController.postResetPassword,
@@ -124,4 +128,7 @@ app.post(
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+  console.log(
+    `Run docker compose up to start mailserver on http://localhost:8025 `
+  );
 });
