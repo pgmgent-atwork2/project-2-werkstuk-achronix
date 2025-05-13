@@ -54,7 +54,7 @@ export const postLogin = async (req, res, next) => {
     });
 
     if (!user) {
-      req.formErrorFields = { email: "This user does not exist." };
+      req.formErrorFields = { email: "Deze gebruiker bestaat niet." };
       req.flash = {
         type: "danger",
         message: "Errors occurred.",
@@ -79,7 +79,7 @@ export const postLogin = async (req, res, next) => {
       return res.redirect("/");
     } else {
       req.formErrorFields = {
-        password: "You entered an invalid password.",
+        password: "Ongeldig wachtwoord ingegeven.",
       };
       req.flash = {
         type: "danger",
