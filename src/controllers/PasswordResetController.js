@@ -114,7 +114,9 @@ export const postForgotPassword = async (req, res, next) => {
 };
 
 export const resetPassword = async (req, res) => {
-  if (!req.query.token) {
+  const token = req.query.token || req.body?.token;
+
+  if (!token) {
     return res.redirect("/password-reset/expired-token");
   }
 
@@ -126,16 +128,14 @@ export const resetPassword = async (req, res) => {
         name: "token",
         label: "",
         type: "hidden",
-        value: req.query.token,
+        value: token,
       },
       {
         name: "password",
         label: "Password",
         type: "password",
         value: req.body?.password ? req.body.password : "",
-        err: req.formErrorFields?.password
-          ? req.formErrorFields["password"]
-          : "",
+        err: req.formErrorFields?.password ? req.formErrorFields.password : "",
       },
     ];
 
@@ -154,14 +154,14 @@ export const resetPassword = async (req, res) => {
 
 export const postResetPassword = async (req, res, next) => {
   try {
+    const token = req.query.token || req.body?.token;
+
     const isValid = await checkValidToken(req, res);
 
     if (isValid) {
       const errors = validationResult(req);
-
       if (!errors.isEmpty()) {
         req.formErrorFields = {};
-
         errors.array().forEach((error) => {
           req.formErrorFields[error.path] = error.msg;
         });
@@ -170,6 +170,8 @@ export const postResetPassword = async (req, res, next) => {
           type: "danger",
           message: "Errors occurred",
         };
+
+        req.query.token = token;
 
         return next();
       }

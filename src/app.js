@@ -7,6 +7,9 @@ import fileUpload from "express-fileupload";
 import session from "express-session";
 import flash from "connect-flash";
 
+// middleware
+import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswordValidation.js";
+
 //import controllers
 import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
@@ -113,14 +116,16 @@ app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
-// Password reset
+// Password reset%
 app.get(
   "/reset-password",
+
   PasswordResetController.resetPassword,
   checkValidToken
 );
 app.post(
   "/reset-password",
+  AuthResetPasswordValidation,
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
