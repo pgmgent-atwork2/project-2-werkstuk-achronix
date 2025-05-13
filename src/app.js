@@ -17,7 +17,7 @@ import * as API_CategoryController from "./controllers/api/CategoryController.js
 import * as API_TeamController from "./controllers/api/TeamController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
-import { handleRequestPasswordReset } from "./controllers/PasswordResetController.js";
+import * as PasswordResetController  from "./controllers/PasswordResetController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -62,8 +62,8 @@ app.get("/logout", AuthController.logout);
 app.get("/forgot-password", AuthController.forgotPassword);
 app.post(
   "/forgot-password",
-  handleRequestPasswordReset,
-  AuthController.forgotPassword
+  PasswordResetController.handleRequestPasswordReset,
+  PasswordResetController.forgotPassword
 );
 
 // Users
@@ -98,8 +98,8 @@ app.delete("/api/teams/:id", API_TeamController.destroy);
 app.get("/reset-password", AuthController.resetPassword, checkValidToken);
 app.post(
   "/reset-password",
-  AuthController.postResetPassword,
-  AuthController.resetPassword
+  PasswordResetController.postResetPassword,
+  PasswordResetController.resetPassword
 );
 
 // ---------------------- Start the app ----------------------
