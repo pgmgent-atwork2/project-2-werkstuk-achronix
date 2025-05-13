@@ -15,11 +15,15 @@
 .modal-content {
   background-color: var(--background);
   margin: 10% auto;
-  padding: 1.25rem;
+  padding: 2rem;
   border-radius: var(--radius);
   width: 80%;
-  max-width: 32rem;
+  max-width: 35rem;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+  margin-bottom: 2rem;
 }
 
 .close {
