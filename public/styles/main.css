@@ -4,8 +4,8 @@
 @import url("sidebar.css");
 @import url("modal.css");
 @import url("forget-password.css");
-//@import url("btn.css");
-//@import url("wedstrijden.css");
+@import url("btn.css");
+@import url("wedstrijden.css");
 
 @font-face {
   font-family: "Inter";
@@ -27,6 +27,7 @@
 
 body {
   font-family: "Inter", sans-serif;
+  font-style: normal;
 }
 
 .visually-hidden {
