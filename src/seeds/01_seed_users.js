@@ -12,6 +12,14 @@ const seed = async function (knex) {
       receive_notifications: true,
     },
     {
+      email: "user@user.com",
+      firstname: "user",
+      lastname: "user",
+      password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
+      is_admin: false,
+      receive_notifications: true,
+    },
+    {
       firstname: "John",
       lastname: "Doe",
       email: "user@example.com",
