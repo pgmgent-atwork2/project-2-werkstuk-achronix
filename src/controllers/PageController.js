@@ -23,42 +23,59 @@ export const dashboard = async (req, res) => {
 };
 
 export const bestellen = (req, res) => {
+  const user = req.user;
+
   res.render("pages/bestellen", {
     pageTitle: "Bestellen | Ping Pong Tool",
+    user,
   });
 };
 
 export const wedstrijden = async (req, res) => {
+  const user = req.user;
+
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
+    user,
   });
 };
 
 export const profiel = (req, res) => {
+  const user = req.user;
+
   res.render("pages/profiel", {
     pageTitle: "Profiel | Ping Pong Tool",
+    user,
   });
 };
 
 //Beheerderspaneel
 
 export const beheerderspaneel = async (req, res) => {
+  const user = req.user;
+
   const users = await User.query();
 
   res.render("pages/beheer/beheerderspaneel", {
     pageTitle: "Beheerderspaneel | Ping Pong Tool",
     users: users,
+    user,
   });
 };
 export const ledenBeheer = async (req, res) => {
+  const user = req.user;
+
   const users = await User.query();
 
   res.render("pages/beheer/ledenBeheer", {
     pageTitle: "Leden beheren | Ping Pong Tool",
     users: users,
+    user,
   });
 };
 export const wedstrijdenBeheer = async (req, res) => {
+  const user = req.user;
+
   const matches = await Match.query()
     .withGraphFetched("team")
     .orderBy("date", "asc");
@@ -69,10 +86,14 @@ export const wedstrijdenBeheer = async (req, res) => {
     title: "Wedstrijden",
     matches: matches,
     teams: teams,
+    user,
   });
 };
 export const bestellingenBeheer = async (req, res) => {
+  const user = req.user;
+
   res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",
+    user,
   });
 };
