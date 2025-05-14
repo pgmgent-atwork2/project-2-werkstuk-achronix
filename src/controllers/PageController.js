@@ -47,7 +47,7 @@ export const profiel = (req, res) => {
 export const beheerderspaneel = async (req, res) => {
   const users = await User.query();
 
-  res.render("pages/beheerderspaneel", {
+  res.render("pages/beheer/beheerderspaneel", {
     pageTitle: "Beheerderspaneel | Ping Pong Tool",
     users: users,
   });
@@ -55,7 +55,7 @@ export const beheerderspaneel = async (req, res) => {
 export const ledenBeheer = async (req, res) => {
   const users = await User.query();
 
-  res.render("pages/ledenBeheer", {
+  res.render("pages/beheer/ledenBeheer", {
     pageTitle: "Leden beheren | Ping Pong Tool",
     users: users,
   });
@@ -64,7 +64,7 @@ export const wedstrijdenBeheer = async (req, res) => {
   const matches = await Match.query().orderBy("date", "asc");
   const teams = await Team.query().orderBy("name", "asc");
 
-  res.render("pages/wedstrijdenBeheer", {
+  res.render("pages/beheer/wedstrijdenBeheer", {
     pageTitle: "Wedstrijden beheren | Ping Pong Tool",
     title: "Wedstrijden",
     matches: matches,
@@ -74,7 +74,7 @@ export const wedstrijdenBeheer = async (req, res) => {
 export const bestellingenBeheer = async (req, res) => {
   const users = await User.query();
 
-  res.render("pages/bestellingenBeheer", {
+  res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",
     users: users,
   });
