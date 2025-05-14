@@ -1,5 +1,6 @@
+<a href="/beheerderspaneel">Ga terug naar beheerderspaneel overzicht</a>
 <div>
-    <h1>Wedstrijden</h1>
+    <h1>Wedstrijden beheren</h1>
 
     <% if (locals.flash) { %>
         <% ['success', 'error' , 'warning' ].forEach(type=> { %>
@@ -16,7 +17,8 @@
                                     <h3>Importeer Wedstrijden</h3>
                                 </div>
                                 <div>
-                                    <form action="/wedstrijden/import" method="POST" enctype="multipart/form-data">
+                                    <form action="/beheerderspaneel/wedstrijden/import" method="POST"
+                                        enctype="multipart/form-data">
                                         <div>
                                             <label for="icsFile">ICS Bestand</label>
                                             <input type="file" name="icsFile" id="icsFile" accept=".ics" required>
