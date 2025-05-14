@@ -9,7 +9,7 @@ const seed = async function (knex) {
       lastname: "admin",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
       is_admin: true,
-      receive_notifications: true,
+      receive_notifications: false,
     },
     {
       email: "user@user.com",
@@ -21,19 +21,19 @@ const seed = async function (knex) {
     },
     {
       firstname: "John",
-      lastname: "Doe",
-      email: "user@example.com",
-      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu",
+      lastname: "Pork",
+      email: "john.pork@gmail.com",
+      password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
       is_admin: false,
-      receive_notifications: true,
+      receive_notifications: false,
     },
     {
-      firstname: "Jane",
-      lastname: "Doe",
-      email: "admin@example.com",
-      password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aULe9c4clXu",
+      firstname: "Tim",
+      lastname: "Cheese",
+      email: "tim.cheese@gmail.com",
+      password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
       is_admin: true,
-      receive_notifications: false,
+      receive_notifications: true,
     },
   ]);
 };
