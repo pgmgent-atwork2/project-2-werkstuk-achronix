@@ -5,11 +5,10 @@
 /**
  * Parse an ICS file content and extract match information
  * @param {string} icsContent - The content of the ICS file
- * @param {number} teamId - The team ID to associate with these matches
  * @returns {Array} Array of match objects ready to be inserted into the database
  */
-export function parseIcsToMatches(icsContent, teamId) {
-  console.log("Starting ICS parse, teamId:", teamId);
+export function parseIcsToMatches(icsContent) {
+  console.log("Starting ICS parse");
   try {
     const events = extractEvents(icsContent);
     console.log("Extracted events:", events.length);
@@ -46,11 +45,15 @@ export function parseIcsToMatches(icsContent, teamId) {
           console.log("Teams found:", teams);
           console.log("Match: " + matchDetails + ", isHome: " + isHome);
 
+          // Determine team ID from match details
+          const teamId = determineTeamId(matchDetails);
+          console.log("Determined team ID:", teamId);
+
           const match = {
             date: parseIcsDate(event.dtstart),
             location: parseLocation(event.location || ""),
             home_away: isHome ? "THUIS" : "UIT",
-            team_id: teamId ? parseInt(teamId) : null,
+            team_id: teamId,
           };
 
           console.log("Created match object:", match);
@@ -65,6 +68,33 @@ export function parseIcsToMatches(icsContent, teamId) {
     console.error("Error parsing ICS file:", err);
     return [];
   }
+}
+
+/**
+ * Determine team ID based on match details
+ * @param {string} matchDetails - String containing match details
+ * @returns {number|null} Team ID or null if no match
+ */
+function determineTeamId(matchDetails) {
+  // Look for team identifier in the match details
+  if (
+    matchDetails.includes("Assenede A") ||
+    matchDetails.includes("HNO Assenede A")
+  ) {
+    return 1;
+  } else if (
+    matchDetails.includes("Assenede B") ||
+    matchDetails.includes("HNO Assenede B")
+  ) {
+    return 2;
+  } else if (
+    matchDetails.includes("Assenede C") ||
+    matchDetails.includes("HNO Assenede C")
+  ) {
+    return 3;
+  }
+
+  return null;
 }
 
 /**
