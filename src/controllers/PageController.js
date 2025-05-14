@@ -13,10 +13,12 @@ export const addCurrentPath = (req, res, next) => {
 
 // ---------------------- Dit rendert de paginas ----------------------
 
-export const dashboard = (req, res) => {
+export const dashboard = async (req, res) => {
+  const user = req.user;
+
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
-    user: req.user,
+    user,
   });
 };
 
