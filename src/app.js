@@ -132,8 +132,8 @@ app.post(
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
   console.log(
     `Run docker compose up to start mailserver on http://localhost:8025 `
   );
+  console.log(`Server running at http://localhost:${port}`);
 });
