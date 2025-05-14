@@ -17,10 +17,8 @@ export const importIcs = async (req, res) => {
     }
 
     const icsFile = req.files.icsFile;
-    const teamId = parseInt(req.body.teamId) || null;
 
     console.log("File name:", icsFile.name);
-    console.log("Team ID:", teamId);
 
     // Validate file type (simple check)
     if (!icsFile.name.endsWith(".ics")) {
@@ -36,7 +34,7 @@ export const importIcs = async (req, res) => {
 
     let matches = [];
     try {
-      matches = parseIcsToMatches(icsContent, teamId);
+      matches = parseIcsToMatches(icsContent);
       console.log("Parsed matches:", matches.length);
     } catch (parseError) {
       console.error("Error parsing ICS:", parseError);
