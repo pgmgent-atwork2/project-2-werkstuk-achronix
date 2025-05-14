@@ -74,7 +74,19 @@ app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
 app.post("/wedstrijden/import", jwtAuth, MatchController.importIcs);
 app.get("/profiel", jwtAuth, PageController.profiel);
+// Page routes beheerderspaneel
 app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
+app.get("/beheerderspaneel/leden", jwtAuth, PageController.ledenBeheer);
+app.get(
+  "/beheerderspaneel/wedstrijden",
+  jwtAuth,
+  PageController.wedstrijdenBeheer
+);
+app.get(
+  "/beheerderspaneel/bestellingen",
+  jwtAuth,
+  PageController.bestellingenBeheer
+);
 
 // Auth routes
 app.get("/login", AuthController.login);
