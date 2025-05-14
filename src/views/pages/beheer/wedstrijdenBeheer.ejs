@@ -1,0 +1,72 @@
+<a href="/beheerderspaneel">Ga terug naar beheerderspaneel overzicht</a>
+<div>
+    <h1>Wedstrijden beheren</h1>
+
+    <% if (locals.flash) { %>
+        <% ['success', 'error' , 'warning' ].forEach(type=> { %>
+            <% if (flash[type]) { %>
+                <div>
+                    <%= flash[type] %>
+                </div>
+                <% } %>
+                    <% }) %>
+                        <% } %>
+
+                            <div>
+                                <div>
+                                    <h3>Importeer Wedstrijden</h3>
+                                </div>
+                                <div>
+                                    <form action="/beheerderspaneel/wedstrijden/import" method="POST"
+                                        enctype="multipart/form-data">
+                                        <div>
+                                            <label for="icsFile">ICS Bestand</label>
+                                            <input type="file" name="icsFile" id="icsFile" accept=".ics" required>
+                                            <small>Upload een .ics bestand met
+                                                wedstrijdinformatie. Het team wordt automatisch herkend uit het
+                                                bestand.</small>
+                                        </div>
+
+                                        <button type="submit" class="btn">Importeren</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3>Geplande Wedstrijden</h3>
+
+                                <% if (locals.matches && matches.length> 0) { %>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Datum</th>
+                                                <th>Locatie</th>
+                                                <th>Thuis/Uit</th>
+                                                <th>Team</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% matches.forEach(match=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.location %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.home_away %>
+                                                    </td>
+                                                    <td>
+                                                        <%= match.team ? match.team.name : '?' %>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <p>Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
+                                            hierboven.</p>
+                                        <% } %>
+                            </div>
+</div>

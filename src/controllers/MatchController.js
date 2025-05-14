@@ -13,20 +13,18 @@ export const importIcs = async (req, res) => {
     if (!req.files || !req.files.icsFile) {
       console.log("No file uploaded");
       req.flash("error", "Geen bestand geüpload.");
-      return res.redirect("/wedstrijden");
+      return res.redirect("/beheerderspaneel/wedstrijden");
     }
 
     const icsFile = req.files.icsFile;
-    const teamId = parseInt(req.body.teamId) || null;
 
     console.log("File name:", icsFile.name);
-    console.log("Team ID:", teamId);
 
     // Validate file type (simple check)
     if (!icsFile.name.endsWith(".ics")) {
       console.log("Invalid file type");
       req.flash("error", "Gelieve een geldig .ics bestand te uploaden.");
-      return res.redirect("/wedstrijden");
+      return res.redirect("/beheerderspaneel/wedstrijden");
     }
 
     // Parse ICS file
@@ -36,7 +34,7 @@ export const importIcs = async (req, res) => {
 
     let matches = [];
     try {
-      matches = parseIcsToMatches(icsContent, teamId);
+      matches = parseIcsToMatches(icsContent);
       console.log("Parsed matches:", matches.length);
     } catch (parseError) {
       console.error("Error parsing ICS:", parseError);
@@ -45,12 +43,12 @@ export const importIcs = async (req, res) => {
         "error",
         `Er is een fout opgetreden bij het verwerken van het ICS-bestand: ${parseError.message}`
       );
-      return res.redirect("/wedstrijden");
+      return res.redirect("/beheerderspaneel/wedstrijden");
     }
 
     if (!matches.length) {
       req.flash("warning", "Geen wedstrijden gevonden in het bestand.");
-      return res.redirect("/wedstrijden");
+      return res.redirect("/beheerderspaneel/wedstrijden");
     }
 
     // Save all matches to database
@@ -79,7 +77,7 @@ export const importIcs = async (req, res) => {
       req.flash("error", `Database fout: ${dbError.message}`);
     }
 
-    res.redirect("/wedstrijden");
+    res.redirect("/beheerderspaneel/wedstrijden");
   } catch (error) {
     console.error("Error importing ICS file:", error);
     console.error("Error stack:", error.stack);
@@ -87,6 +85,6 @@ export const importIcs = async (req, res) => {
       "error",
       `Er ging iets mis bij het importeren van het bestand: ${error.message}`
     );
-    res.redirect("/wedstrijden");
+    res.redirect("/beheerderspaneel/wedstrijden");
   }
 };

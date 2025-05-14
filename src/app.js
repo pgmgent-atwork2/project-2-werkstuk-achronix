@@ -72,9 +72,26 @@ app.get("/", (req, res) => {
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
-app.post("/wedstrijden/import", jwtAuth, MatchController.importIcs);
 app.get("/profiel", jwtAuth, PageController.profiel);
+
+// Page routes beheerderspaneel
 app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
+app.get("/beheerderspaneel/leden", jwtAuth, PageController.ledenBeheer);
+app.get(
+  "/beheerderspaneel/wedstrijden",
+  jwtAuth,
+  PageController.wedstrijdenBeheer
+);
+app.post(
+  "/beheerderspaneel/wedstrijden/import",
+  jwtAuth,
+  MatchController.importIcs
+);
+app.get(
+  "/beheerderspaneel/bestellingen",
+  jwtAuth,
+  PageController.bestellingenBeheer
+);
 
 // Auth routes
 app.get("/login", AuthController.login);
@@ -132,8 +149,8 @@ app.post(
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
   console.log(
     `Run docker compose up to start mailserver on http://localhost:8025 `
   );
+  console.log(`Server running at http://localhost:${port}`);
 });

@@ -29,26 +29,9 @@ export const bestellen = (req, res) => {
 };
 
 export const wedstrijden = async (req, res) => {
-  try {
-    const matches = await Match.query().orderBy("date", "asc");
-    const teams = await Team.query().orderBy("name", "asc");
-
-    res.render("pages/wedstrijden", {
-      pageTitle: "Wedstrijden | Ping Pong Tool",
-      title: "Wedstrijden",
-      matches: matches,
-      teams: teams,
-    });
-  } catch (error) {
-    console.error("Error fetching match data:", error);
-    res.render("pages/wedstrijden", {
-      pageTitle: "Wedstrijden | Ping Pong Tool",
-      title: "Wedstrijden",
-      matches: [],
-      teams: [],
-      error: "Er is een probleem opgetreden bij het ophalen van wedstrijden.",
-    });
-  }
+  res.render("pages/wedstrijden", {
+    pageTitle: "Wedstrijden | Ping Pong Tool",
+  });
 };
 
 export const profiel = (req, res) => {
@@ -57,20 +40,39 @@ export const profiel = (req, res) => {
   });
 };
 
-export const beheerderspaneel = async (req, res) => {
-  try {
-    const users = await User.query();
+//Beheerderspaneel
 
-    res.render("pages/beheerderspaneel", {
-      pageTitle: "Beheerderspaneel | Ping Pong Tool",
-      users: users,
-    });
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    res.render("pages/beheerderspaneel", {
-      pageTitle: "Beheerderspaneel | Ping Pong Tool",
-      users: [],
-      error: "Er is een probleem opgetreden bij het ophalen van gebruikers.",
-    });
-  }
+export const beheerderspaneel = async (req, res) => {
+  const users = await User.query();
+
+  res.render("pages/beheer/beheerderspaneel", {
+    pageTitle: "Beheerderspaneel | Ping Pong Tool",
+    users: users,
+  });
+};
+export const ledenBeheer = async (req, res) => {
+  const users = await User.query();
+
+  res.render("pages/beheer/ledenBeheer", {
+    pageTitle: "Leden beheren | Ping Pong Tool",
+    users: users,
+  });
+};
+export const wedstrijdenBeheer = async (req, res) => {
+  const matches = await Match.query()
+    .withGraphFetched("team")
+    .orderBy("date", "asc");
+  const teams = await Team.query().orderBy("name", "asc");
+
+  res.render("pages/beheer/wedstrijdenBeheer", {
+    pageTitle: "Wedstrijden beheren | Ping Pong Tool",
+    title: "Wedstrijden",
+    matches: matches,
+    teams: teams,
+  });
+};
+export const bestellingenBeheer = async (req, res) => {
+  res.render("pages/beheer/bestellingenBeheer", {
+    pageTitle: "Bestellingen beheren | Ping Pong Tool",
+  });
 };
