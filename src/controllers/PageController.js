@@ -27,14 +27,8 @@ export const bestellen = (req, res) => {
 };
 
 export const wedstrijden = async (req, res) => {
-  const matches = await Match.query().orderBy("date", "asc");
-  const teams = await Team.query().orderBy("name", "asc");
-
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
-    title: "Wedstrijden",
-    matches: matches,
-    teams: teams,
   });
 };
 
@@ -43,6 +37,8 @@ export const profiel = (req, res) => {
     pageTitle: "Profiel | Ping Pong Tool",
   });
 };
+
+//Beheerderspaneel
 
 export const beheerderspaneel = async (req, res) => {
   const users = await User.query();
@@ -61,7 +57,9 @@ export const ledenBeheer = async (req, res) => {
   });
 };
 export const wedstrijdenBeheer = async (req, res) => {
-  const matches = await Match.query().orderBy("date", "asc");
+  const matches = await Match.query()
+    .withGraphFetched("team")
+    .orderBy("date", "asc");
   const teams = await Team.query().orderBy("name", "asc");
 
   res.render("pages/beheer/wedstrijdenBeheer", {
@@ -72,10 +70,7 @@ export const wedstrijdenBeheer = async (req, res) => {
   });
 };
 export const bestellingenBeheer = async (req, res) => {
-  const users = await User.query();
-
   res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",
-    users: users,
   });
 };
