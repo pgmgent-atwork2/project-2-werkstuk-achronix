@@ -5,7 +5,7 @@
     <% if (locals.flash) { %>
         <% ['success', 'error' , 'warning' ].forEach(type=> { %>
             <% if (flash[type]) { %>
-                <div>
+                <div class="error-message ">
                     <%= flash[type] %>
                 </div>
                 <% } %>
