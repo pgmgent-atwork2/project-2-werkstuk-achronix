@@ -72,8 +72,8 @@ app.get("/", (req, res) => {
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
-app.post("/wedstrijden/import", jwtAuth, MatchController.importIcs);
 app.get("/profiel", jwtAuth, PageController.profiel);
+
 // Page routes beheerderspaneel
 app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
 app.get("/beheerderspaneel/leden", jwtAuth, PageController.ledenBeheer);
@@ -81,6 +81,11 @@ app.get(
   "/beheerderspaneel/wedstrijden",
   jwtAuth,
   PageController.wedstrijdenBeheer
+);
+app.post(
+  "/beheerderspaneel/wedstrijden/import",
+  jwtAuth,
+  MatchController.importIcs
 );
 app.get(
   "/beheerderspaneel/bestellingen",
