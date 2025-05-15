@@ -98,7 +98,6 @@ export const bestellingenBeheer = async (req, res) => {
   });
 };
 
-
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",
@@ -119,7 +118,7 @@ export const expiredToken = async (req, res) => {
 export const pageNotFound = async (req, res) => {
   const user = req.user;
 
-  res.render("errors/page-not-found", {
+  res.status(404).render("errors/page-not-found", {
     pageTitle: "Pagina niet gevonden | Ping Pong Tool",
     user,
   });
