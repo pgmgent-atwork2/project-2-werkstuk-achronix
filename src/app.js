@@ -24,6 +24,7 @@ import * as PasswordResetController from "./controllers/PasswordResetController.
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
+import checkAdmin from "./middleware/checkAdmin.js";
 
 //environment variables
 import dotenv from "dotenv";
@@ -75,21 +76,34 @@ app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
 app.get("/profiel", jwtAuth, PageController.profiel);
 
 // Page routes beheerderspaneel
-app.get("/beheerderspaneel", jwtAuth, PageController.beheerderspaneel);
-app.get("/beheerderspaneel/leden", jwtAuth, PageController.ledenBeheer);
+app.get(
+  "/beheerderspaneel",
+  jwtAuth,
+  checkAdmin,
+  PageController.beheerderspaneel
+);
+app.get(
+  "/beheerderspaneel/leden",
+  jwtAuth,
+  checkAdmin,
+  PageController.ledenBeheer
+);
 app.get(
   "/beheerderspaneel/wedstrijden",
   jwtAuth,
+  checkAdmin,
   PageController.wedstrijdenBeheer
 );
 app.post(
   "/beheerderspaneel/wedstrijden/import",
   jwtAuth,
+  checkAdmin,
   MatchController.importIcs
 );
 app.get(
   "/beheerderspaneel/bestellingen",
   jwtAuth,
+  checkAdmin,
   PageController.bestellingenBeheer
 );
 
