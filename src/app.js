@@ -107,6 +107,9 @@ app.get(
   PageController.bestellingenBeheer
 );
 
+app.get("/forgot-password-confirmation", PageController.forgotPasswordConfirmation);
+app.get("/password-reset/expired-token", PageController.expiredToken);
+
 // Auth routes
 app.get("/login", AuthController.login);
 app.post("/login", AuthController.postLogin, AuthController.login);

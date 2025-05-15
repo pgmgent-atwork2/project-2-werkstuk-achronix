@@ -97,3 +97,19 @@ export const bestellingenBeheer = async (req, res) => {
     user,
   });
 };
+
+export const forgotPasswordConfirmation = async (req, res) => {
+  res.render("pages/forgotPasswordConfirmation", {
+    pageTitle: "Email verstuurt | Ping Pong Tool",
+
+    email: req.email,
+    layout: "layouts/authentication",
+  });
+};
+
+export const expiredToken = async (req, res) => {
+  res.render("pages/expiredToken", {
+    pageTitle: "Sessie is verlopen | Ping Pong Tool",
+    layout: "layouts/authentication",
+  });
+};
