@@ -98,6 +98,7 @@ export const bestellingenBeheer = async (req, res) => {
   });
 };
 
+
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",
@@ -111,5 +112,15 @@ export const expiredToken = async (req, res) => {
   res.render("pages/expiredToken", {
     pageTitle: "Sessie is verlopen | Ping Pong Tool",
     layout: "layouts/authentication",
+  });
+};
+
+// Error pages
+export const pageNotFound = async (req, res) => {
+  const user = req.user;
+
+  res.render("errors/page-not-found", {
+    pageTitle: "Pagina niet gevonden | Ping Pong Tool",
+    user,
   });
 };
