@@ -97,3 +97,13 @@ export const bestellingenBeheer = async (req, res) => {
     user,
   });
 };
+
+// Error pages
+export const pageNotFound = async (req, res) => {
+  const user = req.user;
+
+  res.render("errors/page-not-found", {
+    pageTitle: "Pagina niet gevonden | Ping Pong Tool",
+    user,
+  });
+};
