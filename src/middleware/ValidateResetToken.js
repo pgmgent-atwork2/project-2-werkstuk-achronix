@@ -10,12 +10,13 @@ export const checkValidToken = async (req, res) => {
   }
 
   const currentDate = new Date();
+  const expiresAt = new Date(passwordReset.expires_at);
 
   if (passwordReset) {
-    await PasswordReset.query().where("expires_at", "<", currentDate).del();
+    await PasswordReset.query().where("expires_at", "<", expiresAt).del();
   }
 
-  if (passwordReset && await PasswordReset.query().where("expires_at", ">", currentDate)) {
+  if (currentDate < expiresAt) {
     return true;
   } else {
     return false;

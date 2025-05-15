@@ -191,6 +191,8 @@ export const postResetPassword = async (req, res, next) => {
           .update({ firstname, lastname, email, password: hashedPassword })
           .where("id", user.id);
 
+        await PasswordReset.query().where("token", token).del();
+
         req.flash = {
           type: "success",
           message: "Password reset successfully.",
