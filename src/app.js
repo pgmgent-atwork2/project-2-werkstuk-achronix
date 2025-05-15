@@ -64,12 +64,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// zorgt ervoor dat localhost dashboard laadt
+// ---------------------- Page routes ----------------------
 app.get("/", (req, res) => {
   res.redirect("/dashboard");
 });
 
-// Page routes
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
@@ -119,6 +118,12 @@ app.post(
   PasswordResetController.forgotPassword
 );
 
+// ---------------------- Error page routes ----------------------
+// Let op! Werkt nog niet correct! - veroorzaakt een error wanneer uncomment!!!
+// app.get("*", jwtAuth, PageController.pageNotFound);
+
+// ---------------------- API routes ----------------------
+
 // Users
 app.get("/api/users", API_UserController.index);
 app.post("/api/users", API_UserController.store);
@@ -147,7 +152,7 @@ app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
-// Password reset%
+// Password reset
 app.get(
   "/reset-password",
 
