@@ -1,0 +1,14 @@
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.product__form {
+  display: none;
+}
+
+.product__form.active {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
