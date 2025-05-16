@@ -36,8 +36,7 @@ export const handleRequestPasswordReset = async (req, res) => {
     if (addToken) {
       try {
         const host = req.get("host") || "localhost:3000";
-        const protocol = req.protocol || "http";
-        const resetUrl = `${protocol}://${host}/reset-password?token=${token}`;
+        const resetUrl = `http://${host}/reset-password?token=${token}`;
 
         const templatePath = path.join(
           __dirname,
