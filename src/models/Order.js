@@ -59,4 +59,4 @@ class Order extends Model {
   }
 }
 
-export default Consumable;
+export default Order;
