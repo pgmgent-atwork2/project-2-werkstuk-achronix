@@ -18,6 +18,7 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
+import * as API_MatchController from "./controllers/api/MatchController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
@@ -106,7 +107,10 @@ app.get(
   PageController.bestellingenBeheer
 );
 
-app.get("/forgot-password-confirmation", PageController.forgotPasswordConfirmation);
+app.get(
+  "/forgot-password-confirmation",
+  PageController.forgotPasswordConfirmation
+);
 app.get("/password-reset/expired-token", PageController.expiredToken);
 
 // Auth routes
@@ -120,10 +124,6 @@ app.post(
   PasswordResetController.postForgotPassword,
   PasswordResetController.forgotPassword
 );
-
-// ---------------------- Error page routes ----------------------
-// Let op! Werkt nog niet correct! - veroorzaakt een error wanneer uncomment!!!
-// app.get("*", jwtAuth, PageController.pageNotFound);
 
 // ---------------------- API routes ----------------------
 
@@ -155,10 +155,16 @@ app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
+// Matches
+app.get("/api/matches", API_MatchController.index);
+app.get("/api/matches/:id", API_MatchController.show);
+app.post("/api/matches", API_MatchController.store);
+app.put("/api/matches/:id", API_MatchController.update);
+app.delete("/api/matches/:id", API_MatchController.destroy);
+
 // Password reset
 app.get(
   "/reset-password",
-
   PasswordResetController.resetPassword,
   checkValidToken
 );
@@ -168,6 +174,12 @@ app.post(
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
+
+// ---------------------- Error routes ----------------------
+// 404 error page
+app.use(jwtAuth, (req, res) => {
+  return PageController.pageNotFound(req, res);
+});
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {

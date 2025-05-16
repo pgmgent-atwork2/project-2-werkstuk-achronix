@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let deleteUserModalContainer = document.createElement("div");
-  deleteUserModalContainer.id = "delete-user-modal-container";
-  document.body.appendChild(deleteUserModalContainer);
+  let deleteMatchModalContainer = document.createElement("div");
+  deleteMatchModalContainer.id = "delete-match-modal-container";
+  document.body.appendChild(deleteMatchModalContainer);
 
-  const deleteUserModalHTML = `
-    <div id="deleteUserModal" class="modal hidden">
+  const deleteMatchModalHTML = `
+    <div id="deleteMatchModal" class="modal hidden">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Gebruiker verwijderen</h2>
-        <p>Weet je zeker dat je deze gebruiker wilt verwijderen?</p>
-        <form id="deleteUserForm">
-          <input type="hidden" id="deleteUserId" name="deleteUserId">
+        <h2>Wedstrijd verwijderen</h2>
+        <p>Weet je zeker dat je deze wedstrijd wilt verwijderen?</p>
+        <form id="deleteMatchForm">
+          <input type="hidden" id="deleteMatchId" name="deleteMatchId">
           <div class="button-group">
-            <button type="button" id="cancelDeleteUser" class="btn btn--secondary">Annuleren</button>
+            <button type="button" id="cancelDelete" class="btn btn--secondary">Annuleren</button>
             <button type="submit" class="btn btn--danger">Verwijderen</button>
           </div>
         </form>
@@ -20,21 +20,21 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
   `;
 
-  deleteUserModalContainer.innerHTML = deleteUserModalHTML;
+  deleteMatchModalContainer.innerHTML = deleteMatchModalHTML;
 
-  const deleteModal = document.getElementById("deleteUserModal");
-  const deleteButtons = document.querySelectorAll(".delete-user");
-  const closeDeleteBtn = document.querySelector("#deleteUserModal .close");
-  const cancelDeleteBtn = document.getElementById("cancelDeleteUser");
-  const deleteUserForm = document.getElementById("deleteUserForm");
-  const deleteUserIdInput = document.getElementById("deleteUserId");
+  const deleteModal = document.getElementById("deleteMatchModal");
+  const deleteButtons = document.querySelectorAll(".delete-match");
+  const closeDeleteBtn = document.querySelector("#deleteMatchModal .close");
+  const cancelDeleteBtn = document.getElementById("cancelDelete");
+  const deleteMatchForm = document.getElementById("deleteMatchForm");
+  const deleteMatchIdInput = document.getElementById("deleteMatchId");
 
   // Add event listeners to delete buttons
   if (deleteButtons) {
     deleteButtons.forEach((button) => {
       button.addEventListener("click", function () {
-        const userId = this.getAttribute("data-id");
-        deleteUserIdInput.value = userId;
+        const matchId = this.getAttribute("data-id");
+        deleteMatchIdInput.value = matchId;
         deleteModal.classList.remove("hidden");
       });
     });
@@ -62,14 +62,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Handle form submission
-  if (deleteUserForm) {
-    deleteUserForm.addEventListener("submit", async function (e) {
+  if (deleteMatchForm) {
+    deleteMatchForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const userId = deleteUserIdInput.value;
+      const matchId = deleteMatchIdInput.value;
 
       try {
-        const response = await fetch(`/api/users/${userId}`, {
+        const response = await fetch(`/api/matches/${matchId}`, {
           method: "DELETE",
         });
 
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", function () {
           alert(`Fout: ${errorData.message}`);
         }
       } catch (error) {
-        console.error("Error deleting user:", error);
+        console.error("Error deleting match:", error);
         alert(
-          "Er is een probleem opgetreden bij het verwijderen van de gebruiker."
+          "Er is een probleem opgetreden bij het verwijderen van de wedstrijd."
         );
       }
     });

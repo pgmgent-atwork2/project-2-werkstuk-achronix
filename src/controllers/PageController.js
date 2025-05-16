@@ -116,10 +116,11 @@ export const expiredToken = async (req, res) => {
 
 // Error pages
 export const pageNotFound = async (req, res) => {
-  const user = req.user;
+  const user = req.user || null;
 
-  res.status(404).render("errors/page-not-found", {
+  res.status(404).render("errors/404", {
     pageTitle: "Pagina niet gevonden | Ping Pong Tool",
     user,
+    layout: user ? "layouts/main" : "layouts/authentication",
   });
 };
