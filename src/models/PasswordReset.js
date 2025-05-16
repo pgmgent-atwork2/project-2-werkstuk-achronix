@@ -1,5 +1,6 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
+import User from "./User.js";
 
 Model.knex(knex);
 
@@ -22,6 +23,19 @@ class PasswordReset extends Model {
         token: { type: "string", minLength: 1, maxLength: 255 },
         created_at: { type: "string", format: "date-time" },
         expires_at: { type: "string", format: "date-time" },
+      },
+    };
+  }
+
+  static get relationMappings() {
+    return {
+      user: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: "password_resets.user_id",
+          to: "users.id",
+        },
       },
     };
   }
