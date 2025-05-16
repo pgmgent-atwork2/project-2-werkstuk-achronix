@@ -5,6 +5,7 @@ export function showConsumableQuantityChange() {
   const cart = JSON.parse(localStorage.getItem(key)) || [];
   if (cart.length > 0) {
     showCart(cart);
+    showCountOnInput(cart);
   }
 
   $consumables.forEach(($consumable) => {
@@ -17,7 +18,6 @@ export function showConsumableQuantityChange() {
 
     $btn.addEventListener("click", (e) => {
       $form.classList.add("show");
-      $quantityInput.value = 0;
     });
 
     $reduceBtn.addEventListener("click", (e) => {
@@ -99,5 +99,19 @@ function showCart(items) {
       <span class="cart__item-price">${item.price}</span>
       <button class="cart__item-remove" data-index="${i}">Remove</button>
     </li>`;
+  });
+}
+
+function showCountOnInput(data) {
+  data.forEach((item) => {
+    const $input = document.querySelector(
+      `[data-consumable-id="${item.consumable_id}"]`
+    );
+
+    if ($input) {
+      $input.value = item.quantity;
+    }
+
+    console.log($input);
   });
 }
