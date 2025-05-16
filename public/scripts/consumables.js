@@ -1,5 +1,6 @@
 export function showConsumableQuantityChange() {
   const $consumables = document.querySelectorAll(".consumable");
+  const $cart = document.querySelector(".cart");
 
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
@@ -7,7 +8,9 @@ export function showConsumableQuantityChange() {
     showCart(cart);
     showCountOnInput(cart);
 
-    removeItemFromCart()
+    removeItemFromCart();
+  } else {
+    $cart.classList.remove("show");
   }
 
   $consumables.forEach(($consumable) => {
@@ -68,30 +71,43 @@ export function showConsumableQuantityChange() {
 
 function handleShoppingCart(data) {
   const key = "cart";
-  const cart = JSON.parse(localStorage.getItem(key)) || [];
+  let cart = JSON.parse(localStorage.getItem(key)) || [];
 
-  const existingItem = cart.find(
-    (item) => item.consumable_id === data.consumable_id
-  );
-
-  if (existingItem) {
-    existingItem.quantity = data.quantity;
-    existingItem.price = data.price;
+  if (parseInt(data.quantity) === 0) {
+    cart = cart.filter((item) => item.consumable_id !== data.consumable_id);
   } else {
-    cart.push(data);
+    const existingItem = cart.find(
+      (item) => item.consumable_id === data.consumable_id
+    );
+
+    if (existingItem) {
+      existingItem.quantity = data.quantity;
+      existingItem.price = data.price;
+    } else {
+      cart.push(data);
+    }
   }
+
+  cart = cart.filter((item) => Number(item.quantity) > 0);
 
   localStorage.setItem(key, JSON.stringify(cart));
 
   showCart(cart);
-
   removeItemFromCart();
 }
 
 function showCart(items) {
   const $cart = document.querySelector(".cart");
-  const $cartItems = $cart.querySelector(".cart__items");
 
+  if (!items || items.length === 0) {
+    $cart.classList.remove("show");
+    return;
+  }
+
+  const $cartItems = $cart.querySelector(".cart__items");
+  const $cartTotal = $cart.querySelector(".cart__total");
+
+  $cart.classList.add("show");
   $cartItems.innerHTML = "";
 
   items.forEach((item, i) => {
@@ -104,6 +120,11 @@ function showCart(items) {
       <button class="cart__item-remove" data-index="${i}">Remove</button>
     </li>`;
   });
+
+  $cartTotal.innerHTML = `totaal: € ${items.reduce(
+    (acc, item) => acc + item.price,
+    0
+  )}`;
 }
 
 function showCountOnInput(data) {
@@ -122,7 +143,6 @@ function removeItemFromCart() {
   const $removeButtons = document.querySelectorAll(".cart__item-remove");
 
   $removeButtons.forEach(($button, index) => {
-    console.log($button);
     $button.addEventListener("click", (e) => {
       const key = "cart";
       const cart = JSON.parse(localStorage.getItem(key)) || [];

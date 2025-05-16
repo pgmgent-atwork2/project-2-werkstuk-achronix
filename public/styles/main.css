@@ -7,11 +7,12 @@
 @import url("btn.css");
 @import url("wedstrijden.css");
 @import url("consumables.css");
+@import url("cart.css"); 
 
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
-    format("truetype-variations");
+  format("truetype-variations");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
