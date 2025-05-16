@@ -48,7 +48,7 @@
         <input
           type="hidden"
           name="consumable_image"
-          value="<%= consumable.image %>"
+          value="<%= consumable.image_url %>"
         />
         <input type="hidden" name="user_id" value="<%= user.id %>" />
         <input
@@ -80,7 +80,6 @@
       <span class="cart__item-quantity"></span>
       <span class="cart__item-price"></span>
     </li>
-    <li class="cart__empty">Je winkelwagentje is leeg.</li>
   </ul>
   <p class="cart__total">Totaal: €</p>
 </div>
