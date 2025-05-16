@@ -8,9 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Only available in development environment
 if (process.env.NODE_ENV === "development") {
-  // Route to preview password reset email
   router.get("/preview/email/password-reset", async (req, res) => {
     try {
       const templatePath = path.join(
