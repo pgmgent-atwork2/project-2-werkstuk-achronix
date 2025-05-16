@@ -1,4 +1,6 @@
-export function showConsumableQuantityChange() {
+import { addOrderToDb } from "./order.js";
+
+export function InitConsumable() {
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
 
@@ -7,6 +9,7 @@ export function showConsumableQuantityChange() {
   if (cart.length > 0) {
     showCart(cart);
     showCountOnInput(cart);
+    handleShoppingCart(cart);
 
     removeItemFromCart();
   } else {
@@ -70,7 +73,7 @@ export function showConsumableQuantityChange() {
 }
 
 function handleShoppingCart(data) {
-  const $orderBtn = document.getElementById("order-button");
+  const $orderBtn = document.getElementById("order-btn");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -97,29 +100,17 @@ function handleShoppingCart(data) {
   removeItemFromCart();
 
   $orderBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert("Je hebt geen producten in je winkelwagentje.");
+      return;
+    }
 
-    cart.forEach(async (item) => {
+    await addOrderToDb(cart);
 
-      const orderData = {
-        user_id: item.user_id,
-        consumable_id: item.consumable_id,
-        quantity: item.quantity,
-        price: item.price,
-        status: "NOT_PAID",
-        order_on: new Date().toISOString(),
-      };
-      try {
-        await fetch("/api/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(orderData),
-        });
-      } catch (error) {
-        console.error("Error placing order:", error);
-      }
-    });
+    localStorage.removeItem(key);
+
+    showCart([]);
   });
 }
 
