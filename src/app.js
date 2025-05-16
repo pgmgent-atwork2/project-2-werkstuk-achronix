@@ -19,6 +19,7 @@ import * as API_ConsumableController from "./controllers/api/ConsumableControlle
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
+import * as API_ShoppingCartController from "./controllers/api/ShoppingCartController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
@@ -108,7 +109,10 @@ app.get(
   PageController.bestellingenBeheer
 );
 
-app.get("/forgot-password-confirmation", PageController.forgotPasswordConfirmation);
+app.get(
+  "/forgot-password-confirmation",
+  PageController.forgotPasswordConfirmation
+);
 app.get("/password-reset/expired-token", PageController.expiredToken);
 
 // Auth routes
@@ -159,6 +163,13 @@ app.post("/api/orders", API_OrderController.store);
 app.put("/api/orders/:id", API_OrderController.update);
 app.delete("/api/orders/:id", API_OrderController.destroy);
 
+// Shopping cart
+
+app.get("/api/shopping-cart", API_ShoppingCartController.index);
+app.get("/api/shopping-cart/:id", API_ShoppingCartController.show);
+app.post("/api/shopping-cart", API_ShoppingCartController.store);
+app.put("/api/shopping-cart/:id", API_ShoppingCartController.update);
+app.delete("/api/shopping-cart/:id", API_ShoppingCartController.destroy);
 
 // Password reset%
 app.get(

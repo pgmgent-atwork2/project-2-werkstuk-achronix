@@ -40,6 +40,22 @@
           name="consumable_id"
           value="<%= consumable.id %>"
         />
+        <input
+          type="hidden"
+          name="consumable_name"
+          value="<%= consumable.name %>"
+        />
+        <input
+          type="hidden"
+          name="consumable_image"
+          value="<%= consumable.image %>"
+        />
+        <input type="hidden" name="user_id" value="<%= user.id %>" />
+        <input
+          type="hidden"
+          name="consumable_price"
+          value="<%= consumable.price %>"
+        />
         <button name="reduce" type="submit" class="reduce-count">-</button>
         <input
           class="consumable__quantity"
@@ -54,4 +70,17 @@
     </div>
   </article>
   <% }); %> <% } %>
+</div>
+
+<div class="cart">
+  <h2>Winkelwagentje</h2>
+  <ul class="cart__items">
+    <li class="cart__item">
+      <span class="cart__item-name"></span>
+      <span class="cart__item-quantity"></span>
+      <span class="cart__item-price"></span>
+    </li>
+    <li class="cart__empty">Je winkelwagentje is leeg.</li>
+  </ul>
+  <p class="cart__total">Totaal: €</p>
 </div>
