@@ -106,7 +106,10 @@ app.get(
   PageController.bestellingenBeheer
 );
 
-app.get("/forgot-password-confirmation", PageController.forgotPasswordConfirmation);
+app.get(
+  "/forgot-password-confirmation",
+  PageController.forgotPasswordConfirmation
+);
 app.get("/password-reset/expired-token", PageController.expiredToken);
 
 // Auth routes
@@ -120,10 +123,6 @@ app.post(
   PasswordResetController.postForgotPassword,
   PasswordResetController.forgotPassword
 );
-
-// ---------------------- Error page routes ----------------------
-// Let op! Werkt nog niet correct! - veroorzaakt een error wanneer uncomment!!!
-// app.get("*", jwtAuth, PageController.pageNotFound);
 
 // ---------------------- API routes ----------------------
 
@@ -158,7 +157,6 @@ app.delete("/api/teams/:id", API_TeamController.destroy);
 // Password reset
 app.get(
   "/reset-password",
-
   PasswordResetController.resetPassword,
   checkValidToken
 );
@@ -168,6 +166,12 @@ app.post(
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
+
+// ---------------------- Error routes ----------------------
+// 404 error page
+app.use(jwtAuth, (req, res) => {
+  return PageController.pageNotFound(req, res);
+});
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
