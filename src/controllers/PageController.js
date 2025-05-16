@@ -1,6 +1,8 @@
 import Match from "../models/Match.js";
 import Team from "../models/Team.js";
 import User from "../models/User.js";
+import Consumable from "../models/Consumable.js";
+import Category from "../models/Category.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -22,12 +24,16 @@ export const dashboard = async (req, res) => {
   });
 };
 
-export const bestellen = (req, res) => {
+export const bestellen = async (req, res) => {
   const user = req.user;
+  const consumables = await Consumable.query();
+  const categories = await Category.query();
 
   res.render("pages/bestellen", {
     pageTitle: "Bestellen | Ping Pong Tool",
     user,
+    consumables,
+    categories,
   });
 };
 

@@ -31,7 +31,6 @@ export const store = async (req, res) => {
   }
 };
 
-
 export const update = async (req, res) => {
   const id = req.params.id;
   const { name, description, price, image_url, category_id } = req.body;
@@ -41,19 +40,18 @@ export const update = async (req, res) => {
     if (!consumableExists) {
       return res.status(404).json({ error: "Consumable not found" });
     }
-    const updatedConsumable = await Consumable.query()
-      .patchAndFetchById(id, {
-        name,
-        description,
-        price,
-        image_url,
-        category_id,
-      });
+    const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
+      name,
+      description,
+      price,
+      image_url,
+      category_id,
+    });
     return res.json(updatedConsumable);
   } catch (error) {
     return res.status(400).json({ error: "Failed to update consumable" });
   }
-}
+};
 
 export const destroy = async (req, res) => {
   const id = req.params.id;
