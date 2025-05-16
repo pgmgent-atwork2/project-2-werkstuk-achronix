@@ -18,6 +18,7 @@ import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
+import * as API_MatchController from "./controllers/api/MatchController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
 import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
 import * as API_MatchController from "./controllers/api/MatchController.js";
@@ -67,12 +68,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// zorgt ervoor dat localhost dashboard laadt
+// ---------------------- Page routes ----------------------
 app.get("/", (req, res) => {
   res.redirect("/dashboard");
 });
 
-// Page routes
 app.get("/dashboard", jwtAuth, PageController.dashboard);
 app.get("/bestellen", jwtAuth, PageController.bestellen);
 app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
@@ -128,6 +128,8 @@ app.post(
   PasswordResetController.forgotPassword
 );
 
+// ---------------------- API routes ----------------------
+
 // Users
 app.get("/api/users", API_UserController.index);
 app.post("/api/users", API_UserController.store);
@@ -156,23 +158,6 @@ app.post("/api/teams", API_TeamController.store);
 app.put("/api/teams/:id", API_TeamController.update);
 app.delete("/api/teams/:id", API_TeamController.destroy);
 
-//orders
-
-app.get("/api/orders", API_OrderController.index);
-app.get("/api/orders/:id", API_OrderController.show);
-app.post("/api/orders", API_OrderController.store);
-app.put("/api/orders/:id", API_OrderController.update);
-app.delete("/api/orders/:id", API_OrderController.destroy);
-
-// Order items
-app.get("/api/order-items", API_OrderItemsController.index);
-app.get("/api/order-items/:id", API_OrderItemsController.show);
-app.post("/api/order-items", API_OrderItemsController.store);
-app.put("/api/order-items/:id", API_OrderItemsController.update);
-app.delete("/api/order-items/:id", API_OrderItemsController.destroy);
-
-
-// Password reset
 // Matches
 app.get("/api/matches", API_MatchController.index);
 app.get("/api/matches/:id", API_MatchController.show);
@@ -183,7 +168,6 @@ app.delete("/api/matches/:id", API_MatchController.destroy);
 // Password reset
 app.get(
   "/reset-password",
-
   PasswordResetController.resetPassword,
   checkValidToken
 );
@@ -193,6 +177,12 @@ app.post(
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
+
+// ---------------------- Error routes ----------------------
+// 404 error page
+app.use(jwtAuth, (req, res) => {
+  return PageController.pageNotFound(req, res);
+});
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {

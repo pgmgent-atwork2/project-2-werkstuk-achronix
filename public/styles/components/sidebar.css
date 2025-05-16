@@ -5,7 +5,7 @@
   color: #ecedee;
   position: fixed;
   top: 0;
-  left: -100%; 
+  left: -100%;
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -17,13 +17,13 @@
 }
 
 .sidebar-header__logo {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 .sidebar-header__logo img {
-    max-width: 14.0625rem; 
-    height: auto;
-    margin: 0 auto;
+  max-width: 14.0625rem;
+  height: auto;
+  margin: 0 auto;
 }
 .sidebar-header {
   text-align: center;
@@ -41,12 +41,7 @@
   transform: translateX(-50%);
   width: 50px;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #f94d1c,
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, #f94d1c, transparent);
 }
 
 .sidebar-menu {
@@ -180,13 +175,13 @@
   transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 20px;
   min-height: 100vh;
-  margin-left: 0; 
+  margin-left: 0;
 }
 
 @media (min-width: 768px) {
   .sidebar {
     width: 250px;
-    left: 0; 
+    left: 0;
   }
 
   .hamburger {
@@ -194,7 +189,7 @@
   }
 
   .main-container {
-    margin-left: 250px; 
+    margin-left: 250px;
   }
 }
 

@@ -8,10 +8,8 @@
  * @returns {Array} Array of match objects ready to be inserted into the database
  */
 export function parseIcsToMatches(icsContent) {
-  console.log("Starting ICS parse");
   try {
     const events = extractEvents(icsContent);
-    console.log("Extracted events:", events.length);
 
     return events
       .map((event) => {
@@ -19,8 +17,7 @@ export function parseIcsToMatches(icsContent) {
           const description = event.description || "";
           const summary = event.summary || "";
 
-          console.log("Processing event summary:", summary);
-
+          // Determine match details from description or summary
           let matchDetails;
           if (description && description.includes("/")) {
             matchDetails = description;
@@ -31,23 +28,15 @@ export function parseIcsToMatches(icsContent) {
           }
 
           // Get the teams from the match details
-          let teams = [];
-          if (matchDetails.includes("/")) {
-            teams = matchDetails.split("/").map((t) => t.trim());
-          }
+          const teams = matchDetails.includes("/")
+            ? matchDetails.split("/").map((t) => t.trim())
+            : [];
 
           // Determine if home or away
-          let isHome = false;
-          if (event.location && event.location.includes("Assenede")) {
-            isHome = true;
-          }
-
-          console.log("Teams found:", teams);
-          console.log("Match: " + matchDetails + ", isHome: " + isHome);
+          const isHome = event.location && event.location.includes("Assenede");
 
           // Determine team ID from match details
           const teamId = determineTeamId(matchDetails);
-          console.log("Determined team ID:", teamId);
 
           const match = {
             date: parseIcsDate(event.dtstart),
@@ -56,7 +45,6 @@ export function parseIcsToMatches(icsContent) {
             team_id: teamId,
           };
 
-          console.log("Created match object:", match);
           return match;
         } catch (err) {
           console.error("Error processing event:", err);
@@ -135,29 +123,23 @@ function extractEvents(icsContent) {
           currentValue = "";
         }
 
-        // DTSTART can be formatted in two ways
+        // Parse fields
         if (line.startsWith("DTSTART")) {
           currentField = "dtstart";
           if (line.includes(":")) {
             currentValue = line.split(":").pop();
           }
-        }
-        // Handle LOCATION field
-        else if (line.startsWith("LOCATION")) {
+        } else if (line.startsWith("LOCATION")) {
           currentField = "location";
           if (line.includes(":")) {
             currentValue = line.split(":").pop();
           }
-        }
-        // Handle SUMMARY field
-        else if (line.startsWith("SUMMARY")) {
+        } else if (line.startsWith("SUMMARY")) {
           currentField = "summary";
           if (line.includes(":")) {
             currentValue = line.split(":").pop();
           }
-        }
-        // Handle DESCRIPTION field
-        else if (line.startsWith("DESCRIPTION")) {
+        } else if (line.startsWith("DESCRIPTION")) {
           currentField = "description";
           if (line.includes(":")) {
             currentValue = line.split(":").pop();
@@ -187,8 +169,7 @@ function extractEvents(icsContent) {
  */
 function parseIcsDate(icsDate) {
   try {
-    if (!icsDate) return new Date();
-    console.log("Parsing ICS date:", icsDate);
+    if (!icsDate) return new Date().toISOString().split("T")[0];
 
     // Handle dates with timezone identifiers
     if (icsDate.includes(";")) {
@@ -204,12 +185,11 @@ function parseIcsDate(icsDate) {
 
     // Convert to ISO format string for SQLite compatibility
     const date = new Date(year, month, day, hour, minute);
-    console.log("Parsed date object:", date, "ISO string:", date.toISOString());
 
     // Return ISO date string for SQLite compatibility
     return date.toISOString().split("T")[0];
   } catch (err) {
-    console.error("Error parsing date:", err, "from input:", icsDate);
+    console.error("Error parsing date:", err);
     return new Date().toISOString().split("T")[0];
   }
 }
