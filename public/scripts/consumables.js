@@ -5,9 +5,31 @@ export function showConsumableQuantityChange() {
     const $btn = $consumable.querySelector(".consumable__button");
     const $form = $consumable.querySelector(".consumable__form");
 
+    const $quantityInput = $form.querySelector(".consumable__quantity");
+    const $reduceBtn = $form.querySelector(".reduce-count");
+    const $increaseBtn = $form.querySelector(".increase-count");
+
     $btn.addEventListener("click", (e) => {
-      console.log("Button clicked");
       $form.classList.add("show");
+      $quantityInput.value = 1;
+    });
+
+    $reduceBtn.addEventListener("click", (e) => {
+      let currentValue = parseInt($quantityInput.value);
+      if (currentValue > 0) {
+        currentValue--;
+        $quantityInput.value = currentValue;
+      }
+
+      if (currentValue === 0) {
+        $form.classList.remove("show");
+      }
+    });
+
+    $increaseBtn.addEventListener("click", (e) => {
+      let currentValue = parseInt($quantityInput.value);
+      currentValue++;
+      $quantityInput.value = currentValue;
     });
 
     $form.addEventListener("submit", (e) => {
@@ -17,8 +39,7 @@ export function showConsumableQuantityChange() {
       const consumableId = formData.get("consumable_id");
       const quantity = formData.get("quantity");
 
-      const $reduceBtn = $form.querySelector(".reduce-count");
-      const $increaseBtn = $form.querySelector(".increase-count");
+      
     });
   });
 }

@@ -40,16 +40,16 @@
           name="consumable_id"
           value="<%= consumable.id %>"
         />
-        <button type="submit" class="reduce-count">-</button>
+        <button name="reduce" type="submit" class="reduce-count">-</button>
         <input
-          class="quantity"
+          class="consumable__quantity"
           type="number"
           name="quantity"
-          min="1"
+          min="0"
           max="10"
           value="1"
         />
-        <button type="submit" class="increase-count">+</button>
+        <button name="increase" type="submit" class="increase-count">+</button>
       </form>
     </div>
   </article>
