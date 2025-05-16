@@ -16,6 +16,7 @@
 @import url("pages/forgot-password.css");
 
 /*alle imports van de common styles */
+
 @import url("common/error-messages.css");
 
 @font-face {
