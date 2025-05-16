@@ -6,12 +6,6 @@ import { cleanupExpiredTokens } from "../utils/cleanupExpiredTokens.js";
 import { checkValidToken } from "../middleware/ValidateResetToken.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import ejs from "ejs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
@@ -32,43 +26,22 @@ export const handleRequestPasswordReset = async (req, res) => {
       created_at: createdAt.toISOString(),
       expires_at: expiresAt.toISOString(),
     });
+
     if (addToken) {
-      const host = req.get("host") || "localhost:3000";
-      const resetUrl = `https://${host}/reset-password?token=${token}`;
+      const emailSent = await sendMail(
+        email,
+        "Password Reset Request",
+        `<p>Click <a href="http://localhost:3000/reset-password?token=${token}">here</a> to reset your password. The link will expire in 15 minutes.</p>`
+      );
 
-      try {
-        const templatePath = path.join(
-          __dirname,
-          "../views/emails/passwordReset.ejs"
-        );
-        const emailHtml = await ejs.renderFile(templatePath, {
-          resetUrl,
-          username: user.firstname || "gebruiker",
-        });
-
-        const emailSent = await sendMail(
-          email,
-          "Wachtwoord resetten | Ping Pong Tool",
-          emailHtml
-        );
-
-        if (emailSent) {
-          await cleanupExpiredTokens();
-          return res.redirect("/forgot-password-confirmation");
-        } else {
-          return res.render("pages/forgotPassword", {
-            layout: "layouts/authentication",
-            smtp_error:
-              "Fout bij het verzenden van de e-mail. Probeer het later opnieuw.",
-            pageTitle: "Wachtwoord vergeten | Ping Pong Tool",
-          });
-        }
-      } catch (renderError) {
-        console.error("Error rendering email template:", renderError);
+      if (emailSent) {
+        await cleanupExpiredTokens();
+        return res.redirect("/forgot-password-confirmation");
+      } else {
         return res.render("pages/forgotPassword", {
           layout: "layouts/authentication",
           smtp_error:
-            "Er is een fout opgetreden bij het aanmaken van de e-mail. Probeer het later opnieuw.",
+            "Fout bij het verzenden van de e-mail. Probeer het later opnieuw.",
           pageTitle: "Wachtwoord vergeten | Ping Pong Tool",
         });
       }
