@@ -18,9 +18,6 @@
 /*alle imports van de common styles */
 @import url("common/error-messages.css");
 
-/* Email styles - voor preview doeleinden */
-@import url("emails/email.css");
-
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
