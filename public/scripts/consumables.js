@@ -6,6 +6,8 @@ export function showConsumableQuantityChange() {
   if (cart.length > 0) {
     showCart(cart);
     showCountOnInput(cart);
+
+    removeItemFromCart()
   }
 
   $consumables.forEach(($consumable) => {
@@ -82,6 +84,8 @@ function handleShoppingCart(data) {
   localStorage.setItem(key, JSON.stringify(cart));
 
   showCart(cart);
+
+  removeItemFromCart();
 }
 
 function showCart(items) {
@@ -111,7 +115,22 @@ function showCountOnInput(data) {
     if ($input) {
       $input.value = item.quantity;
     }
+  });
+}
 
-    console.log($input);
+function removeItemFromCart() {
+  const $removeButtons = document.querySelectorAll(".cart__item-remove");
+
+  $removeButtons.forEach(($button, index) => {
+    console.log($button);
+    $button.addEventListener("click", (e) => {
+      const key = "cart";
+      const cart = JSON.parse(localStorage.getItem(key)) || [];
+
+      cart.splice(index, 1);
+
+      localStorage.setItem(key, JSON.stringify(cart));
+      showCart(cart);
+    });
   });
 }
