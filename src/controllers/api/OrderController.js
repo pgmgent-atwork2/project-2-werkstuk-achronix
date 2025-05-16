@@ -33,19 +33,15 @@ export const store = async (req, res) => {
 
 export const update = async (req, res) => {
   const { id } = req.params;
-  const { quantity, price, status, consumable_id, user_id, order_on } =
-    req.body;
+  const { status, user_id, order_on } = req.body;
   try {
     const Order = await Order.query().findById(id);
     if (!Order) {
       return res.status(404).json({ message: "Order not found" });
     }
     const updatedOrder = await Order.query().patchAndFetchById(id, {
-      quantity,
-      price,
-      status,
-      consumable_id,
       user_id,
+      status,
       order_on,
     });
     res.json(updatedOrder);
@@ -57,8 +53,8 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
   const { id } = req.params;
   try {
-    const Order = await Order.query().findById(id);
-    if (!Order) {
+    const order = await Order.query().findById(id);
+    if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
     await Order.query().deleteById(id);

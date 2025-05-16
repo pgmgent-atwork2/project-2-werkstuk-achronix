@@ -1,7 +1,7 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import User from "./User.js";
-import Consumable from "./Consumable.js";
+import OrderItem from "./OrderItems.js";
 
 Model.knex(knex);
 
@@ -17,21 +17,11 @@ class Order extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: [
-        "quantity",
-        "price",
-        "status",
-        "consumable_id",
-        "user_id",
-        "order_on",
-      ],
+      required: ["status", "user_id", "order_on"],
       properties: {
         id: { type: "integer" },
-        quantity: { type: "integer", minLength: 1 },
-        price: { type: "string", minLength: 1, maxLength: 255 },
-        status: { type: "string", minLength: 1, maxLength: 255 },
-        consumable_id: { type: "integer", minLength: 1 },
-        user_id: { type: "integer", minLength: 1 },
+        user_id: { type: "integer" },
+        status: { type: "string" },
         order_on: { type: "string", format: "date-time" },
       },
     };
@@ -39,6 +29,7 @@ class Order extends Model {
 
   static get relationMappings() {
     return {
+     
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
@@ -47,12 +38,13 @@ class Order extends Model {
           to: "users.id",
         },
       },
-      consumable: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Consumable,
+
+      orderItems: {
+        relation: Model.HasManyRelation,
+        modelClass: OrderItem,
         join: {
-          from: "orders.consumable_id",
-          to: "consumables.id",
+          from: "orders.id",
+          to: "order_items.order_id",
         },
       },
     };

@@ -70,6 +70,7 @@ export function showConsumableQuantityChange() {
 }
 
 function handleShoppingCart(data) {
+  const $orderBtn = document.getElementById("order-button");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -94,6 +95,32 @@ function handleShoppingCart(data) {
 
   showCart(cart);
   removeItemFromCart();
+
+  $orderBtn.addEventListener("click", async (e) => {
+
+    cart.forEach(async (item) => {
+
+      const orderData = {
+        user_id: item.user_id,
+        consumable_id: item.consumable_id,
+        quantity: item.quantity,
+        price: item.price,
+        status: "NOT_PAID",
+        order_on: new Date().toISOString(),
+      };
+      try {
+        await fetch("/api/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
+      } catch (error) {
+        console.error("Error placing order:", error);
+      }
+    });
+  });
 }
 
 function showCart(items) {
