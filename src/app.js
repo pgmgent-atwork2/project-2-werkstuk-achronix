@@ -19,6 +19,7 @@ import * as API_ConsumableController from "./controllers/api/ConsumableControlle
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
 import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
+import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
@@ -161,6 +162,14 @@ app.get("/api/orders/:id", API_OrderController.show);
 app.post("/api/orders", API_OrderController.store);
 app.put("/api/orders/:id", API_OrderController.update);
 app.delete("/api/orders/:id", API_OrderController.destroy);
+
+// Order items
+app.get("/api/order-items", API_OrderItemsController.index);
+app.get("/api/order-items/:id", API_OrderItemsController.show);
+app.post("/api/order-items", API_OrderItemsController.store);
+app.put("/api/order-items/:id", API_OrderItemsController.update);
+app.delete("/api/order-items/:id", API_OrderItemsController.destroy);
+
 
 // Password reset
 app.get(

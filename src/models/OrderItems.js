@@ -22,7 +22,6 @@ class OrderItem extends Model {
         consumable_id: { type: "integer" },
         quantity: { type: "integer", minimum: 1 },
         price: { type: "number", minimum: 0 },
-        created_at: { type: "string", format: "date-time" }
       }
     };
   }
