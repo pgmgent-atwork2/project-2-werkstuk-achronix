@@ -35,6 +35,10 @@
                             <div>
                                 <h3>Geplande Wedstrijden</h3>
 
+                                <div>
+                                    <button id="addNewMatch" class="btn">Nieuwe wedstrijd</button>
+                                </div>
+
                                 <% if (locals.matches && matches.length> 0) { %>
                                     <table>
                                         <thead>
@@ -43,6 +47,7 @@
                                                 <th>Locatie</th>
                                                 <th>Thuis/Uit</th>
                                                 <th>Team</th>
+                                                <th>Acties</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -59,6 +64,12 @@
                                                     </td>
                                                     <td>
                                                         <%= match.team ? match.team.name : '?' %>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn--secondary edit-match"
+                                                            data-id="<%= match.id %>">Bewerken</button>
+                                                        <button class="btn btn--danger delete-match"
+                                                            data-id="<%= match.id %>">Verwijderen</button>
                                                     </td>
                                                 </tr>
                                                 <% }) %>
