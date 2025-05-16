@@ -1,0 +1,7 @@
+.cart{
+    display: none;
+}
+
+.cart.show{
+    display: block;
+}

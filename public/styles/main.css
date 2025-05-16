@@ -1,16 +1,29 @@
-@import url("reset.css");
-@import url("variables.css");
-@import url("login.css");
-@import url("sidebar.css");
-@import url("modal.css");
-@import url("forget-password.css");
-@import url("btn.css");
-@import url("wedstrijden.css");
+/* Base styles */
+
+@import url("base/reset.css");
+@import url("base/variables.css");
+
+/*alle imports voor de components styles */
+
+@import url("components/buttons.css");
+@import url("components/form.css");
+@import url("components/modal.css");
+@import url("components/sidebar.css");
+
+/* alle imports van de pages styles */
+
+@import url("pages/login.css");
+@import url("pages/forgot-password.css");
+@import url("pages/reset-password.css");
+
+/*alle imports van de common styles */
+
+@import url("common/error-messages.css");
 
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
-    format("truetype-variations");
+  format("truetype-variations");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

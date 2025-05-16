@@ -1,12 +1,13 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import User from "./User.js";
+import OrderItem from "./OrderItems.js";
 
 Model.knex(knex);
 
-class PasswordReset extends Model {
+class Order extends Model {
   static get tableName() {
-    return "password_resets";
+    return "orders";
   }
 
   static get idColumn() {
@@ -16,29 +17,38 @@ class PasswordReset extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["user_id", "token", "created_at", "expires_at"],
+      required: ["status", "user_id", "order_on"],
       properties: {
         id: { type: "integer" },
         user_id: { type: "integer" },
-        token: { type: "string", minLength: 1, maxLength: 255 },
-        created_at: { type: "string", format: "date-time" },
-        expires_at: { type: "string", format: "date-time" },
+        status: { type: "string" },
+        order_on: { type: "string", format: "date-time" },
       },
     };
   }
 
   static get relationMappings() {
     return {
+     
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: "password_resets.user_id",
+          from: "orders.user_id",
           to: "users.id",
+        },
+      },
+
+      orderItems: {
+        relation: Model.HasManyRelation,
+        modelClass: OrderItem,
+        join: {
+          from: "orders.id",
+          to: "order_items.order_id",
         },
       },
     };
   }
 }
 
-export default PasswordReset;
+export default Order;

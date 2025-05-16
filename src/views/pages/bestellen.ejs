@@ -1,0 +1,101 @@
+<select name="category-filter" id="">
+  <option value="all">Alle</option>
+  <% if (categories && categories.length > 0) { %> <%
+  categories.forEach(category => { %>
+  <option value="<%= category.id %>"><%= category.name %></option>
+  <% }); %> <% } %>
+</select>
+
+<div class="consumables">
+  <% if (consumables && consumables.length > 0) { %> <%
+  consumables.forEach(consumable => { %>
+  <article class="consumable">
+    <div class="consumable__image">
+      <img src="<%= consumable.image %>" alt="<%= consumable.name %>" />
+    </div>
+    <div class="consumable__details">
+      <h2 class="consumable__name"><%= consumable.name %></h2>
+      <p class="consumable__price"><%= consumable.price %> €</p>
+
+      <button class="consumable__button" data-id="<%= consumable.id %>">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+          />
+        </svg>
+        Toevoegen
+      </button>
+      <form action="#" method="post" class="consumable__form">
+        <input
+          type="hidden"
+          name="consumable_id"
+          value="<%= consumable.id %>"
+        />
+        <input
+          type="hidden"
+          name="consumable_name"
+          value="<%= consumable.name %>"
+        />
+        <input
+          type="hidden"
+          name="consumable_image"
+          value="<%= consumable.image_url %>"
+        />
+        <input type="hidden" name="user_id" value="<%= user.id %>" />
+        <input
+          type="hidden"
+          name="consumable_price"
+          value="<%= consumable.price %>"
+        />
+        <button name="reduce" type="submit" class="reduce-count">-</button>
+        <input
+          data-consumable-id="<%= consumable.id %>"
+          class="consumable__quantity"
+          type="number"
+          name="quantity"
+          min="0"
+          max="10"
+          value="0"
+        />
+        <button name="increase" type="submit" class="increase-count">+</button>
+      </form>
+    </div>
+  </article>
+  <% }); %> <% } %>
+</div>
+
+<div class="cart">
+  <h2>Winkelwagentje</h2>
+  <form id="cart-form" action="">
+  <ul class="cart__items">
+  
+  </ul>
+  <p class="cart__total">Totaal: €</p>
+</div>
+<button id="order-btn" class="cart-btn">
+    <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+          />
+        </svg>
+        Bestellen
+  </button>
+</form>

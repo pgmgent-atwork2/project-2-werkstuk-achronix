@@ -1,6 +1,8 @@
 import Match from "../models/Match.js";
 import Team from "../models/Team.js";
 import User from "../models/User.js";
+import Consumable from "../models/Consumable.js";
+import Category from "../models/Category.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -22,12 +24,16 @@ export const dashboard = async (req, res) => {
   });
 };
 
-export const bestellen = (req, res) => {
+export const bestellen = async (req, res) => {
   const user = req.user;
+  const consumables = await Consumable.query();
+  const categories = await Category.query();
 
   res.render("pages/bestellen", {
     pageTitle: "Bestellen | Ping Pong Tool",
     user,
+    consumables,
+    categories,
   });
 };
 
@@ -111,5 +117,16 @@ export const expiredToken = async (req, res) => {
   res.render("pages/expiredToken", {
     pageTitle: "Sessie is verlopen | Ping Pong Tool",
     layout: "layouts/authentication",
+  });
+};
+
+// Error pages
+export const pageNotFound = async (req, res) => {
+  const user = req.user || null;
+
+  res.status(404).render("errors/404", {
+    pageTitle: "Pagina niet gevonden | Ping Pong Tool",
+    user,
+    layout: user ? "layouts/main" : "layouts/authentication",
   });
 };

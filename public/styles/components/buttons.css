@@ -1,0 +1,79 @@
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn--primary {
+  background-color: #f94d1c;
+  color: white;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(249, 77, 28, 0.25);
+}
+
+.btn--primary:hover {
+  background-color: rgb(15 44 73 / 90%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(15, 44, 73, 0.25);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+}
+
+.btn--secondary {
+  background-color: rgb(15 44 73);
+  color: white;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.btn--secondary:hover {
+  background-color: rgb(25, 60, 95);
+  transform: translateY(-1px);
+}
+
+.btn--danger {
+  background-color: #ef4444;
+  color: white;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.btn--danger:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+@media (min-width: 640px) {
+  .btn--secondary,
+  .btn--danger {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .btn--primary {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .btn--secondary,
+  .btn--danger {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .btn--primary {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
