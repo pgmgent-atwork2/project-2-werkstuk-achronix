@@ -19,7 +19,6 @@ class Consumable extends Model {
       properties: {
         id: { type: "integer" },
         name: { type: "string", minLength: 1, maxLength: 255 },
-        description: { type: "string", minLength: 1, maxLength: 255 },
         price: { type: "number" },
         image_url: { type: "string", minLength: 1, maxLength: 255 },
         category_id: { type: "integer" },
