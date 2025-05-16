@@ -1,7 +1,7 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import User from "./User.js";
-import OrderItem from "./OrderItems.js";
+import OrderItem from "./OrderItem.js";
 
 Model.knex(knex);
 

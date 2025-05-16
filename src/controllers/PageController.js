@@ -3,6 +3,8 @@ import Team from "../models/Team.js";
 import User from "../models/User.js";
 import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
+import Order from "../models/Order.js";
+import OrderItem from "../models/OrderItem.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -17,10 +19,14 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
+  const orders = await Order.query()
+    .withGraphFetched("orderItems")
+    .where("user_id", user.id);
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
+    orders,
   });
 };
 
