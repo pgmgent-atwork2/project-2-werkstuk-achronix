@@ -5,3 +5,8 @@ import "./delete-user.js";
 import "./edit-match.js";
 import "./delete-match.js";
 import "./create-match.js";
+
+import { InitConsumable } from "./consumables.js";
+
+
+InitConsumable();

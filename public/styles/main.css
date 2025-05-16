@@ -19,11 +19,13 @@
 /*alle imports van de common styles */
 
 @import url("common/error-messages.css");
+@import url("cart.css");
+@import url("consumables.css");
 
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
-  format("truetype-variations");
+    format("truetype-variations");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
