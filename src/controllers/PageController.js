@@ -18,6 +18,7 @@ export const addCurrentPath = (req, res, next) => {
 // ---------------------- Dit rendert de paginas ----------------------
 
 export const dashboard = async (req, res) => {
+  
   const user = req.user;
   const orders = await Order.query()
     .withGraphFetched("orderItems.consumable")
@@ -111,10 +112,17 @@ export const wedstrijdenBeheer = async (req, res) => {
 };
 export const bestellingenBeheer = async (req, res) => {
   const user = req.user;
+  
+  const orders = await Order.query()
+    .withGraphFetched("user")
+    .withGraphFetched("orderItems.consumable")
+    .orderBy("order_on", "desc");
+
 
   res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",
     user,
+    orders,
   });
 };
 
