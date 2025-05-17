@@ -1,0 +1,23 @@
+<div>
+  <h2>Openstaande rekeningen</h2>
+
+  <% orders.forEach(order => { %> <% if (order.status === 'NOT_PAID') { %>
+  <div class="order">
+    <p>Bestelling ID: <%= order.id %></p>
+
+    <% order.orderItems.forEach(item => { %>
+    <div class="order-item">
+      <p>Product: <%= item.consumable.name %></p>
+      <p>Aantal: <%= item.quantity %></p>
+      <p>Prijs: €<%= item.price %></p>
+    </div>
+    <% }) %>
+
+    <p>Totaal: €<%= totalPrice %></p>
+  </div>
+  <% } %> <% }) %>
+
+  <form action="/create-payment-intent" method="post">
+    <button type="submit">Betalen</button>
+  </form>
+</div>

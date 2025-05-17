@@ -3,6 +3,8 @@ import Team from "../models/Team.js";
 import User from "../models/User.js";
 import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
+import Order from "../models/Order.js";
+import OrderItem from "../models/OrderItem.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -16,11 +18,24 @@ export const addCurrentPath = (req, res, next) => {
 // ---------------------- Dit rendert de paginas ----------------------
 
 export const dashboard = async (req, res) => {
+  
   const user = req.user;
+  const orders = await Order.query()
+    .withGraphFetched("orderItems.consumable")
+    .where("user_id", user.id);
+
+  const totalPrice = orders.reduce((acc, order) => {
+    const orderTotal = order.orderItems.reduce((sum, item) => {
+      return sum + item.price;
+    }, 0);
+    return acc + orderTotal;
+  }, 0);
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
+    orders,
+    totalPrice: totalPrice.toFixed(2),
   });
 };
 
@@ -97,10 +112,17 @@ export const wedstrijdenBeheer = async (req, res) => {
 };
 export const bestellingenBeheer = async (req, res) => {
   const user = req.user;
+  
+  const orders = await Order.query()
+    .withGraphFetched("user")
+    .withGraphFetched("orderItems.consumable")
+    .orderBy("order_on", "desc");
+
 
   res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",
     user,
+    orders,
   });
 };
 
