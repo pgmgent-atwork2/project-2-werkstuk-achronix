@@ -19,14 +19,10 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
-  const orders = await Order.query()
-    .withGraphFetched("orderItems")
-    .where("user_id", user.id);
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
-    orders,
   });
 };
 
