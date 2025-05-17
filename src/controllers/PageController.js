@@ -19,10 +19,22 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
+  const orders = await Order.query()
+    .withGraphFetched("orderItems.consumable")
+    .where("user_id", user.id);
+
+  const totalPrice = orders.reduce((acc, order) => {
+    const orderTotal = order.orderItems.reduce((sum, item) => {
+      return sum + item.price;
+    }, 0);
+    return acc + orderTotal;
+  }, 0);
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
+    orders,
+    totalPrice: totalPrice.toFixed(2),
   });
 };
 
