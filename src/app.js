@@ -13,7 +13,7 @@ import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswo
 //import controllers
 import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
-import * as MatchController from "./controllers/MatchController.js";
+import * as ImportMatchesController from "./controllers/importMatchesController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
 import * as API_ConsumableController from "./controllers/api/ConsumableController.js";
 import * as API_CategoryController from "./controllers/api/CategoryController.js";
@@ -91,16 +91,16 @@ app.get(
   PageController.ledenBeheer
 );
 app.get(
-  "/beheerderspaneel/wedstrijden",
+  "/beheerderspaneel/speeldata",
   jwtAuth,
   checkAdmin,
-  PageController.wedstrijdenBeheer
+  PageController.speeldataBeheer
 );
 app.post(
   "/beheerderspaneel/wedstrijden/import",
   jwtAuth,
   checkAdmin,
-  MatchController.importIcs
+  ImportMatchesController.importIcs
 );
 app.get(
   "/beheerderspaneel/bestellingen",
@@ -177,7 +177,6 @@ app.get("/api/order-items/:id", API_OrderItemsController.show);
 app.post("/api/order-items", API_OrderItemsController.store);
 app.put("/api/order-items/:id", API_OrderItemsController.update);
 app.delete("/api/order-items/:id", API_OrderItemsController.destroy);
-
 
 // Password reset
 app.get(
