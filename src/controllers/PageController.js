@@ -57,12 +57,14 @@ export const wedstrijden = async (req, res) => {
     .withGraphFetched("team")
     .orderBy("date", "asc");
   const teams = await Team.query().orderBy("name", "asc");
+  const users = await User.query().orderBy("firstname", "asc");
 
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
     user,
     matches: matches,
     teams: teams,
+    users: users,
   });
 };
 

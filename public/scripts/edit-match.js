@@ -15,6 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <label for="date">Datum</label>
             <input type="date" id="date" name="date" required>
           </div>
+          
+          <div>
+            <label for="start_time">Starttijd</label>
+            <input type="time" id="start_time" name="start_time">
+          </div>
+          
+          <div>
+            <label for="end_time">Eindtijd</label>
+            <input type="time" id="end_time" name="end_time">
+          </div>
 
           <div>
             <label for="location">Locatie</label>
@@ -49,6 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeBtn = document.querySelector("#editMatchModal .close");
   const matchIdInput = document.getElementById("matchId");
   const dateInput = document.getElementById("date");
+  const startTimeInput = document.getElementById("start_time");
+  const endTimeInput = document.getElementById("end_time");
   const locationInput = document.getElementById("location");
   const homeAwayInput = document.getElementById("home_away");
   const teamIdInput = document.getElementById("team_id");
@@ -106,6 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           matchIdInput.value = matchData.id;
           dateInput.value = formattedDate;
+          startTimeInput.value = matchData.start_time || '';
+          endTimeInput.value = matchData.end_time || '';
           locationInput.value = matchData.location;
           homeAwayInput.value = matchData.home_away;
           teamIdInput.value = matchData.team_id || "";
@@ -159,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const matchId = matchIdInput.value;
       const matchData = {
         date: dateInput.value,
+        start_time: startTimeInput.value || null,
+        end_time: endTimeInput.value || null,
         location: locationInput.value,
         home_away: homeAwayInput.value,
         team_id: teamIdInput.value ? parseInt(teamIdInput.value, 10) : null,

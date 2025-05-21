@@ -4,6 +4,8 @@ export function up(knex) {
   return knex.schema.createTable(tableName, function (table) {
     table.increments("id").primary();
     table.date("date").notNullable();
+    table.time("start_time").nullable();
+    table.time("end_time").nullable();
     table.string("location").notNullable();
     table.enum("home_away", ["THUIS", "UIT"]).notNullable();
     table.integer("team_id").unsigned();

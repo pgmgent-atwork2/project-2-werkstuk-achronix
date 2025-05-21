@@ -1,0 +1,172 @@
+/* Wedstrijden (matches) styling */
+
+.wedstrijden-container {
+  padding: 2rem 1rem;
+}
+
+.wedstrijden-container h1 {
+  color: #f94d1c;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Attendance button styling */
+.attendance-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: none;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: all 0.2s ease;
+}
+
+.attendance-button i {
+  font-size: 1rem;
+}
+
+.attendance-button.status-unknown {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.attendance-button.status-available {
+  background-color: #4caf50;
+  color: white;
+}
+
+.attendance-button.status-reserve {
+  background-color: orange;
+  color: #333;
+}
+
+.attendance-button.status-unavailable {
+  background-color: red;
+  color: white;
+}
+
+.attendance-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.wedstrijden-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.wedstrijd-blok {
+  background-color: #f9fafb;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.wedstrijd-header {
+  background-color: rgb(15 44 73 / 90%);
+  padding: 1.25rem;
+  color: #ffffff;
+  position: relative;
+}
+
+.wedstrijd-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.wedstrijd-details {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.wedstrijd-date {
+  font-weight: 500;
+}
+
+.wedstrijd-time {
+  color: #f2f2f2;
+  text-align: right;
+}
+
+.wedstrijd-location {
+  margin-top: 0.25rem;
+}
+
+.wedstrijd-home-away {
+  text-align: right;
+  margin-top: 0.25rem;
+  color: #f94d1c;
+  font-weight: 500;
+}
+
+.wedstrijd-participants {
+  padding: 1.25rem;
+  background-color: #ffffff;
+  flex-grow: 1;
+}
+
+.wedstrijd-participants h3 {
+  font-size: 1rem;
+  color: #f94d1c;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.user {
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  background-color: #f3f4f6;
+}
+
+.ingelogd-user {
+  background-color: rgba(249, 77, 28, 0.1);
+  border-left: 3px solid #f94d1c;
+}
+
+.ingelogd-user p {
+  font-weight: 500;
+}
+
+.other-users {
+  margin-top: 0.75rem;
+}
+
+/* Media Queries */
+@media (min-width: 640px) {
+  .wedstrijden-container {
+    padding: 2rem;
+  }
+
+  .wedstrijden-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .wedstrijden-container {
+    padding: 2.5rem;
+  }
+
+  .wedstrijden-container h1 {
+    font-size: 2.25rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .wedstrijden-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

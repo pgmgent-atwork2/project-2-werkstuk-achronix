@@ -13,6 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <label for="new_date">Datum</label>
             <input type="date" id="new_date" name="date" required>
           </div>
+          
+          <div>
+            <label for="new_start_time">Starttijd</label>
+            <input type="time" id="new_start_time" name="start_time">
+          </div>
+          
+          <div>
+            <label for="new_end_time">Eindtijd</label>
+            <input type="time" id="new_end_time" name="end_time">
+          </div>
 
           <div>
             <label for="new_location">Locatie</label>
@@ -118,6 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const matchData = {
         date: document.getElementById("new_date").value,
+        start_time: document.getElementById("new_start_time").value || null,
+        end_time: document.getElementById("new_end_time").value || null,
         location: document.getElementById("new_location").value,
         home_away: document.getElementById("new_home_away").value,
         team_id: document.getElementById("new_team_id").value

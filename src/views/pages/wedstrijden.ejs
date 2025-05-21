@@ -1,0 +1,71 @@
+<div class="wedstrijden-container">
+    <h1>Wedstrijden</h1>
+
+    <% if (matches && matches.length> 0) { %>
+        <div class="wedstrijden-grid">
+            <% matches.forEach(match=> { %>
+                <div class="wedstrijd-blok">
+                    <!-- Match header -->
+                    <div class="wedstrijd-header">
+                        <h2>
+                            <%= match.team ? match.team.name : '-' %>
+                        </h2>
+                        <div class="wedstrijd-details">
+                            <p class="wedstrijd-date">
+                                <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                            </p>
+                            <% if (match.start_time) { %>
+                                <p class="wedstrijd-time">
+                                    <%= match.start_time %>
+                                        <% if (match.end_time) { %> - <%= match.end_time %>
+                                                <% } %>
+                                </p>
+                                <% } %>
+                                    <p class="wedstrijd-location">
+                                        <%= match.location %>
+                                    </p>
+                                    <p class="wedstrijd-home-away">
+                                        <%= match.home_away %>
+                                    </p>
+                        </div>
+                    </div>
+
+                    <!-- Ingelogde gebruiker eerst tonen -->
+                    <div class="wedstrijd-participants">
+                        <h3>Deelnemers</h3>
+
+                        <!-- Toon eerst de ingelogde gebruiker -->
+                        <div class="user ingelogd-user">
+                            <p>
+                                <%= user.firstname %>
+                                    <%= user.lastname %> (jij)
+                                        <button class="attendance-button status-unknown" data-status="unknown"
+                                            data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
+                                            <i class="fas fa-question"></i>
+                                        </button>
+                            </p>
+                        </div>
+
+                        <!-- Toon daarna alle andere gebruikers -->
+                        <div class="other-users">
+                            <% if (locals.users && users.length> 0) { %>
+                                <% users.forEach(otherUser=> { %>
+                                    <% if (otherUser.id !==user.id) { %>
+                                        <div class="user">
+                                            <p>
+                                                <%= otherUser.firstname %>
+                                                    <%= otherUser.lastname %>
+                                            </p>
+                                        </div>
+                                        <% } %>
+                                            <% }); %>
+                                                <% } %>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+        <% } else { %>
+            <p>Er zijn momenteel geen wedstrijden gepland.</p>
+            <% } %>
+</div>

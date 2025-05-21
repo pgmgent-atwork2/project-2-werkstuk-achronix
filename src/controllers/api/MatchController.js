@@ -33,7 +33,7 @@ export const index = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   const id = req.params.id;
-  const { date, location, home_away, team_id } = req.body;
+  const { date, start_time, end_time, location, home_away, team_id } = req.body;
 
   try {
     const matchExists = await Match.query().findById(id);
@@ -53,6 +53,8 @@ export const update = async (req, res, next) => {
     const matchData = {
       location,
       home_away,
+      start_time,
+      end_time,
     };
 
     // Alleen date toevoegen als het een geldige waarde is
@@ -107,7 +109,7 @@ export const destroy = async (req, res, next) => {
 };
 
 export const store = async (req, res, next) => {
-  const { date, location, home_away, team_id } = req.body;
+  const { date, start_time, end_time, location, home_away, team_id } = req.body;
 
   try {
     // Valideer team_id als deze is opgegeven
@@ -120,6 +122,8 @@ export const store = async (req, res, next) => {
 
     const newMatch = await Match.query().insert({
       date,
+      start_time,
+      end_time,
       location,
       home_away,
       team_id,

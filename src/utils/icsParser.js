@@ -38,8 +38,13 @@ export function parseIcsToMatches(icsContent) {
           // Determine team ID from match details
           const teamId = determineTeamId(matchDetails);
 
+          const dateInfo = parseIcsDate(event.dtstart);
+          const endTimeInfo = event.dtend ? parseIcsTime(event.dtend) : null;
+
           const match = {
-            date: parseIcsDate(event.dtstart),
+            date: dateInfo.date,
+            start_time: parseIcsTime(event.dtstart),
+            end_time: endTimeInfo,
             location: parseLocation(event.location || ""),
             home_away: isHome ? "THUIS" : "UIT",
             team_id: teamId,
@@ -129,6 +134,11 @@ function extractEvents(icsContent) {
           if (line.includes(":")) {
             currentValue = line.split(":").pop();
           }
+        } else if (line.startsWith("DTEND")) {
+          currentField = "dtend";
+          if (line.includes(":")) {
+            currentValue = line.split(":").pop();
+          }
         } else if (line.startsWith("LOCATION")) {
           currentField = "location";
           if (line.includes(":")) {
@@ -165,11 +175,11 @@ function extractEvents(icsContent) {
 /**
  * Parse ICS date format to JavaScript Date object
  * @param {string} icsDate - Date string from ICS file
- * @returns {Date} JavaScript Date object
+ * @returns {Object} Object containing date and time information
  */
 function parseIcsDate(icsDate) {
   try {
-    if (!icsDate) return new Date().toISOString().split("T")[0];
+    if (!icsDate) return { date: new Date().toISOString().split("T")[0] };
 
     // Handle dates with timezone identifiers
     if (icsDate.includes(";")) {
@@ -187,10 +197,40 @@ function parseIcsDate(icsDate) {
     const date = new Date(year, month, day, hour, minute);
 
     // Return ISO date string for SQLite compatibility
-    return date.toISOString().split("T")[0];
+    return {
+      date: date.toISOString().split("T")[0],
+    };
   } catch (err) {
     console.error("Error parsing date:", err);
-    return new Date().toISOString().split("T")[0];
+    return { date: new Date().toISOString().split("T")[0] };
+  }
+}
+
+/**
+ * Parse ICS date format to get time in HH:MM format
+ * @param {string} icsDate - Date string from ICS file
+ * @returns {string} Time in HH:MM format
+ */
+function parseIcsTime(icsDate) {
+  try {
+    if (!icsDate) return null;
+
+    // Handle dates with timezone identifiers
+    if (icsDate.includes(";")) {
+      icsDate = icsDate.split(":").pop();
+    }
+
+    // Extract hours and minutes
+    const hour = parseInt(icsDate.substring(9, 11) || "0");
+    const minute = parseInt(icsDate.substring(11, 13) || "0");
+
+    // Format as HH:MM
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  } catch (err) {
+    console.error("Error parsing time:", err);
+    return null;
   }
 }
 
