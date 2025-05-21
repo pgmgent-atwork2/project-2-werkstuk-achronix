@@ -44,6 +44,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Datum</th>
+                                                <th>Tijden</th>
                                                 <th>Locatie</th>
                                                 <th>Thuis/Uit</th>
                                                 <th>Team</th>
@@ -55,6 +56,15 @@
                                                 <tr>
                                                     <td>
                                                         <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (match.start_time) { %>
+                                                            <%= match.start_time %>
+                                                                <% if (match.end_time) { %> - <%= match.end_time %>
+                                                                        <% } %>
+                                                                            <% } else { %>
+                                                                                -
+                                                                                <% } %>
                                                     </td>
                                                     <td>
                                                         <%= match.location %>
