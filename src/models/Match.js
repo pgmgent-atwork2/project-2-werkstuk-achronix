@@ -23,6 +23,8 @@ class Match extends Model {
         location: { type: "string", minLength: 1, maxLength: 255 },
         home_away: { type: "string", enum: ["THUIS", "UIT"] },
         team_id: { type: ["integer", "null"] },
+        start_time: { type: ["string", "null"] },
+        end_time: { type: ["string", "null"] },
       },
     };
   }
