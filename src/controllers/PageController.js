@@ -18,7 +18,6 @@ export const addCurrentPath = (req, res, next) => {
 // ---------------------- Dit rendert de paginas ----------------------
 
 export const dashboard = async (req, res) => {
-  
   const user = req.user;
   const orders = await Order.query()
     .withGraphFetched("orderItems.consumable")
@@ -54,10 +53,16 @@ export const bestellen = async (req, res) => {
 
 export const wedstrijden = async (req, res) => {
   const user = req.user;
+  const matches = await Match.query()
+    .withGraphFetched("team")
+    .orderBy("date", "asc");
+  const teams = await Team.query().orderBy("name", "asc");
 
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
     user,
+    matches: matches,
+    teams: teams,
   });
 };
 
@@ -94,7 +99,7 @@ export const ledenBeheer = async (req, res) => {
     user,
   });
 };
-export const wedstrijdenBeheer = async (req, res) => {
+export const speeldataBeheer = async (req, res) => {
   const user = req.user;
 
   const matches = await Match.query()
@@ -102,7 +107,7 @@ export const wedstrijdenBeheer = async (req, res) => {
     .orderBy("date", "asc");
   const teams = await Team.query().orderBy("name", "asc");
 
-  res.render("pages/beheer/wedstrijdenBeheer", {
+  res.render("pages/beheer/speeldataBeheer", {
     pageTitle: "Wedstrijden beheren | Ping Pong Tool",
     title: "Wedstrijden",
     matches: matches,
@@ -112,12 +117,11 @@ export const wedstrijdenBeheer = async (req, res) => {
 };
 export const bestellingenBeheer = async (req, res) => {
   const user = req.user;
-  
+
   const orders = await Order.query()
     .withGraphFetched("user")
     .withGraphFetched("orderItems.consumable")
     .orderBy("order_on", "desc");
-
 
   res.render("pages/beheer/bestellingenBeheer", {
     pageTitle: "Bestellingen beheren | Ping Pong Tool",

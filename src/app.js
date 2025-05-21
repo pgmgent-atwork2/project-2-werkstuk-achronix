@@ -91,10 +91,10 @@ app.get(
   PageController.ledenBeheer
 );
 app.get(
-  "/beheerderspaneel/wedstrijden",
+  "/beheerderspaneel/speeldata",
   jwtAuth,
   checkAdmin,
-  PageController.wedstrijdenBeheer
+  PageController.speeldataBeheer
 );
 app.post(
   "/beheerderspaneel/wedstrijden/import",
@@ -177,7 +177,6 @@ app.get("/api/order-items/:id", API_OrderItemsController.show);
 app.post("/api/order-items", API_OrderItemsController.store);
 app.put("/api/order-items/:id", API_OrderItemsController.update);
 app.delete("/api/order-items/:id", API_OrderItemsController.destroy);
-
 
 // Password reset
 app.get(
