@@ -122,7 +122,7 @@
             <% }); %>
         </tbody>
       </table>
-      <p><strong>Totaal: </strong> €<%= order.orderItems.reduce((total, item)=> total + item.price, 0) %>
+      <p><strong>Totaal: </strong> €<%= data.orderItems.reduce((total, item)=> total + item.price, 0) %>
       </p>
     </div>
 
