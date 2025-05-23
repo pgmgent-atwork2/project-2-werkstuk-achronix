@@ -6,12 +6,6 @@ import { cleanupExpiredTokens } from "../utils/cleanupExpiredTokens.js";
 import { checkValidToken } from "../middleware/ValidateResetToken.js";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import ejs from "ejs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const handleRequestPasswordReset = async (req, res) => {
   const { email } = req.body;
@@ -38,16 +32,11 @@ export const handleRequestPasswordReset = async (req, res) => {
         const host = req.get("host") || "localhost:3000";
         const resetUrl = `http://${host}/reset-password?token=${token}`;
 
-        const templatePath = path.join(
-          __dirname,
-          "../views/emails/passwordReset.ejs"
-        );
-        const htmlContent = await ejs.renderFile(templatePath, { resetUrl });
-
         const emailSent = await sendMail(
           email,
           "Wachtwoord resetten | Ping Pong Tool",
-          htmlContent
+          "passwordReset.ejs",
+          resetUrl
         );
 
         if (emailSent) {
