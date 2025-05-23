@@ -1,8 +1,6 @@
 import { createMollieClient } from "@mollie/api-client";
 import dotenv from "dotenv";
-import ejs from "ejs";
-import path from "path";
-import { fileURLToPath } from "url";
+
 import { sendMail } from "../utils/mailer.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
@@ -77,20 +75,12 @@ export const paymentResult = async (req, res) => {
 };
 
 async function sendConfirmationEmail(email, order) {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-
-  const templatePath = path.join(
-    __dirname,
-    "../views/emails/orderConfirmation.ejs"
-  );
-  const htmlContent = await ejs.renderFile(templatePath, { order });
-
   try {
     await sendMail(
       email,
       "Bestelling Bevestiging | Ping Pong Tool",
-      htmlContent
+      "orderConfirmation.ejs",
+      order
     );
   } catch (error) {
     console.error("Error sending confirmation email:", error);
