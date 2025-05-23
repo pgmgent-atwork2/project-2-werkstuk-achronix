@@ -36,7 +36,7 @@
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
     "objection": "^3.1.5",
-    "sqlite3": "^5.1.7",
-    "stripe": "^18.1.0"
+    "qrcode": "^1.5.4",
+    "sqlite3": "^5.1.7"
   }
 }
