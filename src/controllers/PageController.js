@@ -158,3 +158,21 @@ export const pageNotFound = async (req, res) => {
     layout: user ? "layouts/main" : "layouts/authentication",
   });
 };
+
+export const orderComplete = async (req, res) => {
+  const user = req.user;
+
+  res.render("pages/orderComplete", {
+    pageTitle: "betaling gelukt | Ping Pong Tool",
+    user,
+  });
+};
+
+export const orderFailed = async (req, res) => {
+  const user = req.user;
+
+  res.render("pages/orderFailed", {
+    pageTitle: "betaling mislukt | Ping Pong Tool",
+    user,
+  });
+};
