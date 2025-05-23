@@ -9,7 +9,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
-  color: #4b5563;
+  color: var(--color-gray-600);
 }
 
 .form-control {
@@ -17,25 +17,25 @@
   padding: 0.75rem 1rem;
   font-size: 1rem;
   line-height: 1.5;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  background-color: var(--background);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
-  border-color: #f94d1c;
+  border-color: var(--primary);
   outline: 0;
-  box-shadow: 0 0 0 3px rgba(249, 77, 28, 0.2);
+  box-shadow: 0 0 0 3px var(--primary-light);
 }
 
 .form-control-error {
-  border-color: red;
+  border-color: var(--destructive);
 }
 
 .form-help-text {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--color-gray-500);
   margin-top: 0.25rem;
 }
 
@@ -60,14 +60,14 @@
   display: inline-flex;
   align-items: center;
   padding: 0.75rem 1rem;
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
   font-size: 0.9rem;
-  color: #4b5563;
+  color: var(--color-gray-600);
   width: 100%;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px var(--shadow-light);
 }
 
 .file-input-button::before {
@@ -77,8 +77,8 @@
 
 .file-input:focus + .file-input-button,
 .file-input:hover + .file-input-button {
-  background-color: #e5e7eb;
-  border-color: #d1d5db;
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-300);
 }
 
 @media (min-width: 1024px) {
