@@ -1,31 +1,31 @@
 .error-message {
-  color: red;
+  color: var(--destructive);
   font-size: 0.875rem;
   margin-top: 0.5rem;
-  background-color: rgba(255, 0, 0, 0.05);
-  border-radius: 6px;
+  background-color: var(--destructive-light);
+  border-radius: var(--radius);
   padding: 0.75rem;
 }
 
 .error-message--successful {
-  color: green;
+  color: var(--success);
   font-size: 0.875rem;
   margin-top: 0.5rem;
-  background-color: rgba(0, 128, 0, 0.05);
-  border-radius: 6px;
+  background-color: var(--success-light);
+  border-radius: var(--radius);
   padding: 0.75rem;
 }
 
 .flash-message {
   padding: 1rem 1.25rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
   font-weight: 500;
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px var(--shadow-light);
   animation: fadeIn 0.4s ease-in-out;
 }
 
@@ -45,9 +45,9 @@
 }
 
 .flash-message--success {
-  background-color: rgba(16, 185, 129, 0.1);
-  border-left: 4px solid rgb(16, 185, 129);
-  color: rgb(6, 95, 70);
+  background-color: var(--success-light);
+  border-left: 4px solid var(--success);
+  color: var(--success);
 }
 
 .flash-message--success::before {
@@ -55,9 +55,9 @@
 }
 
 .flash-message--error {
-  background-color: rgba(239, 68, 68, 0.1);
-  border-left: 4px solid rgb(239, 68, 68);
-  color: rgb(153, 27, 27);
+  background-color: var(--destructive-light);
+  border-left: 4px solid var(--destructive);
+  color: var(--destructive);
 }
 
 .flash-message--error::before {
@@ -65,9 +65,9 @@
 }
 
 .flash-message--warning {
-  background-color: rgba(245, 158, 11, 0.1);
-  border-left: 4px solid rgb(245, 158, 11);
-  color: rgb(146, 64, 14);
+  background-color: var(--warning-light);
+  border-left: 4px solid var(--warning);
+  color: var(--warning);
 }
 
 .flash-message--warning::before {
