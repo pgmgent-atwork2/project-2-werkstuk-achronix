@@ -10,7 +10,7 @@ export function InitConsumable() {
     showCart(cart);
     showCountOnInput(cart);
     handleShoppingCart(cart);
-
+    handleOrder(cart, key);
     removeItemFromCart();
   } else {
     $cart.classList.remove("show");
@@ -73,7 +73,6 @@ export function InitConsumable() {
 }
 
 function handleShoppingCart(data) {
-  const $orderBtn = document.getElementById("order-btn");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -98,20 +97,6 @@ function handleShoppingCart(data) {
 
   showCart(cart);
   removeItemFromCart();
-
-  $orderBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-    if (cart.length === 0) {
-      alert("Je hebt geen producten in je winkelwagentje.");
-      return;
-    }
-
-    await addOrderToDb(cart);
-
-    localStorage.removeItem(key);
-
-    showCart([]);
-  });
 }
 
 function showCart(items) {
@@ -170,5 +155,23 @@ function removeItemFromCart() {
       localStorage.setItem(key, JSON.stringify(cart));
       showCart(cart);
     });
+  });
+}
+
+function handleOrder(cart, key) {
+  const $orderBtn = document.getElementById("order-btn");
+
+  $orderBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert("Je hebt geen producten in je winkelwagentje.");
+      return;
+    }
+
+    await addOrderToDb(cart);
+
+    localStorage.removeItem(key);
+
+    showCart([]);
   });
 }

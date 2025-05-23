@@ -1,5 +1,4 @@
 export async function addOrderToDb(cart) {
-
   try {
     const response = await fetch("/api/orders", {
       method: "POST",
