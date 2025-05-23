@@ -129,6 +129,7 @@ app.post(
 );
 
 app.post("/create-payment", PaymentController.createPayment);
+app.get("/betaling/result", PaymentController.paymentResult);
 
 // ---------------------- API routes ----------------------
 
