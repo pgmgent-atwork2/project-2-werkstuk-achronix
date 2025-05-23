@@ -39,6 +39,14 @@ class Match extends Model {
           to: "teams.id",
         },
       },
+      attendance: {
+        relation: Model.HasManyRelation,
+        modelClass: require("./Attendance.js").default,
+        join: {
+          from: "matches.id",
+          to: "attendance.match_id",
+        },
+      },
     };
   }
 }

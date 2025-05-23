@@ -32,6 +32,19 @@ class User extends Model {
       },
     };
   }
+
+  static get relationMappings() {
+    return {
+      attendance: {
+        relation: Model.HasManyRelation,
+        modelClass: require("./Attendance.js").default,
+        join: {
+          from: "users.id",
+          to: "attendance.user_id",
+        },
+      },
+    };
+  }
 }
 
 export default User;
