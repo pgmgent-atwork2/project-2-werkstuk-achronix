@@ -1,7 +1,6 @@
 /* Wedstrijden (matches) styling */
 
 .wedstrijden-container {
-  padding: 2rem 1rem;
 }
 
 .wedstrijden-container h1 {
@@ -18,12 +17,15 @@
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
   border-radius: 50%;
   background-color: #f0f0f0;
   border: none;
   cursor: pointer;
-  margin-left: 1rem;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
 }
 
 .attendance-button i {
@@ -124,29 +126,73 @@
 }
 
 .user {
-  padding: 0.75rem;
-  border-radius: var(--radius);
-  margin-bottom: 0.5rem;
-  background-color: #f3f4f6;
+  padding: 0.3rem 0.75rem;
+  /*border-radius: var(--radius);*/
+  /*margin-bottom: 0.2rem;*/
+  /*background-color: #f3f4f6;*/
+  border-bottom: 1px solid black;
 }
 
 .ingelogd-user {
   background-color: rgba(249, 77, 28, 0.1);
-  border-left: 3px solid #f94d1c;
+  padding: 0.75rem;
+  border-bottom: none;
+  border-radius: var(--radius);
 }
 
-.ingelogd-user p {
-  font-weight: 500;
+.user-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.user-status-text {
+  font-weight: 600;
+  color: #333;
+}
+
+.selection-status {
+  text-align: right;
+}
+
+.selection-text {
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .other-users {
   margin-top: 0.75rem;
+  /*background-color: #f3f4f6;*/
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.other-users .user:last-child {
+  border-bottom: none;
+}
+
+.attendence {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+.attendence--green {
+  color: green;
+}
+.attendence--orange {
+  color: orange;
+}
+.attendence-status {
+  background-color: #e8e8e8;
+  padding: 0.1rem 0.5rem;
+  border-radius: 20rem;
 }
 
 /* Media Queries */
 @media (min-width: 640px) {
   .wedstrijden-container {
-    padding: 2rem;
   }
 
   .wedstrijden-grid {
@@ -156,7 +202,6 @@
 
 @media (min-width: 1024px) {
   .wedstrijden-container {
-    padding: 2.5rem;
   }
 
   .wedstrijden-container h1 {
