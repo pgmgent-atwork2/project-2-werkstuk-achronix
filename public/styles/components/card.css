@@ -1,7 +1,9 @@
 .cards {
   display: grid;
   align-items: center;
+  gap: 1rem;
   list-style-type: none;
+  padding-left: 0;
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
