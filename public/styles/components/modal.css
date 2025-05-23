@@ -29,9 +29,11 @@
 .close {
   color: var(--muted-foreground);
   float: right;
-  font-size: 1.75rem;
+
   font-weight: bold;
   cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .close:hover {

@@ -1,43 +1,59 @@
-<a href="/beheerderspaneel">Ga terug naar beheerderspaneel overzicht</a>
+<a class="back" href="/beheerderspaneel"
+  ><svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
 
 <h1>Bestellingen beheren</h1>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Bestelling ID</th>
+        <th>Voornaam</th>
+        <th>Achternaam</th>
+        <th>Product ID</th>
+        <th>Productnaam</th>
+        <th>Aantal</th>
+        <th>Prijs</th>
+        <th>Bestelstatus</th>
+        <th>Datum</th>
+        <th>Acties</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(order => { order.orderItems.forEach(item => { %> <%
+      const date = new Date(order.order_on); const formattedDate
+      =date.toLocaleString('nl-BE', { day: '2-digit', month: '2-digit', year:
+      'numeric', hour: '2-digit', minute: '2-digit' }); %>
+      <tr>
+        <td><%= order.id %></td>
+        <td><%= order.user.firstname %></td>
+        <td><%= order.user.lastname %></td>
+        <td><%= item.consumable.id %></td>
+        <td><%= item.consumable.name %></td>
+        <td><%= item.quantity %></td>
+        <td>€<%= item.price.toFixed(2) %></td>
+        <td><%= order.status %></td>
+        <td><%= formattedDate %></td>
+        <td>
+          <button class="btn btn--secondary">Bewerken</button>
+        </td>
+      </tr>
 
-<table>
-  <thead>
-    <tr>
-      <th>Bestelling ID</th>
-      <th>Voornaam</th>
-      <th>Achternaam</th>
-      <th>Product ID</th>
-      <th>Productnaam</th>
-      <th>Aantal</th>
-      <th>Prijs</th>
-      <th>Bestelstatus</th>
-      <th>Datum</th>
-      <th>Acties</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% orders.forEach(order => { order.orderItems.forEach(item => { %> <% 
-    const date = new Date(order.order_on); 
-    const formattedDate =date.toLocaleString('nl-BE', { 
-        day: '2-digit', month: '2-digit', year:
-    'numeric', hour: '2-digit', minute: '2-digit' }); %>
-    <tr>
-      <td><%= order.id %></td>
-      <td><%= order.user.firstname %></td>
-      <td><%= order.user.lastname %></td>
-      <td><%= item.consumable.id %></td>
-      <td><%= item.consumable.name %></td>
-      <td><%= item.quantity %></td>
-      <td>€<%= item.price.toFixed(2) %></td>
-      <td><%= order.status %></td>
-      <td><%= formattedDate %></td>
-      <td>
-        <a href="/bestellingen/bewerken/<%= order.id %>">Bewerken</a>
-      </td>
-    </tr>
-
-    <% }); %> <% }) %>
-  </tbody>
-</table>
+      <% }); %> <% }) %>
+    </tbody>
+  </table>
+</div>
