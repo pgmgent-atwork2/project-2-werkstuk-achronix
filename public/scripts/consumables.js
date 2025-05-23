@@ -10,6 +10,23 @@ export function InitConsumable() {
     showCart(cart);
     showCountOnInput(cart);
     handleShoppingCart(cart);
+    
+    const $orderBtn = document.getElementById("order-btn");
+
+    $orderBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (cart.length === 0) {
+        alert("Je hebt geen producten in je winkelwagentje.");
+        return;
+      }
+
+      console.log(cart);
+      await addOrderToDb(cart);
+
+      localStorage.removeItem(key);
+
+      showCart([]);
+    });
 
     removeItemFromCart();
   } else {
@@ -73,7 +90,6 @@ export function InitConsumable() {
 }
 
 function handleShoppingCart(data) {
-  const $orderBtn = document.getElementById("order-btn");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -98,20 +114,6 @@ function handleShoppingCart(data) {
 
   showCart(cart);
   removeItemFromCart();
-
-  $orderBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-    if (cart.length === 0) {
-      alert("Je hebt geen producten in je winkelwagentje.");
-      return;
-    }
-
-    await addOrderToDb(cart);
-
-    localStorage.removeItem(key);
-
-    showCart([]);
-  });
 }
 
 function showCart(items) {

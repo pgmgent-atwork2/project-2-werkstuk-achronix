@@ -15,9 +15,11 @@
 
     <p>Totaal: €<%= totalPrice %></p>
   </div>
-  <% } %> <% }) %>
 
-  <form action="/create-payment-intent" method="post">
+  <form action="/create-payment" method="post">
+    <input type="hidden" name="orderId" value="<%= order.id %>" />
+    <input type="hidden" name="amount" value="<%= totalPrice %>" />
     <button type="submit">Betalen</button>
   </form>
+  <% } %> <% }) %>
 </div>

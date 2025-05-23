@@ -21,6 +21,7 @@ import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_MatchController from "./controllers/api/MatchController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
 import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
+import * as PaymentController from "./controllers/PaymentController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
@@ -126,6 +127,8 @@ app.post(
   PasswordResetController.postForgotPassword,
   PasswordResetController.forgotPassword
 );
+
+app.post("/create-payment", PaymentController.createPayment);
 
 // ---------------------- API routes ----------------------
 
