@@ -129,7 +129,8 @@ app.post(
 );
 
 app.post("/create-payment", PaymentController.createPayment);
-app.get("/betaling/result", PaymentController.paymentResult);
+app.get("/betaling/mislukt", PageController.orderFailed);
+app.get("/betaling/bedankt", PageController.orderComplete);
 
 // ---------------------- API routes ----------------------
 
