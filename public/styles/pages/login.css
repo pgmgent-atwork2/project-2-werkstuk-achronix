@@ -76,11 +76,6 @@
 
 .login-button:hover {
   background-color: var(--secondary);
-  transform: translateY(-1px);
-}
-
-.login-button:active {
-  transform: translateY(0);
 }
 
 .login-links {
