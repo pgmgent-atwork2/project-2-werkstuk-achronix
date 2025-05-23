@@ -1,109 +1,135 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wachtwoord Resetten</title>
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 1.6;
-        color: #333333;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-      }
+<head>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
 
-      .email-container {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 2rem;
-      }
+    .email-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
 
-      .email-header {
-        background-color: rgb(15, 44, 73);
-        padding: 20px;
-        text-align: center;
-      }
+    .email-header {
+      background-color: rgb(15, 44, 73);
+      padding: 20px;
+      text-align: center;
+    }
 
-      .email-header img {
-        width: 150px;
-        max-width: 80%;
-      }
+    .email-header img {
+      width: 150px;
+      max-width: 80%;
+    }
 
-      .email-content {
-        padding: 30px;
-      }
+    .email-content {
+      padding: 30px;
+    }
 
-      .email-footer {
-        background-color: #f3f4f6;
-        padding: 15px;
-        text-align: center;
-        font-size: 12px;
-        color: #6b7280;
-      }
+    .email-footer {
+      background-color: #f3f4f6;
+      padding: 15px;
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
 
-      h1 {
-        color: #f94d1c;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
+    h1 {
+      color: #f94d1c;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
 
-      p {
-        margin-bottom: 16px;
-        font-size: 16px;
-      }
+    p {
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
 
-      .btn-container {
-        text-align: center;
-        margin: 30px 0;
-      }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
 
-      .btn {
-        background-color: #f94d1c;
-        color: white;
-        text-decoration: none;
-        padding: 12px 24px;
-        border-radius: 4px;
-        font-weight: bold;
-        display: inline-block;
-      }
+    th {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+      background-color: #f3f4f6;
+    }
 
-      .link-note {
-        margin-top: 30px;
-        padding-top: 15px;
-        border-top: 1px solid #e5e7eb;
-        font-size: 13px;
-        color: #6b7280;
-      }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
 
-      .reset-link {
-        word-break: break-all;
-        color: #f94d1c;
-      }
-    </style>
-  </head>
+    .product-text {
+      text-align: left;
 
-  <body>
-    <div class="email-container">
-      <div class="email-header"></div>
-      <div class="email-content">
-        <h1>Bestelling overzicht</h1>
-        <p>Beste gebruiker,</p>
-        <p></p>
-      </div>
+    }
 
-      <div class="email-footer">
-        <p>
-          &copy; <%= new Date().getFullYear() %> Ping Pong Tool. Alle rechten
-          voorbehouden.
-        </p>
-      </div>
+    .quantity-text {
+      text-align: center;
+    }
+
+    .price-text {
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="email-container">
+    <div class="email-header">
     </div>
-  </body>
+
+    <div class="email-content">
+      <h1>Bestelling overzicht</h1>
+      <p>Beste gebruiker,</p>
+      <p>Bedankt voor je bestelling. Hieronder vind je een overzicht van je bestelde items:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="product-text">Product</th>
+            <th class="quantity-text">Aantal</th>
+            <th class="price-text">Prijs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.orderItems.forEach(item=> { %>
+            <tr>
+              <td class="product-text">
+                <%= item.consumable.name %>
+              </td>
+              <td class="quantity-text">
+                <%= item.quantity %>
+              </td>
+              <td class="price-text">€<%= item.price %>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+      <p><strong>Totaal: </strong> €<%= data.orderItems.reduce((total, item)=> total + item.price, 0) %>
+      </p>
+    </div>
+
+    <div class="email-footer">
+      <p>&copy; <%= new Date().getFullYear() %> Achronix. Alle rechten voorbehouden.</p>
+    </div>
+  </div>
+</body>
+
 </html>

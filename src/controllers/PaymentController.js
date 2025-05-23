@@ -52,6 +52,8 @@ export const paymentResult = async (req, res) => {
     switch (payment.status) {
       case "paid":
         await sendConfirmationEmail(user.email, order);
+        await Order.query().patchAndFetchById(orderId, { status: "PAID" });
+
         res.redirect(
           `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}`
         );
