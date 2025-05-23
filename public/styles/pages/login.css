@@ -4,7 +4,7 @@
   width: 100%;
   align-items: center;
   justify-content: center;
-  background-color: rgb(15 44 73 / 90%);
+  background-color: var(--secondary);
   padding: 1.5rem;
 }
 
@@ -13,8 +13,8 @@
   flex-direction: column;
   width: 100%;
   max-width: 1000px;
-  background-color: #f9fafb;
-  border-radius: 12px;
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f3f4f6;
+  background-color: var(--color-gray-0);
   padding: 2rem;
   width: 100%;
 }
@@ -45,14 +45,14 @@
 .login-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #f94d1c;
+  color: var(--primary);
   margin-bottom: 0.5rem;
   line-height: 1.2;
 }
 
 .login-subtitle {
   font-size: 1rem;
-  color: rgba(26, 27, 38, 0.8);
+  color: var(--color-gray-600);
 }
 
 .login-form {
@@ -66,16 +66,16 @@
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   font-size: 1rem;
-  color: white;
-  background-color: #f94d1c;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .login-button:hover {
-  background-color: rgb(15 44 73 / 90%);
+  background-color: var(--secondary);
   transform: translateY(-1px);
 }
 
@@ -92,11 +92,11 @@
 
 .login-help-text {
   font-size: 0.875rem;
-  color: gray;
+  color: var(--muted-foreground);
 }
 
 .login-link {
-  color: #f94d1c;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
