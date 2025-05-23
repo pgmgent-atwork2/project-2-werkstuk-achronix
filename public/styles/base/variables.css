@@ -1,24 +1,85 @@
 :root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(224, 71.4%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(224, 71.4%, 4.1%);
+  /* Brand Colors - Core palette */
+  --color-orange: hsl(14, 94%, 54%);
+  --color-blue: hsl(206, 67%, 17%);
+  --color-white: hsl(0, 0%, 100%);
+  --color-black: hsl(224, 71.4%, 4.1%);
+
+  /* Status Colors */
+  --color-error: hsl(0, 84.2%, 60.2%);
+  --color-success: hsl(120, 56%, 48%);
+  --color-warning: hsl(39, 100%, 50%);
+
+  /* Gray Scale */
+  --color-gray-0: hsl(220, 14%, 96%);
+  --color-gray-50: hsl(210, 20%, 98%);
+  --color-gray-100: hsl(220, 14%, 96%);
+  --color-gray-200: hsl(220, 13%, 91%);
+  --color-gray-300: hsl(216, 12%, 84%);
+  --color-gray-400: hsl(218, 11%, 65%);
+  --color-gray-500: hsl(220, 9%, 46%);
+  --color-gray-600: hsl(215, 14%, 34%);
+  --color-gray-700: hsl(217, 19%, 27%);
+  --color-gray-800: hsl(215, 25%, 27%);
+  --color-gray-900: hsl(221, 39%, 11%);
+
+  --primary: var(--color-orange);
+  --primary-hover: hsl(14, 94%, 48%);
+  --primary-light: hsla(14, 94%, 54%, 0.1);
+
+  --secondary: var(--color-blue);
+  --secondary-hover: hsl(206, 58%, 24%);
+
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+
+  /* Component Colors */
+  --primary-foreground: var(--color-white);
+  --secondary-foreground: var(--color-white);
+
+  --destructive: var(--color-error);
+  --destructive-foreground: var(--color-white);
+  --destructive-hover: hsl(0, 72%, 51%);
+  --destructive-light: hsla(0, 84.2%, 60.2%, 0.1);
+
+  --success: var(--color-success);
+  --success-foreground: var(--color-white);
+  --success-light: hsla(120, 56%, 48%, 0.1);
+
+  --warning: var(--color-warning);
+  --warning-foreground: hsl(0, 0%, 20%);
+  --warning-light: hsla(39, 100%, 50%, 0.1);
+
+  /* UI Elements */
+  --card: var(--color-white);
+  --card-foreground: var(--color-black);
+
   --popover: hsl(0, 5.7%, 62.2%);
-  --popover-foreground: hsl(224, 71.4%, 4.1%);
-  --primary: hsl(262.1, 83.3%, 57.8%);
-  --primary-foreground: hsl(210, 20%, 98%);
-  --secondary: hsl(220, 14.3%, 95.9%);
-  --secondary-foreground: hsl(220.9, 39.3%, 11%);
+  --popover-foreground: var(--color-black);
+
   --muted: hsl(220, 14.3%, 95.9%);
   --muted-foreground: hsl(220, 8.9%, 46.1%);
+
   --accent: hsl(220, 14.3%, 95.9%);
   --accent-foreground: hsl(220.9, 39.3%, 11%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(210, 20%, 98%);
-  --border: hsl(220, 13%, 91%);
-  --input: hsl(220, 13%, 91%);
-  --ring: hsl(262.1, 83.3%, 57.8%);
-  --success: hsl(120, 56%, 48%);
-  --warning: hsl(39, 100%, 50%);
+
+  --border: var(--color-gray-200);
+  --input: var(--color-gray-200);
+  --ring: var(--color-orange);
+
+  /* Shadows & Overlays */
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+
+  --overlay-light: rgba(0, 0, 0, 0.2);
+  --overlay-medium: rgba(0, 0, 0, 0.5);
+  --overlay-dark: rgba(0, 0, 0, 0.7);
+
+  /* Border Accents */
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-light: rgba(255, 255, 255, 0.08);
+
+  /* Afronding */
   --radius: 0.5rem;
 }

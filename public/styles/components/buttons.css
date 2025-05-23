@@ -3,7 +3,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: var(--radius);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -11,17 +11,17 @@
 }
 
 .btn--primary {
-  background-color: #f94d1c;
-  color: white;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   padding: 0.6rem 1rem;
   font-size: 0.9rem;
-  box-shadow: 0 2px 6px rgba(249, 77, 28, 0.25);
+  box-shadow: 0 2px 6px var(--primary-light);
 }
 
 .btn--primary:hover {
-  background-color: rgb(15 44 73 / 90%);
+  background-color: var(--secondary);
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(15, 44, 73, 0.25);
+  box-shadow: 0 3px 10px var(--secondary-hover);
 }
 
 .btn--primary:active {
@@ -29,26 +29,26 @@
 }
 
 .btn--secondary {
-  background-color: rgb(15 44 73);
-  color: white;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
   padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
 }
 
 .btn--secondary:hover {
-  background-color: rgb(25, 60, 95);
+  background-color: var(--secondary-hover);
   transform: translateY(-1px);
 }
 
 .btn--danger {
-  background-color: #ef4444;
-  color: white;
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
   padding: 0.4rem 0.6rem;
   font-size: 0.75rem;
 }
 
 .btn--danger:hover {
-  background-color: #dc2626;
+  background-color: var(--destructive-hover);
   transform: translateY(-1px);
 }
 
