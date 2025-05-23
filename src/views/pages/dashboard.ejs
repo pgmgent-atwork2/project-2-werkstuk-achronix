@@ -17,6 +17,7 @@
   </div>
 
   <form action="/create-payment" method="post">
+    <input type="hidden" name="userId" value="<%= user.id %> " />
     <input type="hidden" name="orderId" value="<%= order.id %>" />
     <input type="hidden" name="amount" value="<%= totalPrice %>" />
     <button type="submit">Betalen</button>
