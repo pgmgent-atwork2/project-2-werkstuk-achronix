@@ -15,6 +15,16 @@ td {
   border-bottom: 1px solid var(--border);
 }
 
+td.success {
+  color: var(--success);
+  font-weight: 700;
+}
+
+td.error {
+  color: var(--destructive);
+  font-weight: 700;
+}
+
 tr:nth-child(even) {
   background-color: var(--muted);
 }

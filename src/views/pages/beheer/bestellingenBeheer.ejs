@@ -46,7 +46,9 @@
         <td><%= item.consumable.name %></td>
         <td><%= item.quantity %></td>
         <td>€<%= item.price.toFixed(2) %></td>
-        <td><%= order.status %></td>
+        <td class="<%= order.status === 'PAID' ? 'success' : 'error' %>">
+          <%= order.status %>
+        </td>
         <td><%= formattedDate %></td>
         <td>
           <button class="btn btn--secondary">Bewerken</button>
