@@ -32,18 +32,19 @@
 
                     <!-- Ingelogde gebruiker eerst tonen -->
                     <div class="wedstrijd-participants">
-                        <h3>Deelnemers</h3>
 
-                        <!-- Toon eerst de ingelogde gebruiker -->
+                        <!-- Toon eerst de ingelogde gebruiker status -->
                         <div class="user ingelogd-user">
-                            <p>
-                                <%= user.firstname %>
-                                    <%= user.lastname %> (jij)
-                                        <button class="attendance-button status-unknown" data-status="unknown"
-                                            data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
-                                            <i class="fas fa-question"></i>
-                                        </button>
-                            </p>
+                            <div class="user-status-container">
+                                <p class="user-status-text">Jouw status</p>
+                                <button class="attendance-button status-unknown" data-status="unknown"
+                                    data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
+                                    <i class="fas fa-question"></i>
+                                </button>
+                            </div>
+                            <div class="selection-status">
+                                <p class="selection-text">Niet geselecteerd</p>
+                            </div>
                         </div>
 
                         <!-- Toon daarna alle andere gebruikers -->
@@ -56,6 +57,15 @@
                                                 <%= otherUser.firstname %>
                                                     <%= otherUser.lastname %>
                                             </p>
+                                            <div class="attendence">
+
+                                                <p class="attendence-status">
+                                                    RESERVE
+                                                </p>
+                                                <p class="attendence--green">
+                                                    Geselecteerd
+                                                </p>
+                                            </div>
                                         </div>
                                         <% } %>
                                             <% }); %>
