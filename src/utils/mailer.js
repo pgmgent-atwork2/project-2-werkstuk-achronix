@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import Email from "../models/Email.js";
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
   secure: false, // testing
@@ -30,7 +30,7 @@ export const sendMail = async (to, subject, file, data) => {
       return false;
     }
   } catch (error) {
-   await Email.query().insert({
+    await Email.query().insert({
       email: to,
       subject,
       content: html,
