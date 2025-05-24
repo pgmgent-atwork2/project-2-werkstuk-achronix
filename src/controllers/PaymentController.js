@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { sendMail } from "../utils/mailer.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
+
 dotenv.config();
 
 const mollieClient = createMollieClient({
@@ -72,7 +73,8 @@ export const paymentResult = async (req, res) => {
         break;
     }
   } catch (error) {
-    res.redirect(res.send);
+    console.error("Error processing payment result:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

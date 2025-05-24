@@ -26,6 +26,10 @@ import * as PaymentController from "./controllers/PaymentController.js";
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
 
+import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
+import { CronJob } from "cron";
+import { transporter } from "./utils/mailer.js";
+
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
 import checkAdmin from "./middleware/checkAdmin.js";
@@ -202,6 +206,18 @@ app.post(
 app.use(jwtAuth, (req, res) => {
   return PageController.pageNotFound(req, res);
 });
+
+// cronJobs
+
+try {
+  if (await transporter.verify()) {
+    const job = new CronJob("0 */12 * * *", async () => {
+      await sendUnsentEmails();
+    });
+
+    job.start();
+  }
+} catch (error) {}
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
