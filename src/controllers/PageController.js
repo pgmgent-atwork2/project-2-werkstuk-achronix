@@ -164,8 +164,6 @@ export const orderComplete = async (req, res) => {
 
   const user = await User.query().findById(userId);
 
-  console.log("user", user);
-
   res.render("pages/orderComplete", {
     pageTitle: "betaling gelukt | Ping Pong Tool",
     user,
