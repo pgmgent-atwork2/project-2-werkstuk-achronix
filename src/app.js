@@ -38,6 +38,10 @@ import checkAdmin from "./middleware/checkAdmin.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+// Routes
+
+import uploadRoutes from "./routes/uploadRoutes.js";
+
 // ---------------------- App configuration ----------------------
 const port = 3000;
 const app = express();
@@ -71,6 +75,9 @@ app.use((req, res, next) => {
   res.locals.flash = req.flash();
   next();
 });
+
+app.use("/uploads", express.static("public/uploads"));
+app.use("/upload", uploadRoutes);
 
 // ---------------------- Page routes ----------------------
 app.get("/", (req, res) => {
@@ -119,7 +126,7 @@ app.get(
   jwtAuth,
   checkAdmin,
   PageController.consumablesBeheer
-)
+);
 
 app.get(
   "/forgot-password-confirmation",
