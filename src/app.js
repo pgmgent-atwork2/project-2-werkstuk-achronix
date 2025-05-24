@@ -29,6 +29,7 @@ import * as PasswordResetController from "./controllers/PasswordResetController.
 import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
 import { CronJob } from "cron";
 import { transporter } from "./utils/mailer.js";
+import { uploadConsumableImage } from "./controllers/ConsumableUploadController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -37,10 +38,6 @@ import checkAdmin from "./middleware/checkAdmin.js";
 //environment variables
 import dotenv from "dotenv";
 dotenv.config();
-
-// Routes
-
-import uploadRoutes from "./routes/uploadRoutes.js";
 
 // ---------------------- App configuration ----------------------
 const port = 3000;
@@ -75,9 +72,6 @@ app.use((req, res, next) => {
   res.locals.flash = req.flash();
   next();
 });
-
-app.use("/uploads", express.static("public/uploads"));
-app.use("/upload", uploadRoutes);
 
 // ---------------------- Page routes ----------------------
 app.get("/", (req, res) => {
@@ -214,6 +208,8 @@ app.post(
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
+
+app.post("/upload/consumable-image", uploadConsumableImage);
 
 // ---------------------- Error routes ----------------------
 // 404 error page

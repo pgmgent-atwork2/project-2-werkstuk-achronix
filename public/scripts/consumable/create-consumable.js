@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
       try {
         const response = await fetch("/upload/consumable-image", {
           method: "POST",
-
           body: formData,
         });
 
