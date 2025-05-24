@@ -1,0 +1,76 @@
+<a class="back" href="/beheerderspaneel">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
+
+<div>
+  <h1 class="title">Producten beheren</h1>
+  <section>
+    <div>
+      <button id="addNewConsumable" class="btn btn--primary">Nieuw Product</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Naam</th>
+            <th>Prijs</th>
+            <th>Afbeelding</th>
+            <th>Categorie</th>
+            <th>Acties</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if(consumables && consumables.length> 0) { %> <%
+          consumables.forEach(consumable=> { %>
+          <tr>
+            <td><%= consumable.id %></td>
+            <td><%= consumable.name %></td>
+            <td><%= consumable.price %></td>
+            <td>
+              <img
+                src="<%= consumable.image_url %>"
+                alt="<%= consumable.name %>"
+              />
+            </td>
+            <td><%= consumable.category_id %></td>
+            <td>
+              <button
+                class="btn btn--secondary edit-consumable"
+                data-id="<%= consumable.id %>"
+              >
+                Bewerken
+              </button>
+              <button
+                class="btn btn--danger delete-consumable"
+                data-id="<%= consumable.id %>"
+              >
+                Verwijderen
+              </button>
+            </td>
+          </tr>
+          <% }); %> <% } else { %>
+          <tr>
+            <td colspan="7">Geen Producten gevonden</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

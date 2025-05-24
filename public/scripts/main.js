@@ -7,6 +7,8 @@ import "./delete-match.js";
 import "./create-match.js";
 import "./match-attendance.js";
 
+import "./consumable/create-consumable.js";
+
 import { InitConsumable } from "./consumables.js";
 
 InitConsumable();

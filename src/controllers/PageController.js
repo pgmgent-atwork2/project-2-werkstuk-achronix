@@ -132,6 +132,20 @@ export const bestellingenBeheer = async (req, res) => {
   });
 };
 
+export const consumablesBeheer = async (req, res) => {
+  const user = req.user;
+
+  const consumables = await Consumable.query();
+  const categories = await Category.query();
+
+  res.render("pages/beheer/consumablesBeheer", {
+    pageTitle: "Producten beheren | Ping Pong Tool",
+    user,
+    consumables,
+    categories,
+  });
+};
+
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",

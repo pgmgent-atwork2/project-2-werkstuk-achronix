@@ -15,12 +15,11 @@ export const index = async (req, res) => {
 };
 
 export const store = async (req, res) => {
-  const { name, description, price, image_url, category_id } = req.body;
+  const { name, price, image_url, category_id } = req.body;
 
   try {
     const consumable = await Consumable.query().insert({
       name,
-      description,
       price,
       image_url,
       category_id,
@@ -33,7 +32,7 @@ export const store = async (req, res) => {
 
 export const update = async (req, res) => {
   const id = req.params.id;
-  const { name, description, price, image_url, category_id } = req.body;
+  const { name, price, image_url, category_id } = req.body;
 
   try {
     const consumableExists = await Consumable.query().findById(id);

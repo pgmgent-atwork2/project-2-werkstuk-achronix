@@ -115,6 +115,13 @@ app.get(
 );
 
 app.get(
+  "/beheerderspaneel/producten",
+  jwtAuth,
+  checkAdmin,
+  PageController.consumablesBeheer
+)
+
+app.get(
   "/forgot-password-confirmation",
   PageController.forgotPasswordConfirmation
 );
@@ -208,7 +215,6 @@ app.use(jwtAuth, (req, res) => {
 });
 
 // cronJobs
-
 try {
   if (await transporter.verify()) {
     const job = new CronJob("0 */12 * * *", async () => {
