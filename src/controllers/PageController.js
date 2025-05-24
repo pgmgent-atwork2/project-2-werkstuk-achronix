@@ -160,7 +160,11 @@ export const pageNotFound = async (req, res) => {
 };
 
 export const orderComplete = async (req, res) => {
-  const user = req.user;
+  const userId = req.query.userId;
+
+  const user = await User.query().findById(userId);
+
+  console.log("user", user);
 
   res.render("pages/orderComplete", {
     pageTitle: "betaling gelukt | Ping Pong Tool",
@@ -169,7 +173,9 @@ export const orderComplete = async (req, res) => {
 };
 
 export const orderFailed = async (req, res) => {
-  const user = req.user;
+  const userId = req.query.userId;
+
+  const user = await User.query().findById(userId);
 
   res.render("pages/orderFailed", {
     pageTitle: "betaling mislukt | Ping Pong Tool",

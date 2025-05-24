@@ -55,19 +55,19 @@ export const paymentResult = async (req, res) => {
         await Order.query().patchAndFetchById(orderId, { status: "PAID" });
 
         res.redirect(
-          `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}&userId=${userId}`
         );
         break;
       case "open":
         res.redirect(
-          `${process.env.APP_URL}/betaling/wacht?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/wacht?paymentId=${paymentId}&userId=${userId}`
         );
         break;
       case "expired":
       case "canceled":
       case "failed":
         res.redirect(
-          `${process.env.APP_URL}/betaling/fout?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/mislukt?paymentId=${paymentId}&userId=${userId}`
         );
         break;
     }
