@@ -9,15 +9,16 @@ import flash from "connect-flash";
 
 // routes
 import apiRouter from "./routes/api.js";
+import PageRouter from "./routes/pages.js";
 
 // middleware
 import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswordValidation.js";
 
 //import controllers
-import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
 import * as ImportMatchesController from "./controllers/importMatchesController.js";
 import * as PaymentController from "./controllers/PaymentController.js";
+import * as PageController from "./controllers/PageController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
@@ -64,71 +65,19 @@ app.use(
 
 // ---------------------- App routes ----------------------
 
-// Add the currentPath middleware to all routes
 app.use(PageController.addCurrentPath);
-
 // Add flash messages to all routes
 app.use((req, res, next) => {
   res.locals.flash = req.flash();
   next();
 });
 
-app.use("/api", apiRouter);
-
-// ---------------------- Page routes ----------------------
-app.get("/", (req, res) => {
-  res.redirect("/dashboard");
-});
-
-app.get("/dashboard", jwtAuth, PageController.dashboard);
-app.get("/bestellen", jwtAuth, PageController.bestellen);
-app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
-app.get("/profiel", jwtAuth, PageController.profiel);
-
-// Page routes beheerderspaneel
-app.get(
-  "/beheerderspaneel",
-  jwtAuth,
-  checkAdmin,
-  PageController.beheerderspaneel
-);
-app.get(
-  "/beheerderspaneel/leden",
-  jwtAuth,
-  checkAdmin,
-  PageController.ledenBeheer
-);
-app.get(
-  "/beheerderspaneel/speeldata",
-  jwtAuth,
-  checkAdmin,
-  PageController.speeldataBeheer
-);
 app.post(
   "/beheerderspaneel/wedstrijden/import",
   jwtAuth,
   checkAdmin,
   ImportMatchesController.importIcs
 );
-app.get(
-  "/beheerderspaneel/bestellingen",
-  jwtAuth,
-  checkAdmin,
-  PageController.bestellingenBeheer
-);
-
-app.get(
-  "/beheerderspaneel/producten",
-  jwtAuth,
-  checkAdmin,
-  PageController.consumablesBeheer
-);
-
-app.get(
-  "/forgot-password-confirmation",
-  PageController.forgotPasswordConfirmation
-);
-app.get("/password-reset/expired-token", PageController.expiredToken);
 
 // Auth routes
 app.get("/login", AuthController.login);
@@ -144,8 +93,6 @@ app.post(
 
 app.post("/create-payment", PaymentController.createPayment);
 app.get("/betaling/result", PaymentController.paymentResult);
-app.get("/betaling/mislukt", PageController.orderFailed);
-app.get("/betaling/bedankt", PageController.orderComplete);
 
 // Password reset
 app.get(
@@ -160,15 +107,16 @@ app.post(
   PasswordResetController.resetPassword
 );
 
+
+app.use("/api", apiRouter);
+app.use(PageRouter);
+
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
 app.delete("/upload/consumable-image", deleteConsumable);
 
 // ---------------------- Error routes ----------------------
 // 404 error page
-app.use(jwtAuth, (req, res) => {
-  return PageController.pageNotFound(req, res);
-});
 
 // cronJobs
 try {
