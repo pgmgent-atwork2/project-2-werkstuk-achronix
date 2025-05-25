@@ -93,3 +93,24 @@ export const updateConsumableImage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const deleteConsumable = async (req, res) => {
+  const id = req.body.consumableId;
+
+  const consumable = await Consumable.query().findById(id);
+
+  if (!consumable) {
+    return res.status(404).json({ error: "Consumable not found" });
+  }
+
+  const file = path.join(__dirname, "../../public", consumable.image_url);
+
+  if (fs.existsSync(file)) {
+    fs.unlinkSync(file);
+  }
+
+  await Consumable.query().deleteById(id);
+  res.status(200).json({
+    message: "Consumable deleted successfully",
+  });
+};

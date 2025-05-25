@@ -30,6 +30,7 @@ import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
 import { CronJob } from "cron";
 import { transporter } from "./utils/mailer.js";
 import {
+  deleteConsumable,
   updateConsumableImage,
   uploadConsumableImage,
 } from "./controllers/ConsumableUploadController.js";
@@ -214,6 +215,7 @@ app.post(
 
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
+app.delete("/upload/consumable-image", deleteConsumable);
 
 // ---------------------- Error routes ----------------------
 // 404 error page
