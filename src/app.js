@@ -29,7 +29,10 @@ import * as PasswordResetController from "./controllers/PasswordResetController.
 import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
 import { CronJob } from "cron";
 import { transporter } from "./utils/mailer.js";
-import { uploadConsumableImage } from "./controllers/ConsumableUploadController.js";
+import {
+  updateConsumableImage,
+  uploadConsumableImage,
+} from "./controllers/ConsumableUploadController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -210,6 +213,7 @@ app.post(
 );
 
 app.post("/upload/consumable-image", uploadConsumableImage);
+app.put("/upload/consumable-image", updateConsumableImage);
 
 // ---------------------- Error routes ----------------------
 // 404 error page
