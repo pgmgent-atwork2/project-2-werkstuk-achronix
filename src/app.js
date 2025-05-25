@@ -29,6 +29,11 @@ import * as PasswordResetController from "./controllers/PasswordResetController.
 import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
 import { CronJob } from "cron";
 import { transporter } from "./utils/mailer.js";
+import {
+  deleteConsumable,
+  updateConsumableImage,
+  uploadConsumableImage,
+} from "./controllers/ConsumableUploadController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -112,6 +117,13 @@ app.get(
   jwtAuth,
   checkAdmin,
   PageController.bestellingenBeheer
+);
+
+app.get(
+  "/beheerderspaneel/producten",
+  jwtAuth,
+  checkAdmin,
+  PageController.consumablesBeheer
 );
 
 app.get(
@@ -201,6 +213,10 @@ app.post(
   PasswordResetController.resetPassword
 );
 
+app.post("/upload/consumable-image", uploadConsumableImage);
+app.put("/upload/consumable-image", updateConsumableImage);
+app.delete("/upload/consumable-image", deleteConsumable);
+
 // ---------------------- Error routes ----------------------
 // 404 error page
 app.use(jwtAuth, (req, res) => {
@@ -208,7 +224,6 @@ app.use(jwtAuth, (req, res) => {
 });
 
 // cronJobs
-
 try {
   if (await transporter.verify()) {
     const job = new CronJob("0 */12 * * *", async () => {
