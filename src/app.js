@@ -108,12 +108,14 @@ app.post(
 );
 
 
-app.use("/api", apiRouter);
-app.use(PageRouter);
-
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
 app.delete("/upload/consumable-image", deleteConsumable);
+
+
+app.use("/api", apiRouter);
+app.use(PageRouter);
+
 
 // ---------------------- Error routes ----------------------
 // 404 error page
