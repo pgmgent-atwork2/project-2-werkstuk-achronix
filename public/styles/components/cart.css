@@ -31,10 +31,17 @@
       margin-bottom: 1rem;
     }
 
+    .cart__total{
+      text-align: right;
+    }
+
     .cart-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+
       svg {
         width: 1.5rem;
         height: 1.5rem;
