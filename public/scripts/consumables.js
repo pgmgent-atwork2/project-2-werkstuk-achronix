@@ -3,18 +3,24 @@ import { addOrderToDb } from "./order.js";
 export function InitConsumable() {
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
+  const $showCart = document.getElementById("show-cart");
 
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
   if (cart.length > 0) {
-    showCart(cart);
+    $showCart.parentElement.classList.remove("hidden");
     showCountOnInput(cart);
     handleShoppingCart(cart);
     handleOrder(cart, key);
     removeItemFromCart();
   } else {
     $cart.classList.remove("show");
+    $showCart.parentElement.classList.add("hidden");
   }
+
+  $showCart.addEventListener("click", () => {
+    $cart.classList.add("show");
+  });
 
   $consumables.forEach(($consumable) => {
     const $btn = $consumable.querySelector(".consumable__button");
@@ -73,6 +79,7 @@ export function InitConsumable() {
 }
 
 function handleShoppingCart(data) {
+   const $showCart = document.getElementById("show-cart");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -95,15 +102,17 @@ function handleShoppingCart(data) {
 
   localStorage.setItem(key, JSON.stringify(cart));
 
-  showCart(cart);
+  $showCart.parentElement.classList.remove("hidden");
   removeItemFromCart();
 }
 
 function showCart(items) {
+  const $showCart = document.getElementById("show-cart");
   const $cart = document.querySelector(".cart");
 
   if (!items || items.length === 0) {
     $cart.classList.remove("show");
+    $showCart.parentElement.classList.add("hidden");
     return;
   }
 
