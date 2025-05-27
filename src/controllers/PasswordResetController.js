@@ -199,11 +199,10 @@ export const postResetPassword = async (req, res, next) => {
       });
 
       if (user) {
-        const { firstname, lastname, email } = user;
         const hashedPassword = bcrypt.hashSync(req.body.password, 10);
         await User.query()
-          .update({ firstname, lastname, email, password: hashedPassword })
-          .where("id", user.id);
+          .findById(user.id)
+          .patch({ password: hashedPassword });
 
         await PasswordReset.query().where("token", token).del();
 
