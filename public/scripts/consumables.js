@@ -85,6 +85,8 @@ export function InitConsumable() {
 
 function handleShoppingCart(data) {
   const $showCart = document.getElementById("show-cart");
+  const $cartItemCount = document.getElementById("item__count");
+
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -106,6 +108,8 @@ function handleShoppingCart(data) {
   cart = cart.filter((item) => Number(item.quantity) > 0);
 
   localStorage.setItem(key, JSON.stringify(cart));
+
+  $cartItemCount.textContent = cart.length;
 
   $showCart.parentElement.classList.remove("hidden");
   showCart(cart);
@@ -168,6 +172,7 @@ function showCountOnInput(data) {
 
 function removeItemFromCart() {
   const $removeButtons = document.querySelectorAll(".cart__item-remove");
+   const $cartItemCount = document.getElementById("item__count");
 
   $removeButtons.forEach(($button, index) => {
     $button.addEventListener("click", (e) => {
@@ -192,6 +197,8 @@ function removeItemFromCart() {
           $form.classList.remove("show");
         }
       }
+
+      $cartItemCount.textContent = cart.length;
 
       localStorage.setItem(key, JSON.stringify(cart));
       showCart(cart);
