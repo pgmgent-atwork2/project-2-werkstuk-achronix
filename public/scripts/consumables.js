@@ -4,6 +4,7 @@ export function InitConsumable() {
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
   const $showCart = document.getElementById("show-cart");
+  const $closeCart = document.getElementById("close-cart");
 
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
@@ -20,6 +21,10 @@ export function InitConsumable() {
 
   $showCart.addEventListener("click", () => {
     $cart.classList.add("show");
+  });
+
+  $closeCart.addEventListener("click", () => {
+    $cart.classList.remove("show");
   });
 
   $consumables.forEach(($consumable) => {
@@ -79,7 +84,7 @@ export function InitConsumable() {
 }
 
 function handleShoppingCart(data) {
-   const $showCart = document.getElementById("show-cart");
+  const $showCart = document.getElementById("show-cart");
   const key = "cart";
   let cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -103,6 +108,7 @@ function handleShoppingCart(data) {
   localStorage.setItem(key, JSON.stringify(cart));
 
   $showCart.parentElement.classList.remove("hidden");
+  showCart(cart);
   removeItemFromCart();
 }
 
@@ -119,7 +125,7 @@ function showCart(items) {
   const $cartItems = $cart.querySelector(".cart__items");
   const $cartTotal = $cart.querySelector(".cart__total");
 
-  $cart.classList.add("show");
+  $showCart.parentElement.classList.remove("hidden");
   $cartItems.innerHTML = "";
 
   items.forEach((item, i) => {

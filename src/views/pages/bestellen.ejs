@@ -65,14 +65,20 @@
 </div>
 
 <div class="cart main-container">
+  <div id="close-cart" class="close">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+    </div>
   <h2>Winkelwagentje</h2>
   <form id="cart-form" action="">
   <ul class="cart__items">
   
   </ul>
   <p class="cart__total">Totaal: €</p>
-</div>
-<button id="order-btn" class="cart-btn">
+
+  <button id="order-btn" class="cart-btn">
     <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -89,4 +95,7 @@
         </svg>
         Bestellen
   </button>
+</div>
+
+
 </form>
