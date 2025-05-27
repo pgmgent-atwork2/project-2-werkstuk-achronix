@@ -48,8 +48,19 @@
 
     .cart__item-remove {
       cursor: pointer;
-      color: var(--color-danger);
-      font-size: 1.5rem;
+
+      color: var(--destructive);
+      background-color: var(--destructive-light);
+
+      &:hover {
+        color: var(--color-white);
+        background-color: var(--destructive);
+      }
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
     }
   }
 }
