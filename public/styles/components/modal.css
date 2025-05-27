@@ -29,7 +29,6 @@
 .close {
   color: var(--muted-foreground);
   float: right;
-
   font-weight: bold;
   cursor: pointer;
   width: 1.5rem;

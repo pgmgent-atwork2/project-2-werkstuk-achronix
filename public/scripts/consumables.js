@@ -174,7 +174,24 @@ function removeItemFromCart() {
       const key = "cart";
       const cart = JSON.parse(localStorage.getItem(key)) || [];
 
+      const index = parseInt($button.dataset.index);
+
+      const removedItemId = cart[index].consumable_id;
+
       cart.splice(index, 1);
+
+      const $input = document.querySelector(
+        `[data-consumable-id="${removedItemId}"]`
+      );
+
+      if ($input) {
+        $input.value = 0;
+
+        const $form = $input.parentElement;
+        if ($form) {
+          $form.classList.remove("show");
+        }
+      }
 
       localStorage.setItem(key, JSON.stringify(cart));
       showCart(cart);
