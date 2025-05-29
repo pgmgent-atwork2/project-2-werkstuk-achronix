@@ -1,5 +1,6 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
+import Attendance from "./Attendance.js";
 
 Model.knex(knex);
 
@@ -29,6 +30,19 @@ class User extends Model {
         password: { type: "string", minLength: 6, maxLength: 255 },
         is_admin: { type: "boolean", default: false },
         receive_notifications: { type: "boolean", default: true },
+      },
+    };
+  }
+
+  static get relationMappings() {
+    return {
+      attendance: {
+        relation: Model.HasManyRelation,
+        modelClass: () => Attendance,
+        join: {
+          from: "users.id",
+          to: "attendance.user_id",
+        },
       },
     };
   }

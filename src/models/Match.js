@@ -1,6 +1,7 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import Team from "./Team.js";
+import Attendance from "./Attendance.js";
 
 Model.knex(knex);
 
@@ -33,10 +34,18 @@ class Match extends Model {
     return {
       team: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Team,
+        modelClass: () => Team,
         join: {
           from: "matches.team_id",
           to: "teams.id",
+        },
+      },
+      attendance: {
+        relation: Model.HasManyRelation,
+        modelClass: () => Attendance,
+        join: {
+          from: "matches.id",
+          to: "attendance.match_id",
         },
       },
     };
