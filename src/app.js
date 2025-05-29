@@ -21,6 +21,7 @@ import * as API_TeamController from "./controllers/api/TeamController.js";
 import * as API_MatchController from "./controllers/api/MatchController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
 import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
+import * as API_AttendanceController from "./controllers/api/AttendanceController.js";
 import * as PaymentController from "./controllers/PaymentController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
@@ -174,6 +175,23 @@ app.get("/api/orders/:id", API_OrderController.show);
 app.post("/api/orders", API_OrderController.store);
 app.put("/api/orders/:id", API_OrderController.update);
 app.delete("/api/orders/:id", API_OrderController.destroy);
+
+// Attendance routes - specific routes first to avoid parameter conflicts
+app.get(
+  "/api/attendance/match/:matchId/user/:userId",
+  API_AttendanceController.getAttendance
+);
+app.get(
+  "/api/attendance/match/:matchId",
+  API_AttendanceController.getAttendance
+);
+app.post("/api/attendance/update", API_AttendanceController.updateAttendance);
+// Standard REST routes
+app.get("/api/attendance", API_AttendanceController.index);
+app.get("/api/attendance/:id", API_AttendanceController.show);
+app.post("/api/attendance", API_AttendanceController.store);
+app.put("/api/attendance/:id", API_AttendanceController.update);
+app.delete("/api/attendance/:id", API_AttendanceController.destroy);
 
 // Order items
 app.get("/api/order-items", API_OrderItemsController.index);
