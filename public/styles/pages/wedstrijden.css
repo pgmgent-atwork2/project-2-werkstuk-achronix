@@ -184,10 +184,14 @@
 .attendence--orange {
   color: orange;
 }
+.attendence--red {
+  color: red;
+}
 .attendence-status {
   background-color: #e8e8e8;
   padding: 0.1rem 0.5rem;
   border-radius: 20rem;
+  display: inline-block;
 }
 
 /* Media Queries */
