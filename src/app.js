@@ -176,7 +176,7 @@ app.post("/api/orders", API_OrderController.store);
 app.put("/api/orders/:id", API_OrderController.update);
 app.delete("/api/orders/:id", API_OrderController.destroy);
 
-// Attendance routes - specific routes first to avoid parameter conflicts
+// Attendance routes
 app.get(
   "/api/attendance/match/:matchId/user/:userId",
   API_AttendanceController.getAttendance
@@ -186,7 +186,7 @@ app.get(
   API_AttendanceController.getAttendance
 );
 app.post("/api/attendance/update", API_AttendanceController.updateAttendance);
-// Standard REST routes
+// Standard attendance routes
 app.get("/api/attendance", API_AttendanceController.index);
 app.get("/api/attendance/:id", API_AttendanceController.show);
 app.post("/api/attendance", API_AttendanceController.store);
