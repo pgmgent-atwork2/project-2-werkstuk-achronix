@@ -74,6 +74,27 @@ export const wedstrijden = async (req, res) => {
     };
   });
 
+  // Get attendance data for all users
+  const allAttendanceData = await Attendance.query()
+    .select("user_id", "match_id", "status", "is_selected");
+  
+  // Create attendance data for each user
+  const userAttendance = {};
+  allAttendanceData.forEach((attendance) => {
+    if (!userAttendance[attendance.user_id]) {
+      userAttendance[attendance.user_id] = {};
+    }
+    userAttendance[attendance.user_id][attendance.match_id] = {
+      status: attendance.status,
+      is_selected: attendance.is_selected
+    };
+  });
+  
+  // Add attendance data to each user
+  users.forEach(user => {
+    user.attendance = userAttendance[user.id] || {};
+  });
+
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
     user,

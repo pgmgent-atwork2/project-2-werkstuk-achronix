@@ -60,7 +60,21 @@
                                             <div class="attendence">
 
                                                 <p class="attendence-status">
-                                                    RESERVE
+                                                    <% if (otherUser.attendance && otherUser.attendance[match.id]) { %>
+                                                        <span
+                                                            class="<%= otherUser.attendance[match.id].status === 'available' ? 'attendence--green' : 
+                                                                       otherUser.attendance[match.id].status === 'unavailable' ? 'attendence--red' : 
+                                                                       otherUser.attendance[match.id].status === 'reserve' ? 'attendence--orange' : '' %>">
+                                                            <%= otherUser.attendance[match.id].status==='available'
+                                                                ? 'Beschikbaar' :
+                                                                otherUser.attendance[match.id].status==='unavailable'
+                                                                ? 'Niet beschikbaar' :
+                                                                otherUser.attendance[match.id].status==='reserve'
+                                                                ? 'Reserve' : 'Onbekend' %>
+                                                        </span>
+                                                        <% } else { %>
+                                                            <span>Onbekend</span>
+                                                            <% } %>
                                                 </p>
                                                 <p class="attendence--green">
                                                     Geselecteerd
