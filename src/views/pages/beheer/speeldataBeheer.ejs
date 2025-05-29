@@ -1,93 +1,116 @@
-<a href="/beheerderspaneel">Ga terug naar beheerderspaneel overzicht</a>
+<a class="back" href="/beheerderspaneel">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
 <div>
-    <h1>Wedstrijden beheren</h1>
+  <h1 class="title">Wedstrijden beheren</h1>
 
-    <% if (locals.flash) { %>
-        <% ['success', 'error' , 'warning' ].forEach(type=> { %>
-            <% if (flash[type]) { %>
-                <div class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>">
-                    <%= flash[type] %>
-                </div>
-                <% } %>
-                    <% }) %>
-                        <% } %>
+  <% if (locals.flash) { %> <% ['success', 'error' , 'warning' ].forEach(type=>
+  { %> <% if (flash[type]) { %>
+  <div
+    class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>"
+  >
+    <%= flash[type] %>
+  </div>
+  <% } %> <% }) %> <% } %>
 
-                            <div>
-                                <div>
-                                    <h3>Importeer Wedstrijden</h3>
-                                </div>
-                                <div>
-                                    <form action="/beheerderspaneel/wedstrijden/import" method="POST"
-                                        enctype="multipart/form-data">
-                                        <div>
-                                            <label for="icsFile">ICS Bestand</label>
-                                            <input type="file" name="icsFile" id="icsFile" accept=".ics" required>
-                                            <small>Upload een .ics bestand met
-                                                wedstrijdinformatie. Het team wordt automatisch herkend uit het
-                                                bestand.</small>
-                                        </div>
+  <div>
+    <div>
+      <h3>Importeer Wedstrijden</h3>
+    </div>
+    <div>
+      <form
+        action="/beheerderspaneel/wedstrijden/import"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div>
+          <label for="icsFile">ICS Bestand</label>
+          <input
+            type="file"
+            name="icsFile"
+            id="icsFile"
+            accept=".ics"
+            required
+          />
+          <small
+            >Upload een .ics bestand met wedstrijdinformatie. Het team wordt
+            automatisch herkend uit het bestand.</small
+          >
+        </div>
 
-                                        <button type="submit" class="btn">Importeren</button>
-                                    </form>
-                                </div>
-                            </div>
+        <button type="submit" class="btn">Importeren</button>
+      </form>
+    </div>
+  </div>
 
-                            <div>
-                                <h3>Geplande Wedstrijden</h3>
+  <div>
+    <h3>Geplande Wedstrijden</h3>
 
-                                <div>
-                                    <button id="addNewMatch" class="btn">Nieuwe wedstrijd</button>
-                                </div>
+    <div>
+      <button id="addNewMatch" class="btn">Nieuwe wedstrijd</button>
+    </div>
 
-                                <% if (locals.matches && matches.length> 0) { %>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Datum</th>
-                                                <th>Tijden</th>
-                                                <th>Locatie</th>
-                                                <th>Thuis/Uit</th>
-                                                <th>Team</th>
-                                                <th>Acties</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% matches.forEach(match=> { %>
-                                                <tr>
-                                                    <td>
-                                                        <%= new Date(match.date).toLocaleDateString('nl-BE') %>
-                                                    </td>
-                                                    <td>
-                                                        <% if (match.start_time) { %>
-                                                            <%= match.start_time %>
-                                                                <% if (match.end_time) { %> - <%= match.end_time %>
-                                                                        <% } %>
-                                                                            <% } else { %>
-                                                                                -
-                                                                                <% } %>
-                                                    </td>
-                                                    <td>
-                                                        <%= match.location %>
-                                                    </td>
-                                                    <td>
-                                                        <%= match.home_away %>
-                                                    </td>
-                                                    <td>
-                                                        <%= match.team ? match.team.name : '?' %>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn--secondary edit-match"
-                                                            data-id="<%= match.id %>">Bewerken</button>
-                                                        <button class="btn btn--danger delete-match"
-                                                            data-id="<%= match.id %>">Verwijderen</button>
-                                                    </td>
-                                                </tr>
-                                                <% }) %>
-                                        </tbody>
-                                    </table>
-                                    <% } else { %>
-                                        <p>Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
-                                            hierboven.</p>
-                                        <% } %>
-                            </div>
+    <% if (locals.matches && matches.length> 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Tijden</th>
+          <th>Locatie</th>
+          <th>Thuis/Uit</th>
+          <th>Team</th>
+          <th>Acties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% matches.forEach(match=> { %>
+        <tr>
+          <td><%= new Date(match.date).toLocaleDateString('nl-BE') %></td>
+          <td>
+            <% if (match.start_time) { %> <%= match.start_time %> <% if
+            (match.end_time) { %> - <%= match.end_time %> <% } %> <% } else { %>
+            - <% } %>
+          </td>
+          <td><%= match.location %></td>
+          <td><%= match.home_away %></td>
+          <td><%= match.team ? match.team.name : '?' %></td>
+          <td>
+            <button
+              class="btn btn--secondary edit-match"
+              data-id="<%= match.id %>"
+            >
+              Bewerken
+            </button>
+            <button
+              class="btn btn--danger delete-match"
+              data-id="<%= match.id %>"
+            >
+              Verwijderen
+            </button>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>
+      Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
+      hierboven.
+    </p>
+    <% } %>
+  </div>
 </div>

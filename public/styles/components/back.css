@@ -1,0 +1,25 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  background-color: var(--muted);
+  padding: 0.5rem 1rem;
+  color: var(--color-blue);
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+
+  &:hover {
+    color: var(--primary);
+
+    svg {
+      color: var(--primary);
+    }
+  }
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--color-blue);
+  }
+}

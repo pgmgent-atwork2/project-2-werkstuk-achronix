@@ -29,9 +29,11 @@
 .close {
   color: var(--muted-foreground);
   float: right;
-  font-size: 1.75rem;
+
   font-weight: bold;
   cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .close:hover {
@@ -40,6 +42,12 @@
 
 .modal form > div {
   margin-bottom: 1rem;
+}
+
+.modal form div img{
+  max-height: 300px;
+  max-width: 100%;
+  object-fit: cover;
 }
 
 .modal label {
@@ -51,7 +59,8 @@
 
 .modal input[type="text"],
 .modal input[type="email"],
-.modal input[type="password"] {
+.modal input[type="password"],
+.modal input[type="number"] {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--border);

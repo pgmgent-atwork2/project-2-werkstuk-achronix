@@ -1,0 +1,35 @@
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+td.success {
+  color: var(--success);
+  font-weight: 700;
+}
+
+td.error {
+  color: var(--destructive);
+  font-weight: 700;
+}
+
+tr:nth-child(even) {
+  background-color: var(--muted);
+}

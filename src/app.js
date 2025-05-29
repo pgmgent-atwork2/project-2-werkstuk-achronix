@@ -7,11 +7,14 @@ import fileUpload from "express-fileupload";
 import session from "express-session";
 import flash from "connect-flash";
 
+// routes
+import apiRouter from "./routes/api.js";
+import PageRouter from "./routes/pages.js";
+
 // middleware
 import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswordValidation.js";
 
 //import controllers
-import * as PageController from "./controllers/PageController.js";
 import * as AuthController from "./controllers/AuthController.js";
 import * as ImportMatchesController from "./controllers/importMatchesController.js";
 import * as API_UserController from "./controllers/api/UserController.js";
@@ -22,10 +25,21 @@ import * as API_MatchController from "./controllers/api/MatchController.js";
 import * as API_OrderController from "./controllers/api/OrderController.js";
 import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
 import * as API_AttendanceController from "./controllers/api/AttendanceController.js";
+
 import * as PaymentController from "./controllers/PaymentController.js";
+import * as PageController from "./controllers/PageController.js";
 
 import { checkValidToken } from "./middleware/ValidateResetToken.js";
 import * as PasswordResetController from "./controllers/PasswordResetController.js";
+
+import sendUnsentEmails from "./jobs/sendUnsentEmails.js";
+import { CronJob } from "cron";
+import { transporter } from "./utils/mailer.js";
+import {
+  deleteConsumable,
+  updateConsumableImage,
+  uploadConsumableImage,
+} from "./controllers/ConsumableUploadController.js";
 
 //import middleware
 import jwtAuth from "./middleware/jwtAuth.js";
@@ -60,62 +74,19 @@ app.use(
 
 // ---------------------- App routes ----------------------
 
-// Add the currentPath middleware to all routes
 app.use(PageController.addCurrentPath);
-
 // Add flash messages to all routes
 app.use((req, res, next) => {
   res.locals.flash = req.flash();
   next();
 });
 
-// ---------------------- Page routes ----------------------
-app.get("/", (req, res) => {
-  res.redirect("/dashboard");
-});
-
-app.get("/dashboard", jwtAuth, PageController.dashboard);
-app.get("/bestellen", jwtAuth, PageController.bestellen);
-app.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
-app.get("/profiel", jwtAuth, PageController.profiel);
-
-// Page routes beheerderspaneel
-app.get(
-  "/beheerderspaneel",
-  jwtAuth,
-  checkAdmin,
-  PageController.beheerderspaneel
-);
-app.get(
-  "/beheerderspaneel/leden",
-  jwtAuth,
-  checkAdmin,
-  PageController.ledenBeheer
-);
-app.get(
-  "/beheerderspaneel/speeldata",
-  jwtAuth,
-  checkAdmin,
-  PageController.speeldataBeheer
-);
 app.post(
   "/beheerderspaneel/wedstrijden/import",
   jwtAuth,
   checkAdmin,
   ImportMatchesController.importIcs
 );
-app.get(
-  "/beheerderspaneel/bestellingen",
-  jwtAuth,
-  checkAdmin,
-  PageController.bestellingenBeheer
-);
-
-app.get(
-  "/forgot-password-confirmation",
-  PageController.forgotPasswordConfirmation
-);
-app.get("/password-reset/expired-token", PageController.expiredToken);
 
 // Auth routes
 app.get("/login", AuthController.login);
@@ -213,11 +184,26 @@ app.post(
   PasswordResetController.resetPassword
 );
 
+app.post("/upload/consumable-image", uploadConsumableImage);
+app.put("/upload/consumable-image", updateConsumableImage);
+app.delete("/upload/consumable-image", deleteConsumable);
+
+app.use("/api", apiRouter);
+app.use(PageRouter);
+
 // ---------------------- Error routes ----------------------
 // 404 error page
-app.use(jwtAuth, (req, res) => {
-  return PageController.pageNotFound(req, res);
-});
+
+// cronJobs
+try {
+  if (await transporter.verify()) {
+    const job = new CronJob("0 */12 * * *", async () => {
+      await sendUnsentEmails();
+    });
+
+    job.start();
+  }
+} catch (error) {}
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {

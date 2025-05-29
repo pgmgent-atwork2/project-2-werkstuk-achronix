@@ -148,6 +148,20 @@ export const bestellingenBeheer = async (req, res) => {
   });
 };
 
+export const consumablesBeheer = async (req, res) => {
+  const user = req.user;
+
+  const consumables = await Consumable.query();
+  const categories = await Category.query();
+
+  res.render("pages/beheer/consumablesBeheer", {
+    pageTitle: "Producten beheren | Ping Pong Tool",
+    user,
+    consumables,
+    categories,
+  });
+};
+
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",
@@ -172,5 +186,27 @@ export const pageNotFound = async (req, res) => {
     pageTitle: "Pagina niet gevonden | Ping Pong Tool",
     user,
     layout: user ? "layouts/main" : "layouts/authentication",
+  });
+};
+
+export const orderComplete = async (req, res) => {
+  const userId = req.query.userId;
+
+  const user = await User.query().findById(userId);
+
+  res.render("pages/orderComplete", {
+    pageTitle: "betaling gelukt | Ping Pong Tool",
+    user,
+  });
+};
+
+export const orderFailed = async (req, res) => {
+  const userId = req.query.userId;
+
+  const user = await User.query().findById(userId);
+
+  res.render("pages/orderFailed", {
+    pageTitle: "betaling mislukt | Ping Pong Tool",
+    user,
   });
 };

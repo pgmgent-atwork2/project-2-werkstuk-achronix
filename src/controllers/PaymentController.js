@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { sendMail } from "../utils/mailer.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
+
 dotenv.config();
 
 const mollieClient = createMollieClient({
@@ -52,25 +53,28 @@ export const paymentResult = async (req, res) => {
     switch (payment.status) {
       case "paid":
         await sendConfirmationEmail(user.email, order);
+        await Order.query().patchAndFetchById(orderId, { status: "PAID" });
+
         res.redirect(
-          `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}&userId=${userId}`
         );
         break;
       case "open":
         res.redirect(
-          `${process.env.APP_URL}/betaling/wacht?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/wacht?paymentId=${paymentId}&userId=${userId}`
         );
         break;
       case "expired":
       case "canceled":
       case "failed":
         res.redirect(
-          `${process.env.APP_URL}/betaling/fout?paymentId=${paymentId}`
+          `${process.env.APP_URL}/betaling/mislukt?paymentId=${paymentId}&userId=${userId}`
         );
         break;
     }
   } catch (error) {
-    res.redirect(res.send);
+    console.error("Error processing payment result:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
