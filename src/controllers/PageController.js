@@ -5,6 +5,7 @@ import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
 import Order from "../models/Order.js";
 import OrderItem from "../models/OrderItem.js";
+import Attendance from "../models/Attendance.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -59,12 +60,27 @@ export const wedstrijden = async (req, res) => {
   const teams = await Team.query().orderBy("name", "asc");
   const users = await User.query().orderBy("firstname", "asc");
 
+  // Get attendance data for the current user across all matches
+  const attendanceData = await Attendance.query()
+    .where("user_id", user.id)
+    .select("match_id", "status", "is_selected");
+
+  // Create a map of attendance data by match_id for easier lookup
+  const attendanceMap = {};
+  attendanceData.forEach((item) => {
+    attendanceMap[item.match_id] = {
+      status: item.status || "unknown",
+      isSelected: item.is_selected || "not_selected",
+    };
+  });
+
   res.render("pages/wedstrijden", {
     pageTitle: "Wedstrijden | Ping Pong Tool",
     user,
     matches: matches,
     teams: teams,
     users: users,
+    attendanceMap: attendanceMap,
   });
 };
 
