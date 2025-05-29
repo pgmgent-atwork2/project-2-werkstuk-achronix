@@ -24,8 +24,6 @@ class Attendance extends Model {
         match_id: { type: "integer" },
         status: { type: "string", default: "unknown" },
         is_selected: { type: "string", default: "not_selected" },
-        created_at: { type: "string", format: "date-time" },
-        updated_at: { type: "string", format: "date-time" },
       },
     };
   }
@@ -34,7 +32,7 @@ class Attendance extends Model {
     return {
       user: {
         relation: Model.BelongsToOneRelation,
-        modelClass: User,
+        modelClass: () => User,
         join: {
           from: "attendance.user_id",
           to: "users.id",
@@ -42,7 +40,7 @@ class Attendance extends Model {
       },
       match: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Match,
+        modelClass: () => Match,
         join: {
           from: "attendance.match_id",
           to: "matches.id",

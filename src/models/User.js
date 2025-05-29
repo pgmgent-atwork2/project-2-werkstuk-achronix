@@ -1,5 +1,6 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
+import Attendance from "./Attendance.js";
 
 Model.knex(knex);
 
@@ -37,7 +38,7 @@ class User extends Model {
     return {
       attendance: {
         relation: Model.HasManyRelation,
-        modelClass: require("./Attendance.js").default,
+        modelClass: () => Attendance,
         join: {
           from: "users.id",
           to: "attendance.user_id",
