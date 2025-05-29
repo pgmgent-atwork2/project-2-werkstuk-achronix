@@ -36,4 +36,6 @@ export async function addOrderToDb(cart) {
   } catch (error) {
     console.error("Error placing order:", error);
   }
+
+  return orderId
 }

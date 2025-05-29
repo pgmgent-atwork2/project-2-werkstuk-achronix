@@ -13,6 +13,7 @@ export function InitConsumable() {
     showCountOnInput(cart);
     handleShoppingCart(cart);
     handleOrder(cart, key);
+    handleInstantOrder(cart, key);
     removeItemFromCart();
   } else {
     $cart.classList.remove("show");
@@ -172,7 +173,7 @@ function showCountOnInput(data) {
 
 function removeItemFromCart() {
   const $removeButtons = document.querySelectorAll(".cart__item-remove");
-   const $cartItemCount = document.getElementById("item__count");
+  const $cartItemCount = document.getElementById("item__count");
 
   $removeButtons.forEach(($button, index) => {
     $button.addEventListener("click", (e) => {
@@ -221,5 +222,39 @@ function handleOrder(cart, key) {
     localStorage.removeItem(key);
 
     showCart([]);
+  });
+}
+
+function handleInstantOrder(cart, key) {
+  const $instantOrderbtn = document.getElementById("instant-order-btn");
+
+  $instantOrderbtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert("Je hebt geen producten in je winkelwagentje.");
+      return;
+    }
+
+    const orderId = await addOrderToDb(cart);
+    console.log("Order ID:", orderId);
+
+    if (orderId) {
+
+      const userId = cart[0].user_id;
+      const totalPrice = cart.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+
+      await fetch(`create-payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId, userId, totalPrice }),
+      });
+
+      localStorage.removeItem(key);
+      showCart([]);
+
+      
+    }
   });
 }
