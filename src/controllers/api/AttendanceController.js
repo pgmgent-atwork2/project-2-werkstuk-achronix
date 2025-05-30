@@ -261,3 +261,85 @@ export const getAttendance = async (req, res) => {
 
 // Alias for the route
 export const updateAttendance = update;
+
+export const updateSelection = async (req, res) => {
+  try {
+    const { match_id, user_id, is_selected } = req.body;
+
+    if (!match_id || !user_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields",
+      });
+    }
+
+    // Check if the user making the request is an admin
+    if (!req.user || !req.user.is_admin) {
+      return res.status(403).json({
+        success: false,
+        message: "You don't have permission to select players",
+      });
+    }
+
+    // Check if the match exists
+    const match = await Match.query().findById(match_id);
+    if (!match) {
+      return res.status(404).json({
+        success: false,
+        message: "Match not found",
+      });
+    }
+
+    // Check if the user exists
+    const user = await User.query().findById(user_id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if attendance record already exists
+    let attendanceRecord = await Attendance.query()
+      .where("match_id", match_id)
+      .where("user_id", user_id)
+      .first();
+
+    let message;
+
+    if (attendanceRecord) {
+      // Update existing record
+      attendanceRecord = await Attendance.query().updateAndFetchById(
+        attendanceRecord.id,
+        {
+          is_selected,
+        }
+      );
+      message =
+        is_selected === "selected" ? "Player selected" : "Player deselected";
+    } else {
+      // Create new record with unknown status but selection status set
+      attendanceRecord = await Attendance.query().insert({
+        match_id,
+        user_id,
+        status: "unknown",
+        is_selected,
+      });
+      message =
+        is_selected === "selected" ? "Player selected" : "Player deselected";
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: message,
+      data: attendanceRecord,
+    });
+  } catch (error) {
+    console.error("Error updating player selection:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update player selection",
+      error: error.message,
+    });
+  }
+};
