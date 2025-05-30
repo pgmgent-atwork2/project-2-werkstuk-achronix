@@ -157,6 +157,11 @@ app.get(
   API_AttendanceController.getAttendance
 );
 app.post("/api/attendance/update", API_AttendanceController.updateAttendance);
+app.post(
+  "/api/attendance/selection",
+  jwtAuth,
+  API_AttendanceController.updateSelection
+);
 // Standard attendance routes
 app.get("/api/attendance", API_AttendanceController.index);
 app.get("/api/attendance/:id", API_AttendanceController.show);
