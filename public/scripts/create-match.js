@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeNewModalBtn = document.getElementById("closeNewMatchModal");
   const newMatchForm = document.getElementById("newMatchForm");
 
-  // Load teams for dropdown
   const loadTeams = async () => {
     try {
       const response = await fetch("/api/teams");
@@ -71,12 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const teams = await response.json();
       const teamSelect = document.getElementById("new_team_id");
 
-      // Clear existing options except the first one
       while (teamSelect.options.length > 1) {
         teamSelect.remove(1);
       }
 
-      // Add team options
       teams.forEach((team) => {
         const option = document.createElement("option");
         option.value = team.id;
@@ -88,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Load teams when the page loads
   loadTeams();
 
   if (addNewMatchBtn) {
@@ -113,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
     newMatchForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      // Validate form fields
       if (!document.getElementById("new_date").value) {
         alert("Vul een geldige datum in.");
         return;
