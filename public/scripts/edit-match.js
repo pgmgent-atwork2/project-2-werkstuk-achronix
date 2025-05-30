@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const teamIdInput = document.getElementById("team_id");
   const editMatchForm = document.getElementById("editMatchForm");
 
-  // Load teams for dropdown
   const loadTeams = async () => {
     try {
       const response = await fetch("/api/teams");
@@ -80,12 +79,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const teams = await response.json();
       const teamSelect = document.getElementById("team_id");
 
-      // Clear existing options except the first one
       while (teamSelect.options.length > 1) {
         teamSelect.remove(1);
       }
 
-      // Add team options
       teams.forEach((team) => {
         const option = document.createElement("option");
         option.value = team.id;
@@ -97,10 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-  // Load teams when the page loads
   loadTeams();
 
-  // Add event listeners to edit buttons
   if (editButtons) {
     editButtons.forEach((button) => {
       button.addEventListener("click", async function () {
@@ -115,14 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const matchData = await response.json();
 
-          // Format date to YYYY-MM-DD for input field
           const date = new Date(matchData.date);
           const formattedDate = date.toISOString().split("T")[0];
 
           matchIdInput.value = matchData.id;
           dateInput.value = formattedDate;
-          startTimeInput.value = matchData.start_time || '';
-          endTimeInput.value = matchData.end_time || '';
+          startTimeInput.value = matchData.start_time || "";
+          endTimeInput.value = matchData.end_time || "";
           locationInput.value = matchData.location;
           homeAwayInput.value = matchData.home_away;
           teamIdInput.value = matchData.team_id || "";
@@ -138,26 +132,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close modal when clicking close button
   if (closeBtn) {
     closeBtn.addEventListener("click", function () {
       modal.classList.add("hidden");
     });
   }
 
-  // Close modal when clicking outside
   window.addEventListener("click", function (event) {
     if (event.target === modal) {
       modal.classList.add("hidden");
     }
   });
 
-  // Handle form submission
   if (editMatchForm) {
     editMatchForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      // Validate form fields
       if (!dateInput.value) {
         alert("Vul een geldige datum in.");
         return;

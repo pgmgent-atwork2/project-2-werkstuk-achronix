@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteUserForm = document.getElementById("deleteUserForm");
   const deleteUserIdInput = document.getElementById("deleteUserId");
 
-  // Add event listeners to delete buttons
   if (deleteButtons) {
     deleteButtons.forEach((button) => {
       button.addEventListener("click", function () {
@@ -43,28 +42,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close modal when clicking close button
   if (closeDeleteBtn) {
     closeDeleteBtn.addEventListener("click", function () {
       deleteModal.classList.add("hidden");
     });
   }
 
-  // Close modal when clicking cancel button
   if (cancelDeleteBtn) {
     cancelDeleteBtn.addEventListener("click", function () {
       deleteModal.classList.add("hidden");
     });
   }
 
-  // Close modal when clicking outside
   window.addEventListener("click", function (event) {
     if (event.target === deleteModal) {
       deleteModal.classList.add("hidden");
     }
   });
 
-  // Handle form submission
   if (deleteUserForm) {
     deleteUserForm.addEventListener("submit", async function (e) {
       e.preventDefault();
