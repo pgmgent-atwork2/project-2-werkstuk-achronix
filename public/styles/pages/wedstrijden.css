@@ -154,11 +154,35 @@
 
 .selection-status {
   text-align: right;
+  margin-top: 0.5rem;
 }
 
 .selection-text {
   font-size: 0.85rem;
   color: #666;
+}
+
+.select-player-button {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-player-button:hover {
+  background-color: #e0e0e0;
+}
+
+.selection-status.attendence--green .select-player-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.selection-status.attendence--green .select-player-button:hover {
+  background-color: #3e8e41;
 }
 
 .other-users {
