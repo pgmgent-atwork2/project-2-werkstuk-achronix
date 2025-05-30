@@ -43,8 +43,11 @@
                                 </button>
                             </div>
                             <div class="selection-status">
-                                <p class="selection-text <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                    <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'Geselecteerd' : 'Niet geselecteerd' %>
+                                <p
+                                    class="selection-text <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                    <%= user.attendance && user.attendance[match.id] &&
+                                        user.attendance[match.id].is_selected==='selected' ? 'Geselecteerd'
+                                        : 'Niet geselecteerd' %>
                                 </p>
                             </div>
                         </div>
@@ -79,19 +82,27 @@
                                                             <% } %>
                                                 </p>
                                                 <% if (user.is_admin) { %>
-                                                <p class="selection-status <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                                    <button class="select-player-button" 
-                                                            data-user-id="<%= otherUser.id %>" 
+                                                    <p
+                                                        class="selection-status <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                                        <button class="select-player-button"
+                                                            data-user-id="<%= otherUser.id %>"
                                                             data-match-id="<%= match.id %>"
                                                             data-is-selected="<%= otherUser.attendance && otherUser.attendance[match.id] ? otherUser.attendance[match.id].is_selected : 'not_selected' %>">
-                                                        <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'Geselecteerd' : 'Selecteer speler' %>
-                                                    </button>
-                                                </p>
-                                                <% } else { %>
-                                                <p class="<%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                                    <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'Geselecteerd' : 'Niet geselecteerd' %>
-                                                </p>
-                                                <% } %>
+                                                            <%= otherUser.attendance && otherUser.attendance[match.id]
+                                                                &&
+                                                                otherUser.attendance[match.id].is_selected==='selected'
+                                                                ? 'Geselecteerd' : 'Selecteer speler' %>
+                                                        </button>
+                                                    </p>
+                                                    <% } else { %>
+                                                        <p
+                                                            class="<%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                                            <%= otherUser.attendance && otherUser.attendance[match.id]
+                                                                &&
+                                                                otherUser.attendance[match.id].is_selected==='selected'
+                                                                ? 'Geselecteerd' : 'Niet geselecteerd' %>
+                                                        </p>
+                                                        <% } %>
                                             </div>
                                         </div>
                                         <% } %>
