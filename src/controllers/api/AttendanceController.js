@@ -269,12 +269,12 @@ export const updateSelection = async (req, res) => {
     if (!match_id || !user_id) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields",
+        message: "Missing required fields: match_id and user_id",
       });
     }
 
     // Check if the user making the request is an admin
-    if (!req.user || !req.user.is_admin) {
+    if (req.user && !req.user.is_admin) {
       return res.status(403).json({
         success: false,
         message: "You don't have permission to select players",
@@ -308,11 +308,15 @@ export const updateSelection = async (req, res) => {
     let message;
 
     if (attendanceRecord) {
-      // Update existing record
+      // Update existing record - include all required fields
       attendanceRecord = await Attendance.query().updateAndFetchById(
         attendanceRecord.id,
         {
+          match_id, // Include this even though it's not changing
+          user_id, // Include this even though it's not changing
           is_selected,
+          // Keep the existing status
+          status: attendanceRecord.status || "unknown",
         }
       );
       message =
