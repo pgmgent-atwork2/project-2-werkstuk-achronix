@@ -23,6 +23,24 @@
       <button id="addNewUser" class="btn btn--primary">Nieuwe gebruiker</button>
     </div>
 
+    <div class="table-controls">
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Zoeken op naam"
+          class="search-input"
+        />
+      </div>
+      <div class="filter-container">
+        <select id="filterSelect" class="filter-select">
+          <option value="">Alle gebruikers</option>
+          <option value="admin">Beheerders</option>
+          <option value="user">Gebruikers</option>
+        </select>
+      </div>
+    </div>
+
     <div class="table-container">
       <table>
         <thead>
