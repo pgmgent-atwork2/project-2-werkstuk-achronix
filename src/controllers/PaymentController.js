@@ -22,7 +22,7 @@ export const createPayment = async (req, res) => {
       },
       description: `Bestelling #${orderId}`,
       redirectUrl: `${process.env.APP_URL}/betaling`,
-      method: "ideal",
+      method: "bancontact",
     });
 
     const redirectUrl = `${process.env.APP_URL}/betaling/result?paymentId=${payment.id}&orderId=${orderId}&userId=${userId}`;
