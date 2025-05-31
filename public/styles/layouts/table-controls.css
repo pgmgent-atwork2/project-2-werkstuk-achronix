@@ -1,7 +1,52 @@
-.table-controls{
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 2rem;
+
+  .filter-container {
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;
     align-items: center;
-    width: 100%;
-    margin-top: 2rem; 
+
+    .filter-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .filter {
+      position: relative;
+      display: flex;
+      min-width: 200px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.25rem;
+        height: 1.25rem;
+        background-image: url("../../assets/images/arrow.svg");
+        background-size: cover;
+      }
+
+      .filter-select {
+        appearance: none;
+        width: 100%;
+        font-size: 1.15rem;
+        padding: 0.5rem 1rem;
+        padding-right: 2rem;
+        background-color: #fff;
+        border: 1px solid #caced1;
+        border-radius: 0.25rem;
+        color: #000;
+        cursor: pointer;
+      }
+    }
+  }
 }
