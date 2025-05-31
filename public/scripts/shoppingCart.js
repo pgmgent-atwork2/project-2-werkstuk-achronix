@@ -1,6 +1,6 @@
 import { addOrderToDb } from "./order.js";
 
-export function InitConsumable() {
+export function InitShoppingCart() {
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
   const $showCart = document.getElementById("show-cart");
