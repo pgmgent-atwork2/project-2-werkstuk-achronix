@@ -36,7 +36,7 @@ export const createPayment = async (req, res) => {
       req.headers["x-requested-with"] === "XMLHttpRequest";
 
     if (IsFetch) {
-      console.log("Returning JSON response for AJAX request");
+    
       return res.json({ paymentUrl: payment.getCheckoutUrl() });
     }
 
