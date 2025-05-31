@@ -13,6 +13,8 @@
 @import url("components/back.css");
 @import url("components/card.css");
 @import url("components/title.css");
+@import url("components/cart.css");
+@import url("components/consumables.css");
 
 /* alle imports van de pages styles */
 
@@ -24,8 +26,7 @@
 /*alle imports van de common styles */
 
 @import url("common/error-messages.css");
-@import url("cart.css");
-@import url("consumables.css");
+
 
 @font-face {
   font-family: "Inter";

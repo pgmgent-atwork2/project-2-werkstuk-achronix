@@ -22,7 +22,7 @@ export const createPayment = async (req, res) => {
       },
       description: `Bestelling #${orderId}`,
       redirectUrl: `${process.env.APP_URL}/betaling`,
-      method: "ideal",
+      method: "bancontact",
     });
 
     const redirectUrl = `${process.env.APP_URL}/betaling/result?paymentId=${payment.id}&orderId=${orderId}&userId=${userId}`;
@@ -30,6 +30,15 @@ export const createPayment = async (req, res) => {
     await mollieClient.payments.update(payment.id, {
       redirectUrl,
     });
+
+    const IsFetch =
+      req.headers.accept?.includes("application/json") ||
+      req.headers["x-requested-with"] === "XMLHttpRequest";
+
+    if (IsFetch) {
+      console.log("Returning JSON response for AJAX request");
+      return res.json({ paymentUrl: payment.getCheckoutUrl() });
+    }
 
     res.redirect(payment.getCheckoutUrl());
   } catch (error) {

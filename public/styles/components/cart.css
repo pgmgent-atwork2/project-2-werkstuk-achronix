@@ -1,0 +1,148 @@
+.cart {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  background-color: var(--background);
+}
+
+.cart.show {
+  display: block;
+}
+
+.cart-btn-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+
+  border-radius: 99%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: none;
+    outline: none;
+    padding: 1rem;
+    border-radius: 99%;
+    cursor: pointer;
+    font-size: 1.25rem;
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}
+
+.cart__footer {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-top: 1rem;
+
+  .cart__footer__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    @media screen and (min-width: 600px) {
+    display: inline;
+    }
+    .cart__total {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .cart__total {
+      text-align: right;
+    }
+
+    .cart-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
+
+.cart__items {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+
+  .cart__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-block: 0.5rem;
+    width: 100%;
+
+    .cart__item__info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .cart__item-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        margin-right: 1rem;
+      }
+
+      .cart__item__details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .cart__item-name {
+          font-weight: bold;
+          font-size: 1.2rem;
+        }
+
+        .cart__item-price {
+          color: var(--color-primary);
+          font-weight: bold;
+        }
+
+        @media screen and (min-width: 600px) {
+          flex-direction: row;
+        }
+      }
+    }
+
+    .cart__item-remove {
+      cursor: pointer;
+
+      color: var(--destructive);
+      background-color: var(--destructive-light);
+
+      &:hover {
+        color: var(--color-white);
+        background-color: var(--destructive);
+      }
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
