@@ -17,6 +17,7 @@ router.post("/users", API_UserController.store);
 router.get("/users/:id", API_UserController.show);
 router.put("/users/:id", API_UserController.update);
 router.delete("/users/:id", API_UserController.destroy);
+router.get("/users/name/:name", API_UserController.findByName);
 
 // Consumables
 router.get("/consumables", API_ConsumableController.index);
