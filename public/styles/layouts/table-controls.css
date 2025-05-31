@@ -46,6 +46,17 @@
         border-radius: 0.25rem;
         color: #000;
         cursor: pointer;
+
+        &:focus {
+          outline: none;
+          border-color: var(--primary);
+        }
+
+        option {
+          padding: 0.5rem;
+          background-color: #fff;
+          color: #000;
+        }
       }
     }
   }
