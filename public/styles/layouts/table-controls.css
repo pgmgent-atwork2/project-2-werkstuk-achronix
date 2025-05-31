@@ -5,6 +5,39 @@
   width: 100%;
   margin-top: 2rem;
 
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.25rem;
+      height: 1.25rem;
+      background-image: url("../../assets/images/search.svg");
+      background-size: cover;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border: 1px solid #caced1;
+      border-radius: 0.5rem;
+      color: #000;
+      padding-left: 2.25rem;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+    }
+  }
+
   .filter-container {
     display: flex;
     gap: 1rem;
@@ -38,12 +71,11 @@
       .filter-select {
         appearance: none;
         width: 100%;
-        font-size: 1.15rem;
         padding: 0.5rem 1rem;
         padding-right: 2rem;
         background-color: #fff;
         border: 1px solid #caced1;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
         color: #000;
         cursor: pointer;
 
