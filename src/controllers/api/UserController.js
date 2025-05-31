@@ -124,3 +124,30 @@ export const store = async (req, res, next) => {
     });
   }
 };
+
+export const findByName = async (req, res, next) => {
+  const { name } = req.query;
+
+  if (!name) {
+    return res.status(400).json({ message: "Naam is vereist voor de zoekopdracht." });
+  }
+
+  try {
+    const users = await User.query()
+      .where("firstname", "ilike", `%${name}%`)
+      .orWhere("lastname", "ilike", `%${name}%`);
+
+      
+    if (users.length === 0) {
+      return res.status(404).json({ message: "Geen gebruikers gevonden." });
+    }
+
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
+      error: error.message,
+    });
+  }
+
+}

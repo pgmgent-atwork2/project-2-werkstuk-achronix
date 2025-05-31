@@ -27,6 +27,10 @@
 
 @import url("common/error-messages.css");
 
+/* Layouts */
+
+@import url("layouts/table-controls.css");
+
 
 @font-face {
   font-family: "Inter";

@@ -8,6 +8,7 @@ import "./create-match.js";
 import "./match-attendance.js";
 import "./player-selection.js";
 
+
 import "./consumable/create-consumable.js";
 import "./consumable/edit-consumable.js";
 import "./consumable/delete-consumable.js";
