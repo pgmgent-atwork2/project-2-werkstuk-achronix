@@ -13,6 +13,7 @@ import "./player-selection.js";
 import "./consumable/create-consumable.js";
 import "./consumable/edit-consumable.js";
 import "./consumable/delete-consumable.js";
+import "./consumable/search-consumables.js";
 
 import { InitShoppingCart } from "./shoppingCart.js";
 

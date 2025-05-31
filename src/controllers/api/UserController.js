@@ -128,9 +128,6 @@ export const store = async (req, res, next) => {
 export const findByName = async (req, res, next) => {
   const { name } = req.params;
 
-  
-  console.log("Searching for users with name:", name);
-
   if (name === "undefined") {
     try {
       const users = await User.query();

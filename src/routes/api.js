@@ -8,7 +8,6 @@ import * as API_MatchController from "../controllers/api/MatchController.js";
 import * as API_OrderController from "../controllers/api/OrderController.js";
 import * as API_OrderItemsController from "../controllers/api/OrderItemsController.js";
 
-
 const router = new Router();
 
 // users
@@ -19,10 +18,10 @@ router.get("/users/name/:name", API_UserController.findByName);
 router.put("/users/:id", API_UserController.update);
 router.delete("/users/:id", API_UserController.destroy);
 
-
 // Consumables
 router.get("/consumables", API_ConsumableController.index);
 router.get("/consumables/:id", API_ConsumableController.show);
+router.get("/consumables/name/:name", API_ConsumableController.findByName);
 router.post("/consumables", API_ConsumableController.store);
 router.put("/consumables/:id", API_ConsumableController.update);
 router.delete("/consumables/:id", API_ConsumableController.destroy);
@@ -62,9 +61,4 @@ router.post("/order-items", API_OrderItemsController.store);
 router.put("/order-items/:id", API_OrderItemsController.update);
 router.delete("/order-items/:id", API_OrderItemsController.destroy);
 
-
-
-export default router
-
-
-
+export default router;
