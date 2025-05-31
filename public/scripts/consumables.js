@@ -236,25 +236,39 @@ function handleInstantOrder(cart, key) {
     }
 
     const orderId = await addOrderToDb(cart);
-    console.log("Order ID:", orderId);
 
     if (orderId) {
-
       const userId = cart[0].user_id;
-      const totalPrice = cart.reduce((acc, item) => acc + item.price, 0).toFixed(2);
+      const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
 
-      await fetch(`create-payment`, {
+      console.log(totalPrice);
+
+      const response = await fetch(`create-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
+          "X-Requested-With": "XMLHttpRequest",
         },
-        body: JSON.stringify({ orderId, userId, totalPrice }),
+        body: JSON.stringify({
+          orderId,
+          userId,
+          amount: totalPrice.toFixed(2),
+        }),
       });
+
+      if (!response.ok) {
+        console.error("Failed to create payment");
+        alert("Er is een fout opgetreden bij het verwerken van de betaling.");
+        return;
+      }
 
       localStorage.removeItem(key);
       showCart([]);
 
-      
+      const paymentData = await response.json();
+
+      window.location.href = paymentData.paymentUrl;
     }
   });
 }

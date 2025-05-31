@@ -31,6 +31,15 @@ export const createPayment = async (req, res) => {
       redirectUrl,
     });
 
+    const IsFetch =
+      req.headers.accept?.includes("application/json") ||
+      req.headers["x-requested-with"] === "XMLHttpRequest";
+
+    if (IsFetch) {
+      console.log("Returning JSON response for AJAX request");
+      return res.json({ paymentUrl: payment.getCheckoutUrl() });
+    }
+
     res.redirect(payment.getCheckoutUrl());
   } catch (error) {
     console.error("Error creating payment:", error);
