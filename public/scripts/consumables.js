@@ -8,12 +8,14 @@ export function InitConsumable() {
 
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
+
+  handleOrder(key);
+  handleInstantOrder(key);
   if (cart.length > 0) {
     $showCart.parentElement.classList.remove("hidden");
     showCountOnInput(cart);
     handleShoppingCart(cart);
-    handleOrder(cart, key);
-    handleInstantOrder(cart, key);
+
     removeItemFromCart();
   } else {
     $cart.classList.remove("show");
@@ -207,11 +209,13 @@ function removeItemFromCart() {
   });
 }
 
-function handleOrder(cart, key) {
+function handleOrder(key) {
   const $orderBtn = document.getElementById("order-btn");
 
   $orderBtn.addEventListener("click", async (e) => {
     e.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem(key) || []);
     if (cart.length === 0) {
       alert("Je hebt geen producten in je winkelwagentje.");
       return;
@@ -219,17 +223,22 @@ function handleOrder(cart, key) {
 
     await addOrderToDb(cart);
 
+    clearInputs();
+
     localStorage.removeItem(key);
 
     showCart([]);
   });
 }
 
-function handleInstantOrder(cart, key) {
+function handleInstantOrder(key) {
   const $instantOrderbtn = document.getElementById("instant-order-btn");
 
   $instantOrderbtn.addEventListener("click", async (e) => {
     e.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem(key) || []);
+
     if (cart.length === 0) {
       alert("Je hebt geen producten in je winkelwagentje.");
       return;
@@ -241,34 +250,46 @@ function handleInstantOrder(cart, key) {
       const userId = cart[0].user_id;
       const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
 
-      console.log(totalPrice);
+      try {
+        const response = await fetch(`create-payment`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify({
+            orderId,
+            userId,
+            amount: totalPrice.toFixed(2),
+          }),
+        });
 
-      const response = await fetch(`create-payment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-        },
-        body: JSON.stringify({
-          orderId,
-          userId,
-          amount: totalPrice.toFixed(2),
-        }),
-      });
+        localStorage.removeItem(key);
+        showCart([]);
+        clearInputs();
 
-      if (!response.ok) {
-        console.error("Failed to create payment");
-        alert("Er is een fout opgetreden bij het verwerken van de betaling.");
-        return;
+        const paymentData = await response.json();
+
+        window.location.href = paymentData.paymentUrl;
+      } catch (err) {
+        console.log("error");
       }
+    }
+  });
+}
 
-      localStorage.removeItem(key);
-      showCart([]);
+function clearInputs() {
+  const $inputs = document.querySelectorAll(".consumable__quantity");
 
-      const paymentData = await response.json();
+  $inputs.forEach(($input) => {
+    if ($input) {
+      $input.value = 0;
 
-      window.location.href = paymentData.paymentUrl;
+      const $form = $input.parentElement;
+      if ($form) {
+        $form.classList.remove("show");
+      }
     }
   });
 }
