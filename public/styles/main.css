@@ -31,7 +31,6 @@
 
 @import url("layouts/table-controls.css");
 
-
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
@@ -53,6 +52,13 @@
 body {
   font-family: "Inter", sans-serif;
   font-style: normal;
+}
+main {
+  margin-top: 2rem;
+
+  @media screen and (min-width: 768px) {
+    margin-top: 0;
+  }
 }
 
 .visually-hidden {

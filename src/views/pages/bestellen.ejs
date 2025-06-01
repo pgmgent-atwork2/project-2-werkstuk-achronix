@@ -1,24 +1,59 @@
-<select name="category-filter" id="">
-  <option value="all">Alle</option>
-  <% if (categories && categories.length > 0) { %> <%
-  categories.forEach(category => { %>
-  <option value="<%= category.id %>"><%= category.name %></option>
-  <% }); %> <% } %>
-</select>
+<div class="table-controls">
+  <div class="search-container">
+    <input
+      type="text"
+      id="searchInput-consumables"
+      placeholder="Zoeken op naam"
+      class="search-input"
+    />
+  </div>
+  <div class="filter-container">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="filter-icon"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+      />
+    </svg>
+    <div class="filter">
+      <select id="filterSelect" class="filter-select">
+        <% if (categories && categories.length > 0) { %>
+        <option value="">Alle filters</option>
+        <% categories.forEach(category => { %>
+        <option value="<%= category.value %>"><%= category.name %></option>
+        <% }); %>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
 
 <div class="consumables">
   <% if (consumables && consumables.length > 0) { %> <%
   consumables.forEach(consumable => { %>
   <article class="consumable">
-      <img class="consumable__image" src="<%= consumable.image_url %>" alt="<%= consumable.name %>" />
+    <img
+      class="consumable__image"
+      src="<%= consumable.image_url %>"
+      alt="<%= consumable.name %>"
+    />
     <div class="consumable__details">
       <div class="consumable__info">
-      <h2 class="consumable__name"><%= consumable.name %></h2>
-      <p class="consumable__price">€ <%= consumable.price %> </p>
+        <h2 class="consumable__name"><%= consumable.name %></h2>
+        <p class="consumable__price">€ <%= consumable.price %></p>
       </div>
 
-      <button class="consumable__button btn btn--primary" data-id="<%= consumable.id %>">
-       
+      <button
+        class="consumable__button btn btn--primary"
+        data-id="<%= consumable.id %>"
+      >
         Toevoegen
       </button>
       <form action="#" method="post" class="consumable__form">
@@ -63,55 +98,83 @@
 <div class="cart-btn-container hidden">
   <button id="show-cart">
     <span id="item__count"></span>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-</svg>
-</button>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+      />
+    </svg>
+  </button>
 </div>
 
 <div class="cart main-container">
   <div id="close-cart" class="close">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-</svg>
-
-    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6 18 18 6M6 6l12 12"
+      />
+    </svg>
+  </div>
   <h2>Winkelwagentje</h2>
   <form id="cart-form" action="">
-  <ul class="cart__items">
-  
-  </ul>
-  <div class="cart__footer">
-    <div class="cart__footer__content">
-  <p class="cart__total">Totaal: €</p>
+    <ul class="cart__items"></ul>
+    <div class="cart__footer">
+      <div class="cart__footer__content">
+        <p class="cart__total">Totaal: €</p>
 
-  <button id="order-btn" class="cart-btn btn btn--secondary">
-    <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-          />
-        </svg>
-        Bestellen
-  </button>
-   <button id="instant-order-btn" class="cart-btn btn btn--primary">
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
-</svg>
+        <button id="order-btn" class="cart-btn btn btn--secondary">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+          Bestellen
+        </button>
+        <button id="instant-order-btn" class="cart-btn btn btn--primary">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+            />
+          </svg>
 
-        Direct Betalen
-  </button>
-  </div>
-  </div>
+          Direct Betalen
+        </button>
+      </div>
+    </div>
+  </form>
 </div>
-
-
-</form>
