@@ -94,4 +94,29 @@ if (document.querySelector(".consumables")) {
         "<p>Fout bij het ophalen van producten</p>";
     }
   });
+
+  const $filterSelect = document.getElementById("filterSelect");
+  $filterSelect.addEventListener("change", async (event) => {
+    const categoryId = event.target.value;
+
+    try {
+      const response = await fetch(
+        `/api/consumables/category/${categoryId ? categoryId : undefined}`
+      );
+      const consumables = await response.json();
+      $consumablesContainer.innerHTML = "";
+      if (!consumables || consumables.length === 0) {
+        $consumablesContainer.innerHTML = "<p>Geen producten gevonden</p>";
+        return;
+      }
+      consumables.forEach((consumable) => {
+        renderConsumableCard(consumable, $consumablesContainer, userId);
+      });
+      
+      InitShoppingCart();
+    } catch (error) {
+      $consumablesContainer.innerHTML =
+        "<p>Fout bij het ophalen van producten</p>";
+    }
+  });
 }
