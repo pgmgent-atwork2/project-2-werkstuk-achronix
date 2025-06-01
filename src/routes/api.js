@@ -22,6 +22,10 @@ router.delete("/users/:id", API_UserController.destroy);
 router.get("/consumables", API_ConsumableController.index);
 router.get("/consumables/:id", API_ConsumableController.show);
 router.get("/consumables/name/:name", API_ConsumableController.findByName);
+router.get(
+  "/consumables/category/:categoryId",
+  API_ConsumableController.findByCategory
+);
 router.post("/consumables", API_ConsumableController.store);
 router.put("/consumables/:id", API_ConsumableController.update);
 router.delete("/consumables/:id", API_ConsumableController.destroy);
@@ -51,6 +55,7 @@ router.delete("/matches/:id", API_MatchController.destroy);
 router.get("/orders", API_OrderController.index);
 router.get("/orders/:id", API_OrderController.show);
 router.get("/orders/name/:name", API_OrderController.findByName);
+router.get("/orders/status/:status", API_OrderController.findByStatus);
 router.post("/orders", API_OrderController.store);
 router.put("/orders/:id", API_OrderController.update);
 router.delete("/orders/:id", API_OrderController.destroy);

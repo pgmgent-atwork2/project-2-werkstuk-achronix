@@ -52,8 +52,10 @@
         <div class="filter">
           <select id="filterSelect" class="filter-select">
             <option value="">Alle categorieën</option>
-            <option value="1">Drinken</option>
-            <option value="2">Eten</option>
+            <% if(categories && categories.length > 0) { %> <%
+            categories.forEach(category => { %>
+            <option value="<%= category.id %>"><%= category.name %></option>
+            <% }); %> <% } %>
           </select>
         </div>
       </div>
