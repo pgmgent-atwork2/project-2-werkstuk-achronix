@@ -1,4 +1,6 @@
 <div class="table-controls">
+  <input type="hidden" id="logged-in-user" value="<%= user.id %>" />
+
   <div class="search-container">
     <input
       type="text"
@@ -28,8 +30,7 @@
         <option value="">Alle filters</option>
         <% categories.forEach(category => { %>
         <option value="<%= category.value %>"><%= category.name %></option>
-        <% }); %>
-        <% } %>
+        <% }); %> <% } %>
       </select>
     </div>
   </div>
