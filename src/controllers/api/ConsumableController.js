@@ -102,6 +102,18 @@ export const findByName = async (req, res, next) => {
 export const findByCategory = async (req, res, next) => {
   const { categoryId } = req.params;
 
+  if (categoryId === "undefined") {
+    try {
+      const consumables = await Consumable.query();
+      return res.json(consumables);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Er is een fout opgetreden bij het ophalen van producten.",
+        error: error.message,
+      });
+    }
+  }
+
   try {
     const consumables = await Consumable.query().where(
       "category_id",
