@@ -22,6 +22,10 @@ router.delete("/users/:id", API_UserController.destroy);
 router.get("/consumables", API_ConsumableController.index);
 router.get("/consumables/:id", API_ConsumableController.show);
 router.get("/consumables/name/:name", API_ConsumableController.findByName);
+router.get(
+  "/consumables/category/:categoryId",
+  API_ConsumableController.findByCategory
+);
 router.post("/consumables", API_ConsumableController.store);
 router.put("/consumables/:id", API_ConsumableController.update);
 router.delete("/consumables/:id", API_ConsumableController.destroy);
