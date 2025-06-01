@@ -208,9 +208,7 @@ try {
 
     job.start();
   }
-} catch (error) {
-  console.error("Error starting cron job:", error);
-}
+} catch (error) {}
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
