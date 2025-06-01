@@ -95,8 +95,19 @@ export const findByName = async (req, res) => {
 export const findByStatus = async (req, res) => {
   const { status } = req.params;
 
-  if (status !== "PAID" || status !== "NOT_PAID") {
-    return;
+  if (status === "undefined") {
+    try  {
+    const orders = await Order.query()
+      .withGraphFetched("user")
+      .withGraphFetched("orderItems.consumable")
+      .orderBy("order_on", "desc");
+
+    return res.json(orders);
+    }
+  catch (error) {
+      console.error("Error fetching all orders:", error);
+      return res.status(500).json({ message: "Error fetching all orders", error });
+    }
   }
 
   try {
@@ -112,5 +123,3 @@ export const findByStatus = async (req, res) => {
     res.status(500).json({ message: "Error fetching orders by status", error });
   }
 };
-
-

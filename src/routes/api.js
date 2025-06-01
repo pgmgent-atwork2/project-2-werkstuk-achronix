@@ -55,6 +55,7 @@ router.delete("/matches/:id", API_MatchController.destroy);
 router.get("/orders", API_OrderController.index);
 router.get("/orders/:id", API_OrderController.show);
 router.get("/orders/name/:name", API_OrderController.findByName);
+router.get("/orders/status/:status", API_OrderController.findByStatus);
 router.post("/orders", API_OrderController.store);
 router.put("/orders/:id", API_OrderController.update);
 router.delete("/orders/:id", API_OrderController.destroy);
