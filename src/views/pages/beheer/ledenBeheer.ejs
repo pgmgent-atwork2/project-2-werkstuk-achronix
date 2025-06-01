@@ -27,7 +27,7 @@
       <div class="search-container">
         <input
           type="text"
-          id="searchInput"
+          id="searchInput-user"
           placeholder="Zoeken op naam"
           class="search-input"
         />
@@ -70,7 +70,7 @@
             <th>Acties</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="userTableBody">
           <% if(users && users.length> 0) { %> <% users.forEach(user=> { %>
           <tr>
             <td><%= user.id %></td>

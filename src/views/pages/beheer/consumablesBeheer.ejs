@@ -29,8 +29,8 @@
       <div class="search-container">
         <input
           type="text"
-          id="searchInput"
-          placeholder="Zoeken op naam"
+          id="searchInput-consumables"
+          placeholder="Zoeken op product"
           class="search-input"
         />
       </div>
@@ -71,7 +71,7 @@
             <th>Acties</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="consumablesTableBody">
           <% if(consumables && consumables.length> 0) { %> <%
           consumables.forEach(consumable=> { %>
           <tr>

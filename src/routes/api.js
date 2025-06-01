@@ -8,20 +8,20 @@ import * as API_MatchController from "../controllers/api/MatchController.js";
 import * as API_OrderController from "../controllers/api/OrderController.js";
 import * as API_OrderItemsController from "../controllers/api/OrderItemsController.js";
 
-
 const router = new Router();
 
 // users
 router.get("/users", API_UserController.index);
 router.post("/users", API_UserController.store);
 router.get("/users/:id", API_UserController.show);
+router.get("/users/name/:name", API_UserController.findByName);
 router.put("/users/:id", API_UserController.update);
 router.delete("/users/:id", API_UserController.destroy);
-router.get("/users/name/:name", API_UserController.findByName);
 
 // Consumables
 router.get("/consumables", API_ConsumableController.index);
 router.get("/consumables/:id", API_ConsumableController.show);
+router.get("/consumables/name/:name", API_ConsumableController.findByName);
 router.post("/consumables", API_ConsumableController.store);
 router.put("/consumables/:id", API_ConsumableController.update);
 router.delete("/consumables/:id", API_ConsumableController.destroy);
@@ -50,6 +50,7 @@ router.delete("/matches/:id", API_MatchController.destroy);
 // Orders
 router.get("/orders", API_OrderController.index);
 router.get("/orders/:id", API_OrderController.show);
+router.get("/orders/name/:name", API_OrderController.findByName);
 router.post("/orders", API_OrderController.store);
 router.put("/orders/:id", API_OrderController.update);
 router.delete("/orders/:id", API_OrderController.destroy);
@@ -61,9 +62,4 @@ router.post("/order-items", API_OrderItemsController.store);
 router.put("/order-items/:id", API_OrderItemsController.update);
 router.delete("/order-items/:id", API_OrderItemsController.destroy);
 
-
-
-export default router
-
-
-
+export default router;

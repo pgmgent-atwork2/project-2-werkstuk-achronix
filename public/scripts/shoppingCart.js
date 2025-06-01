@@ -158,7 +158,7 @@ function showCart(items) {
   $cartTotal.innerHTML = `totaal: € ${items.reduce(
     (acc, item) => acc + item.price,
     0
-  )}`;
+  ).toFixed(2)}`;
 }
 
 function showCountOnInput(data) {

@@ -126,28 +126,31 @@ export const store = async (req, res, next) => {
 };
 
 export const findByName = async (req, res, next) => {
-  const { name } = req.query;
+  const { name } = req.params;
 
-  if (!name) {
-    return res.status(400).json({ message: "Naam is vereist voor de zoekopdracht." });
+  if (name === "undefined") {
+    try {
+      const users = await User.query();
+      return res.json(users);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Er is een fout opgetreden bij het ophalen van gebruikers.",
+        error: error.message,
+      });
+    }
   }
 
   try {
     const users = await User.query()
-      .where("firstname", "ilike", `%${name}%`)
-      .orWhere("lastname", "ilike", `%${name}%`);
-
-      
-    if (users.length === 0) {
-      return res.status(404).json({ message: "Geen gebruikers gevonden." });
-    }
+      .where("firstname", "like", `%${name}%`)
+      .orWhere("lastname", "like", `%${name}%`);
 
     return res.json(users);
   } catch (error) {
+    console.log("Error fetching users:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
       error: error.message,
     });
   }
-
-}
+};

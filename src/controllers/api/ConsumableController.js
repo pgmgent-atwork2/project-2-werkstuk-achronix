@@ -66,3 +66,35 @@ export const destroy = async (req, res) => {
     return res.json({ error: "Failed to delete consumable" });
   }
 };
+
+export const findByName = async (req, res, next) => {
+  const { name } = req.params;
+
+  if (name === "undefined") {
+    try {
+      const consumables = await Consumable.query();
+      return res.json(consumables);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Er is een fout opgetreden bij het ophalen van producten.",
+        error: error.message,
+      });
+    }
+  }
+
+  try {
+    const consumables = await Consumable.query().where(
+      "name",
+      "like",
+      `%${name}%`
+    );
+
+    return res.json(consumables);
+  } catch (error) {
+    console.log("Error fetching products:", error);
+    return res.status(500).json({
+      message: "Er is een fout opgetreden bij het zoeken naar producten.",
+      error: error.message,
+    });
+  }
+};
