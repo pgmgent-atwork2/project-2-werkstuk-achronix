@@ -41,7 +41,6 @@ export const update = async (req, res) => {
     }
     const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
       name,
-      description,
       price,
       image_url,
       category_id,
