@@ -22,7 +22,7 @@
   <div class="search-container">
     <input
       type="text"
-      id="searchInput"
+      id="searchInput-orders"
       placeholder="Zoeken op naam"
       class="search-input"
     />
@@ -68,7 +68,7 @@
         <th>Acties</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="ordersTableBody">
       <% orders.forEach(order => { order.orderItems.forEach(item => { %> <%
       const date = new Date(order.order_on); const formattedDate
       =date.toLocaleString('nl-BE', { day: '2-digit', month: '2-digit', year:

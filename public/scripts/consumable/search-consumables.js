@@ -45,3 +45,5 @@ if (document.getElementById("consumablesTableBody")) {
     }
   });
 }
+
+
