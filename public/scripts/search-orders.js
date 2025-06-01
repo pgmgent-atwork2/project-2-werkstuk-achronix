@@ -7,7 +7,7 @@ if (document.getElementById("ordersTableBody")) {
 
     try {
       const response = await fetch(
-        `/api/users/name/${searchTerm ? searchTerm : undefined}`
+        `/api/orders/name/${searchTerm ? searchTerm : undefined}`
       );
       const orders = await response.json();
 
@@ -29,8 +29,9 @@ if (document.getElementById("ordersTableBody")) {
           minute: "2-digit",
         });
 
-        const $row = document.createElement("tr");
-        $row.innerHTML = `
+        order.orderItems.forEach((item) => {
+          const $row = document.createElement("tr");
+          $row.innerHTML = `
           <td>${order.id}</td>
           <td>${order.user.firstname}</td>
           <td>${order.user.lastname}</td>
@@ -39,8 +40,8 @@ if (document.getElementById("ordersTableBody")) {
             <td>${item.quantity}</td>
               <td>€ ${item.price.toFixed(2)} </td>
             <td class="${order.status === "PAID" ? "success" : "error"}">${
-          order.status
-        }</td>
+            order.status
+          }</td>
             <td>${formattedDate}</td>
           <td>
             <button class="btn btn--secondary edit-order" data-id="${order.id}">
@@ -48,7 +49,8 @@ if (document.getElementById("ordersTableBody")) {
             </button>
           </td>
         `;
-        $tableBody.appendChild($row);
+          $tableBody.appendChild($row);
+        });
       });
     } catch (error) {
       console.error("Fout bij het ophalen van bestelling(en):", error);

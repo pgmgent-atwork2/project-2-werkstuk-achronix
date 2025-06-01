@@ -63,3 +63,31 @@ export const destroy = async (req, res) => {
     res.status(500).json({ message: "Error deleting Order", error });
   }
 };
+
+export const findByName = async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    if (name === "undefined") {
+      const orders = await Order.query()
+        .withGraphFetched("user")
+        .withGraphFetched("orderItems.consumable")
+        .orderBy("order_on", "desc");
+
+      return res.json(orders);
+    }
+
+    const orders = await Order.query()
+      .joinRelated("user")
+      .where("user.firstname", "like", `%${name}%`)
+      .orWhere("user.lastname", "like", `%${name}%`)
+      .withGraphFetched("user")
+      .withGraphFetched("orderItems.consumable")
+      .orderBy("order_on", "desc");
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders by name:", error);
+    res.status(500).json({ message: "Error fetching orders by name", error });
+  }
+};
