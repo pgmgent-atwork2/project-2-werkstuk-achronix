@@ -1,7 +1,7 @@
 import User from "../../models/User.js";
 import bcrypt from "bcrypt";
 
-export const show = async (req, res, next) => {
+export const show = async (req, res) => {
   const id = req.params.id;
   const user = await User.query().findById(id);
 
@@ -12,12 +12,12 @@ export const show = async (req, res, next) => {
   return res.json(user);
 };
 
-export const index = async (req, res, next) => {
+export const index = async (req, res) => {
   const users = await User.query();
   return res.json(users);
 };
 
-export const update = async (req, res, next) => {
+export const update = async (req, res) => {
   const id = req.params.id;
   const {
     firstname,
@@ -56,7 +56,7 @@ export const update = async (req, res, next) => {
   }
 };
 
-export const getUserByEmail = async (req, res, next) => {
+export const getUserByEmail = async (req, res) => {
   const email = req.params.email;
   const user = await User.query().where("email", email).first();
   if (!user) {
@@ -65,7 +65,7 @@ export const getUserByEmail = async (req, res, next) => {
   return res.json(user);
 };
 
-export const destroy = async (req, res, next) => {
+export const destroy = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -86,7 +86,7 @@ export const destroy = async (req, res, next) => {
   }
 };
 
-export const store = async (req, res, next) => {
+export const store = async (req, res) => {
   const {
     firstname,
     lastname,
@@ -125,7 +125,7 @@ export const store = async (req, res, next) => {
   }
 };
 
-export const findByName = async (req, res, next) => {
+export const findByName = async (req, res) => {
   const { name } = req.params;
 
   if (name === "undefined") {
