@@ -7,6 +7,8 @@ import * as API_TeamController from "../controllers/api/TeamController.js";
 import * as API_MatchController from "../controllers/api/MatchController.js";
 import * as API_OrderController from "../controllers/api/OrderController.js";
 import * as API_OrderItemsController from "../controllers/api/OrderItemsController.js";
+import * as API_AttendanceController from "../controllers/api/AttendanceController.js";
+import jwtAuth from "../middleware/jwtAuth.js";
 
 const router = new Router();
 
@@ -50,6 +52,28 @@ router.get("/matches/:id", API_MatchController.show);
 router.post("/matches", API_MatchController.store);
 router.put("/matches/:id", API_MatchController.update);
 router.delete("/matches/:id", API_MatchController.destroy);
+
+// Attendance routes
+router.get(
+  "/attendance/match/:matchId/user/:userId",
+  API_AttendanceController.getAttendance
+);
+router.get(
+  "/attendance/match/:matchId",
+  API_AttendanceController.getAttendance
+);
+router.post("/attendance/update", API_AttendanceController.updateAttendance);
+router.post(
+  "/attendance/selection",
+  jwtAuth,
+  API_AttendanceController.updateSelection
+);
+// Standard attendance routes
+router.get("/attendance", API_AttendanceController.index);
+router.get("/attendance/:id", API_AttendanceController.show);
+router.post("/attendance", API_AttendanceController.store);
+router.put("/attendance/:id", API_AttendanceController.update);
+router.delete("/attendance/:id", API_AttendanceController.destroy);
 
 // Orders
 router.get("/orders", API_OrderController.index);

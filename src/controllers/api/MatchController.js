@@ -1,7 +1,7 @@
 import Match from "../../models/Match.js";
 import Team from "../../models/Team.js";
 
-export const show = async (req, res, next) => {
+export const show = async (req, res) => {
   const id = req.params.id;
   try {
     const match = await Match.query().findById(id).withGraphFetched("team");
@@ -19,7 +19,7 @@ export const show = async (req, res, next) => {
   }
 };
 
-export const index = async (req, res, next) => {
+export const index = async (req, res) => {
   try {
     const matches = await Match.query().withGraphFetched("team");
     return res.json(matches);
@@ -31,7 +31,7 @@ export const index = async (req, res, next) => {
   }
 };
 
-export const update = async (req, res, next) => {
+export const update = async (req, res) => {
   const id = req.params.id;
   const { date, start_time, end_time, location, home_away, team_id } = req.body;
 
@@ -68,7 +68,8 @@ export const update = async (req, res, next) => {
         } else {
           return res.status(400).json({ message: "Ongeldige datum" });
         }
-      } catch (e) {
+      } catch (error) {
+        console.error("Fout bij het parsen van de datum:", error);
         return res.status(400).json({ message: "Ongeldige datum" });
       }
     }
@@ -87,7 +88,7 @@ export const update = async (req, res, next) => {
   }
 };
 
-export const destroy = async (req, res, next) => {
+export const destroy = async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -108,7 +109,7 @@ export const destroy = async (req, res, next) => {
   }
 };
 
-export const store = async (req, res, next) => {
+export const store = async (req, res) => {
   const { date, start_time, end_time, location, home_away, team_id } = req.body;
 
   try {

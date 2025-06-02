@@ -26,6 +26,7 @@ export const store = async (req, res) => {
     });
     return res.json(consumable);
   } catch (error) {
+    console.error("Error creating consumable:", error);
     return res.status(400).json({ error: "Failed to create consumable" });
   }
 };
@@ -47,6 +48,7 @@ export const update = async (req, res) => {
     });
     return res.json(updatedConsumable);
   } catch (error) {
+    console.error("Error updating consumable:", error);
     return res.status(400).json({ error: "Failed to update consumable" });
   }
 };
@@ -62,11 +64,12 @@ export const destroy = async (req, res) => {
     await Consumable.query().deleteById(id);
     return res.json({ message: "Consumable deleted successfully" });
   } catch (error) {
+    console.error("Error deleting consumable:", error);
     return res.json({ error: "Failed to delete consumable" });
   }
 };
 
-export const findByName = async (req, res, next) => {
+export const findByName = async (req, res) => {
   const { name } = req.params;
 
   if (name === "undefined") {
@@ -98,7 +101,7 @@ export const findByName = async (req, res, next) => {
   }
 };
 
-export const findByCategory = async (req, res, next) => {
+export const findByCategory = async (req, res) => {
   const { categoryId } = req.params;
 
   if (categoryId === "undefined") {

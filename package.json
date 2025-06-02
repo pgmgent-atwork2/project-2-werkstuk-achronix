@@ -16,7 +16,7 @@
   "main": "/src/app.js",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "lint": "eslint src --fix",
+    "lint": "eslint . --fix",
     "db:up": "knex migrate:latest",
     "db:down": "knex migrate:rollback",
     "db:seed": "knex seed:run"

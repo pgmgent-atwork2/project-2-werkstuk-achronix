@@ -90,6 +90,7 @@ if (document.querySelector(".consumables")) {
       });
       InitShoppingCart();
     } catch (error) {
+      console.error("Fout bij het ophalen van producten:", error);
       $consumablesContainer.innerHTML =
         "<p>Fout bij het ophalen van producten</p>";
     }
@@ -115,6 +116,7 @@ if (document.querySelector(".consumables")) {
       
       InitShoppingCart();
     } catch (error) {
+      console.error("Fout bij het ophalen van producten:", error);
       $consumablesContainer.innerHTML =
         "<p>Fout bij het ophalen van producten</p>";
     }
