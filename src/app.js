@@ -200,9 +200,12 @@ app.use(PageRouter);
 // 404 error page
 
 // cronJobs
+
+const EVERY_12_HOURS = "0 */12 * * *";
+
 try {
   if (await transporter.verify()) {
-    const job = new CronJob("0 */12 * * *", async () => {
+    const job = new CronJob(EVERY_12_HOURS, async () => {
       await sendUnsentEmails();
     });
 
