@@ -211,7 +211,9 @@ try {
 
     job.start();
   }
-} catch (error) {}
+} catch (error) {
+  console.error("Error verifying transporter:", error);
+}
 
 // ---------------------- Start the app ----------------------
 app.listen(port, () => {
