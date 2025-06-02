@@ -30,6 +30,7 @@ export const sendMail = async (to, subject, file, data) => {
       return false;
     }
   } catch (error) {
+    console.error("Error sending email:", error);
     await Email.query().insert({
       email: to,
       subject,

@@ -20,6 +20,7 @@ export default async (req, res, next) => {
 
     return next();
   } catch (e) {
+    console.error("JWT Authentication Error:", e);
     res.redirect("/login");
   }
 };

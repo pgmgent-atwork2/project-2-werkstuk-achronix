@@ -1,5 +1,5 @@
 import PasswordReset from "../models/PasswordReset.js";
-export const checkValidToken = async (req, res) => {
+export const checkValidToken = async (req) => {
   const resetToken = req.query.token || req.body?.token;
   const passwordReset = await PasswordReset.query()
     .where("token", resetToken)
