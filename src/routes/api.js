@@ -7,8 +7,8 @@ import * as API_TeamController from "../controllers/api/TeamController.js";
 import * as API_MatchController from "../controllers/api/MatchController.js";
 import * as API_OrderController from "../controllers/api/OrderController.js";
 import * as API_OrderItemsController from "../controllers/api/OrderItemsController.js";
-import * as API_AttendanceController from "./controllers/api/AttendanceController.js";
-import jwtAuth from "./middleware/jwtAuth.js";
+import * as API_AttendanceController from "../controllers/api/AttendanceController.js";
+import jwtAuth from "../middleware/jwtAuth.js";
 
 const router = new Router();
 
@@ -55,28 +55,25 @@ router.delete("/matches/:id", API_MatchController.destroy);
 
 // Attendance routes
 router.get(
-  "/api/attendance/match/:matchId/user/:userId",
+  "/attendance/match/:matchId/user/:userId",
   API_AttendanceController.getAttendance
 );
 router.get(
-  "/api/attendance/match/:matchId",
+  "/attendance/match/:matchId",
   API_AttendanceController.getAttendance
 );
+router.post("/attendance/update", API_AttendanceController.updateAttendance);
 router.post(
-  "/api/attendance/update",
-  API_AttendanceController.updateAttendance
-);
-router.post(
-  "/api/attendance/selection",
+  "/attendance/selection",
   jwtAuth,
   API_AttendanceController.updateSelection
 );
 // Standard attendance routes
-router.get("/api/attendance", API_AttendanceController.index);
-router.get("/api/attendance/:id", API_AttendanceController.show);
-router.post("/api/attendance", API_AttendanceController.store);
-router.put("/api/attendance/:id", API_AttendanceController.update);
-router.delete("/api/attendance/:id", API_AttendanceController.destroy);
+router.get("/attendance", API_AttendanceController.index);
+router.get("/attendance/:id", API_AttendanceController.show);
+router.post("/attendance", API_AttendanceController.store);
+router.put("/attendance/:id", API_AttendanceController.update);
+router.delete("/attendance/:id", API_AttendanceController.destroy);
 
 // Orders
 router.get("/orders", API_OrderController.index);
