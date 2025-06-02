@@ -38,11 +38,11 @@ export function InitShoppingCart() {
     const $reduceBtn = $form.querySelector(".reduce-count");
     const $increaseBtn = $form.querySelector(".increase-count");
 
-    $btn.addEventListener("click", (e) => {
+    $btn.addEventListener("click", () => {
       $form.classList.add("show");
     });
 
-    $reduceBtn.addEventListener("click", (e) => {
+    $reduceBtn.addEventListener("click", () => {
       let currentValue = parseInt($quantityInput.value);
       if (currentValue > 0) {
         currentValue--;
@@ -54,7 +54,7 @@ export function InitShoppingCart() {
       }
     });
 
-    $increaseBtn.addEventListener("click", (e) => {
+    $increaseBtn.addEventListener("click", () => {
       let currentValue = parseInt($quantityInput.value);
       currentValue++;
       $quantityInput.value = currentValue;
@@ -177,8 +177,8 @@ function removeItemFromCart() {
   const $removeButtons = document.querySelectorAll(".cart__item-remove");
   const $cartItemCount = document.getElementById("item__count");
 
-  $removeButtons.forEach(($button, index) => {
-    $button.addEventListener("click", (e) => {
+  $removeButtons.forEach(($button) => {
+    $button.addEventListener("click", () => {
       const key = "cart";
       const cart = JSON.parse(localStorage.getItem(key)) || [];
 
@@ -273,7 +273,7 @@ function handleInstantOrder(key) {
 
         window.location.href = paymentData.paymentUrl;
       } catch (err) {
-        console.log("error");
+        console.log("Fout bij het verwerken van de betaling:", err);
       }
     }
   });
