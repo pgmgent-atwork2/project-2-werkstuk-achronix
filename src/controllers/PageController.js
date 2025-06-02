@@ -4,7 +4,6 @@ import User from "../models/User.js";
 import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
 import Order from "../models/Order.js";
-import OrderItem from "../models/OrderItem.js";
 import Attendance from "../models/Attendance.js";
 
 /**
