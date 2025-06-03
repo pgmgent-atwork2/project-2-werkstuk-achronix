@@ -36,7 +36,6 @@ export const createPayment = async (req, res) => {
       req.headers["x-requested-with"] === "XMLHttpRequest";
 
     if (IsFetch) {
-    
       return res.json({ paymentUrl: payment.getCheckoutUrl() });
     }
 
@@ -68,14 +67,10 @@ export const paymentResult = async (req, res) => {
           `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}&userId=${userId}`
         );
         break;
-      case "open":
-        res.redirect(
-          `${process.env.APP_URL}/betaling/wacht?paymentId=${paymentId}&userId=${userId}`
-        );
-        break;
       case "expired":
       case "canceled":
       case "failed":
+      case "open":
         res.redirect(
           `${process.env.APP_URL}/betaling/mislukt?paymentId=${paymentId}&userId=${userId}`
         );
