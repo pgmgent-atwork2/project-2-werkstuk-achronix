@@ -15,7 +15,6 @@ export function InitShoppingCart() {
     orderIntialized = true;
     handleOrder(key);
     handleInstantOrder(key);
-     console.log("Order handlers initialized");
   }
 
   if (cart.length > 0) {
@@ -125,7 +124,6 @@ function handleShoppingCart(data) {
   showCart(cart);
   removeItemFromCart();
 
-  console.log("Winkelwagentje bijgewerkt:", cart);
 }
 
 function showCart(items) {
