@@ -1,6 +1,8 @@
 import { addOrderToDb } from "./order.js";
+let orderIntialized = false;
 
 export function InitShoppingCart() {
+  
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
   const $showCart = document.getElementById("show-cart");
@@ -9,8 +11,13 @@ export function InitShoppingCart() {
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
 
-  handleOrder(key);
-  handleInstantOrder(key);
+  if (!orderIntialized) {
+    orderIntialized = true;
+    handleOrder(key);
+    handleInstantOrder(key);
+     console.log("Order handlers initialized");
+  }
+
   if (cart.length > 0) {
     $showCart.parentElement.classList.remove("hidden");
     showCountOnInput(cart);
@@ -117,6 +124,8 @@ function handleShoppingCart(data) {
   $showCart.parentElement.classList.remove("hidden");
   showCart(cart);
   removeItemFromCart();
+
+  console.log("Winkelwagentje bijgewerkt:", cart);
 }
 
 function showCart(items) {
@@ -155,10 +164,9 @@ function showCart(items) {
     </li>`;
   });
 
-  $cartTotal.innerHTML = `totaal: € ${items.reduce(
-    (acc, item) => acc + item.price,
-    0
-  ).toFixed(2)}`;
+  $cartTotal.innerHTML = `totaal: € ${items
+    .reduce((acc, item) => acc + item.price, 0)
+    .toFixed(2)}`;
 }
 
 function showCountOnInput(data) {
