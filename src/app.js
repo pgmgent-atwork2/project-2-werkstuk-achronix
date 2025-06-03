@@ -17,7 +17,6 @@ import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswo
 //import controllers
 import * as AuthController from "./controllers/AuthController.js";
 import * as ImportMatchesController from "./controllers/importMatchesController.js";
-import * as API_OrderItemsController from "./controllers/api/OrderItemsController.js";
 
 import * as PageController from "./controllers/PageController.js";
 
@@ -92,12 +91,7 @@ app.post(
   PasswordResetController.forgotPassword
 );
 
-// Order items
-app.get("/api/order-items", API_OrderItemsController.index);
-app.get("/api/order-items/:id", API_OrderItemsController.show);
-app.post("/api/order-items", API_OrderItemsController.store);
-app.put("/api/order-items/:id", API_OrderItemsController.update);
-app.delete("/api/order-items/:id", API_OrderItemsController.destroy);
+
 
 // Password reset
 app.get(
