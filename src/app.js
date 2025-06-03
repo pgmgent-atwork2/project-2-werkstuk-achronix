@@ -17,6 +17,7 @@ import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswo
 //import controllers
 import * as AuthController from "./controllers/AuthController.js";
 import * as ImportMatchesController from "./controllers/importMatchesController.js";
+import * as PaymentController from "./controllers/PaymentController.js";
 
 import * as PageController from "./controllers/PageController.js";
 
@@ -105,6 +106,9 @@ app.post(
   PasswordResetController.postResetPassword,
   PasswordResetController.resetPassword
 );
+
+app.post("/create-payment", PaymentController.createPayment);
+app.get("/betaling/result", PaymentController.paymentResult);
 
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
