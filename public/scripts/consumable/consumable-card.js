@@ -3,7 +3,6 @@ export default function renderConsumableCard(consumable, $consumablesContainer, 
   $consumableCard.classList.add("consumable");
   $consumableCard.innerHTML = `
           <img class="consumable__image" src="${consumable.image_url}" alt="${consumable.name}">
-          <h3>${consumable.name}</h3>
          <div class="consumable__details">
       <div class="consumable__info">
         <h2 class="consumable__name"> ${consumable.name}</h2>
