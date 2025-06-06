@@ -40,24 +40,29 @@
   <% if (consumables && consumables.length > 0) { %> <%
   consumables.forEach(consumable => { %> <% if(consumable.stock <= 0) { %>
   <article class="consumable disabled">
-    <img
-      class="consumable__image"
-      src="<%= consumable.image_url %>"
-      alt="<%= consumable.name %>"
-    />
-    <div class="consumable__details">
-      <div class="consumable__info">
-        <h2 class="consumable__name"><%= consumable.name %></h2>
-        <p class="consumable__price">€ <%= consumable.price %></p>
-      </div>
+    <div class="consumable__overlay">
+      <p class="consumable__overlay-text">Niet op voorraad</p>
+    </div>
+    <div class="consumable__content">
+      <img
+        class="consumable__image"
+        src="<%= consumable.image_url %>"
+        alt="<%= consumable.name %>"
+      />
+      <div class="consumable__details">
+        <div class="consumable__info">
+          <h2 class="consumable__name"><%= consumable.name %></h2>
+          <p class="consumable__price">€ <%= consumable.price %></p>
+        </div>
 
-      <button
-        disabled
-        class="consumable__button btn btn--primary"
-        data-id="<%= consumable.id %>"
-      >
-        Toevoegen
-      </button>
+        <button
+          disabled
+          class="consumable__button btn btn--primary"
+          data-id="<%= consumable.id %>"
+        >
+          Toevoegen
+        </button>
+      </div>
     </div>
   </article>
   <% } else { %>
