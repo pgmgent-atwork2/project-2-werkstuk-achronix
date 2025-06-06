@@ -1,5 +1,6 @@
 import { addOrderToDb } from "./order.js";
-import getAllConsumables from "./getAllConsumables.js"
+import { getShowNotification } from "./utils/notifications.js";
+import getAllConsumables from "./getAllConsumables.js";
 import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
 import renderConsumableCard from "./consumable/consumable-card.js";
 
@@ -228,7 +229,11 @@ function handleOrder(key) {
 
     const cart = JSON.parse(localStorage.getItem(key) || []);
     if (cart.length === 0) {
-      alert("Je hebt geen producten in je winkelwagentje.");
+      getShowNotification()(
+        "geen producten",
+        "Je hebt geen producten in je winkelwagentje.",
+        "error"
+      );
       return;
     }
 
@@ -240,8 +245,10 @@ function handleOrder(key) {
     });
 
     if (InsufficientStock) {
-      alert(
-        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      getShowNotification()(
+        "Onvoldoende voorraad",
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
+        "error"
       );
       return;
     }
@@ -275,6 +282,12 @@ function handleOrder(key) {
     localStorage.removeItem(key);
 
     showCart([]);
+
+    getShowNotification()(
+      "Bestelling geplaatst",
+      "Je bestelling is succesvol geplaatst.",
+      "success"
+    );
   });
 }
 
@@ -287,7 +300,11 @@ function handleInstantOrder(key) {
     const cart = JSON.parse(localStorage.getItem(key) || []);
 
     if (cart.length === 0) {
-      alert("Je hebt geen producten in je winkelwagentje.");
+      getShowNotification()(
+        "Geen producten",
+        "Je hebt geen producten in je winkelwagentje.",
+        "error"
+      );
       return;
     }
 
@@ -299,8 +316,10 @@ function handleInstantOrder(key) {
     });
 
     if (InsufficientStock) {
-      alert(
-        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      getShowNotification()(
+        "Onvoldoende voorraad",
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
+        "error"
       );
       return;
     }
@@ -389,10 +408,13 @@ function handleAboveStockAmount() {
       const currentValue = parseInt($input.value);
 
       if (currentValue > stockAmount) {
-        alert(`De voorraad is niet voldoende. `);
+        getShowNotification()(
+          "Onvoldoende voorraad",
+          "Je kunt niet meer bestellen dan de beschikbare voorraad.",
+          "error"
+        );
         $input.value = stockAmount;
       }
     });
   });
 }
-

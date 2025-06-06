@@ -142,7 +142,7 @@ export function editConsumable() {
 
         if (response.ok) {
           $editConsumableModal.classList.add("hidden");
-          getShowNotification(
+          getShowNotification()(
             "product aangepast",
             "product is succesvol aangepast.",
             "success"
@@ -157,7 +157,7 @@ export function editConsumable() {
           deleteConsumable();
         } else {
           const errorData = await response.json();
-          getShowNotification(
+          getShowNotification()(
             "Fout bij het aanpassen",
             errorData.message,
             "error"
@@ -165,7 +165,7 @@ export function editConsumable() {
         }
       } catch (error) {
         console.error("Error updating user:", error);
-        getShowNotification(
+        getShowNotification()(
           "Fout bij het aanpassen",
           "Er is een probleem opgetreden bij het aanpassen van het product.",
           "error"
