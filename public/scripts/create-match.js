@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   newMatchModalContainer.id = "new-match-modal-container";
   document.body.appendChild(newMatchModalContainer);
 
+   let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
   const newMatchModalHTML = `
     <div id="newMatchModal" class="modal hidden">
       <div class="modal-content">
@@ -144,18 +148,25 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify(matchData),
         });
 
-        if (response.ok) {
-          newMatchModal.classList.add("hidden");
-          window.location.reload();
-        } else {
-          const errorData = await response.json();
-          alert(`Fout: ${errorData.message}`);
-        }
-      } catch (error) {
-        console.error("Error creating match:", error);
-        alert(
-          "Er is een probleem opgetreden bij het aanmaken van de wedstrijd."
+          if (response.ok) {
+        newMatchModal.classList.add("hidden");
+        showNotification(
+          "Wedstrijd toegevoegd",
+          "deze wedstrijd is succesvol toegevoegd.",
+          "success"
         );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        const errorData = await response.json();
+        showNotification("Fout bij het verwijderen", errorData.message, "error");
+      }
+    } catch (error) {
+      console.error("Error removing match:", error);
+      showNotification(
+        "Fout bij het toevoegen",
+        "Er is een probleem opgetreden bij het toevoegen van de wedstrijd.",
+        "error"
+      );
       }
     });
   }
