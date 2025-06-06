@@ -1,5 +1,7 @@
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
+import { deleteUser } from "./delete-user.js";
+import { editUser } from "./edit-user.js";
 
 export function createUser() {
   let newUserModalContainer = document.createElement("div");
@@ -121,6 +123,8 @@ export function createUser() {
             renderUserRow(user, $tableBody);
           });
           createUser();
+          editUser();
+          deleteUser();
         } else {
           const errorData = await response.json();
           showNotification("Fout bij aanmaken", errorData.message, "error");

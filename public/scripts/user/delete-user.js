@@ -1,5 +1,6 @@
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
+import { editUser } from "./edit-user.js";
 
 export function deleteUser() {
   let deleteUserModalContainer = document.createElement("div");
@@ -94,6 +95,7 @@ export function deleteUser() {
             renderUserRow(user, $tableBody);
           });
           deleteUser();
+          editUser();
         } else {
           const errorData = await response.json();
           showNotification("Fout bij verwijderen", errorData.message, "error");
