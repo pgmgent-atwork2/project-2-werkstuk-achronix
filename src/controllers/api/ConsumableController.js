@@ -71,6 +71,26 @@ export const destroy = async (req, res) => {
   }
 };
 
+export const updateStock = async (req, res) => {
+  const { stock } = req.body;
+  const id = req.params.id;
+
+  try {
+    const consumableExists = await Consumable.query().findById(id);
+    if (!consumableExists) {
+      return res.status(404).json({ error: "Consumable not found" });
+    }
+    const newStock = consumableExists.stock - stock;
+    const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
+      stock: newStock,
+    });
+    return res.json(updatedConsumable);
+  } catch (error) {
+    console.error("Error updating stock:", error);
+    return res.status(400).json({ error: "Failed to update stock" });
+  }
+};
+
 export const findByName = async (req, res) => {
   const { name } = req.params;
 

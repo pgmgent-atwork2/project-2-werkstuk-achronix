@@ -2,7 +2,6 @@ import { addOrderToDb } from "./order.js";
 let orderIntialized = false;
 
 export function InitShoppingCart() {
-  
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
   const $showCart = document.getElementById("show-cart");
@@ -123,7 +122,6 @@ function handleShoppingCart(data) {
   $showCart.parentElement.classList.remove("hidden");
   showCart(cart);
   removeItemFromCart();
-
 }
 
 function showCart(items) {
@@ -229,6 +227,10 @@ function handleOrder(key) {
 
     await addOrderToDb(cart);
 
+    for (const item of cart) {
+      await updateStock({ stock: item.quantity }, item.consumable_id);
+    }
+
     clearInputs();
 
     localStorage.removeItem(key);
@@ -275,6 +277,10 @@ function handleInstantOrder(key) {
         showCart([]);
         clearInputs();
 
+        for (const item of cart) {
+          await updateStock({ stock: item.quantity }, item.consumable_id);
+        }
+
         const paymentData = await response.json();
 
         window.location.href = paymentData.paymentUrl;
@@ -298,4 +304,25 @@ function clearInputs() {
       }
     }
   });
+}
+
+async function updateStock(data, id) {
+  try {
+    const response = await fetch(`/api/consumables/${id}/stock`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update stock");
+    }
+
+    const result = await response.json();
+    console.log("Stock updated successfully:", result);
+  } catch (error) {
+    console.error("Error updating stock:", error);
+  }
 }
