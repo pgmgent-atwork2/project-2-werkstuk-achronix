@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   $newConsumableModalContainer.id = "new-consumable-modal-container";
   document.body.appendChild($newConsumableModalContainer);
 
+     let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
+
   const newConsumableHTML = `
     <div id="newConsumableModal" class="modal hidden">
       <div class="modal-content">
@@ -95,14 +100,25 @@ document.addEventListener("DOMContentLoaded", function () {
           body: formData,
         });
 
-        if (response.ok) {
-          $newConsumableModal.classList.add("hidden");
-
-          window.location.reload();
-        }
-      } catch (error) {
-        console.error("Upload error:", error);
-        alert("Upload mislukt.");
+     if (response.ok) {
+        $newConsumableModal.classList.add("hidden");
+        showNotification(
+          "Product toegevoegd",
+          "product is succesvol toegevoegd.",
+          "success"
+        );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        const errorData = await response.json();
+        showNotification("Fout bij bijwerken", errorData.message, "error");
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      showNotification(
+        "Fout bij product toevoegen",
+        "Er is een probleem opgetreden bij het toevoegen van het product.",
+        "error"
+      );
       }
     });
   }
