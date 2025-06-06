@@ -22,6 +22,7 @@ class Order extends Model {
         id: { type: "integer" },
         user_id: { type: "integer" },
         status: { type: "string" },
+        method: { type: "string" },
         order_on: { type: "string", format: "date-time" },
       },
     };
@@ -29,7 +30,6 @@ class Order extends Model {
 
   static get relationMappings() {
     return {
-     
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: User,

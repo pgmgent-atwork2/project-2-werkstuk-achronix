@@ -8,6 +8,7 @@ export async function addOrderToDb(cart) {
       body: JSON.stringify({
         user_id: cart[0].user_id,
         status: "NOT_PAID",
+        method: "UNKOWN",
         order_on: new Date().toISOString(),
       }),
     });
