@@ -1,4 +1,4 @@
-import { addOrderToDb } from "./order.js";
+import { addOrderToDb, addToExistingOrder } from "./order.js";
 import { getShowNotification } from "./utils/notifications.js";
 import getAllConsumables from "./getAllConsumables.js";
 import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
@@ -253,7 +253,7 @@ function handleOrder(key) {
       return;
     }
 
-    await addOrderToDb(cart);
+    await addToExistingOrder(cart);
 
     $consumablesContainer.innerHTML = "";
 
