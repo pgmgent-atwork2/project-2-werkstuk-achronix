@@ -89,6 +89,7 @@ router.delete("/orders/:id", API_OrderController.destroy);
 // Order items
 router.get("/order-items", API_OrderItemsController.index);
 router.get("/order-items/:id", API_OrderItemsController.show);
+router.get("/order-items/order/:orderId", API_OrderItemsController.getItemsByOrder);
 router.post("/order-items", API_OrderItemsController.store);
 router.put("/order-items/:id", API_OrderItemsController.update);
 router.delete("/order-items/:id", API_OrderItemsController.destroy);
