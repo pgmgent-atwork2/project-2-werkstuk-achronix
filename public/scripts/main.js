@@ -1,4 +1,3 @@
-import "./utils/notifications.js";
 import "./sidebar.js";
 import "./edit-user.js";
 import "./create-user.js";
