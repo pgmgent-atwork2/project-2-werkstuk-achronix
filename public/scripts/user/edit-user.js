@@ -1,11 +1,16 @@
-document.addEventListener("DOMContentLoaded", function () {
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+
+export function editUser() {
   let editModalContainer = document.createElement("div");
   editModalContainer.id = "edit-modal-container";
   document.body.appendChild(editModalContainer);
 
-  let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
+  let showNotification =
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    };
 
   const editUserModalHTML = `
     <div id="editUserModal" class="modal hidden">
@@ -143,7 +148,13 @@ document.addEventListener("DOMContentLoaded", function () {
           "De gebruiker is succesvol bijgewerkt.",
           "success"
         );
-        setTimeout(() => window.location.reload(), 1500);
+        const users = await getAllUsers();
+        const $tableBody = document.querySelector("#userTableBody");
+        $tableBody.innerHTML = "";
+        users.forEach((user) => {
+          renderUserRow(user, $tableBody);
+        });
+        editUser();
       } else {
         const errorData = await response.json();
         showNotification("Fout bij bijwerken", errorData.message, "error");
@@ -157,4 +168,4 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
   });
-});
+}

@@ -19,6 +19,8 @@ import { editConsumables } from "./consumable/edit-consumable.js";
 import { deleteConsumable } from "./consumable/delete-consumable.js";
 
 import { createUser } from "./user/create-user.js";
+import { editUser } from "./user/edit-user.js";
+import { deleteUser } from "./user/delete-user.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   createConsumable();
@@ -26,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
   deleteConsumable();
 
   createUser();
+  editUser();
+  deleteUser();
 
   InitShoppingCart();
 });

@@ -1,12 +1,16 @@
-document.addEventListener("DOMContentLoaded", function () {
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+
+export function deleteUser() {
   let deleteUserModalContainer = document.createElement("div");
   deleteUserModalContainer.id = "delete-user-modal-container";
   document.body.appendChild(deleteUserModalContainer);
 
-   let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
+  let showNotification =
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    };
 
   const deleteUserModalHTML = `
     <div id="deleteUserModal" class="modal hidden">
@@ -76,26 +80,32 @@ document.addEventListener("DOMContentLoaded", function () {
           method: "DELETE",
         });
 
-       if (response.ok) {
-        deleteModal.classList.add("hidden");
+        if (response.ok) {
+          deleteModal.classList.add("hidden");
+          showNotification(
+            "Gebruiker verwijderd",
+            "De gebruiker is succesvol verwijderd.",
+            "success"
+          );
+          const users = await getAllUsers();
+          const $tableBody = document.querySelector("#userTableBody");
+          $tableBody.innerHTML = "";
+          users.forEach((user) => {
+            renderUserRow(user, $tableBody);
+          });
+          deleteUser();
+        } else {
+          const errorData = await response.json();
+          showNotification("Fout bij verwijderen", errorData.message, "error");
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
         showNotification(
-          "Gebruiker verwijderd",
-          "De gebruiker is succesvol verwijderd.",
-          "success"
+          "Fout bij verwijderen",
+          "Er is een probleem opgetreden bij het verwijden van de gebruiker.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij verwijderen", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      showNotification(
-        "Fout bij verwijderen",
-        "Er is een probleem opgetreden bij het verwijden van de gebruiker.",
-        "error"
-      );
       }
     });
   }
-});
+}
