@@ -5,6 +5,7 @@ export function up(knex) {
     table.increments("id").primary();
     table.integer("user_id");
     table.string("status").notNullable();
+    table.string("method").notNullable();
     table.timestamp("order_on");
     table.foreign("user_id").references("users.id");
   });
