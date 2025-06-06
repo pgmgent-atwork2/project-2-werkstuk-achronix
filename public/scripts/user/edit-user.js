@@ -1,3 +1,8 @@
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+import {deleteUser} from "./delete-user.js";
+
+export function editUser() {
 import { getShowNotification } from "./utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -141,7 +146,14 @@ document.addEventListener("DOMContentLoaded", function () {
           "De gebruiker is succesvol bijgewerkt.",
           "success"
         );
-        setTimeout(() => window.location.reload(), 1500);
+        const users = await getAllUsers();
+        const $tableBody = document.querySelector("#userTableBody");
+        $tableBody.innerHTML = "";
+        users.forEach((user) => {
+          renderUserRow(user, $tableBody);
+        });
+        editUser();
+        deleteUser();
       } else {
         const errorData = await response.json();
         getShowNotification()("Fout bij bijwerken", errorData.message, "error");
@@ -155,4 +167,4 @@ document.addEventListener("DOMContentLoaded", function () {
       );
     }
   });
-});
+}

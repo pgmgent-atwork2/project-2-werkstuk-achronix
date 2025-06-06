@@ -1,6 +1,11 @@
 import { getShowNotification } from "../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+import renderConsumableRow from "./consumable-table.js";
+import getAllConsumables from "../getAllConsumables.js";
+import { deleteConsumable } from "./delete-consumable.js";
+
+export function editConsumable() {
   let $editConsumableModalContainer = document.createElement("div");
   $editConsumableModalContainer.id = "edit-consumable-modal-container";
   document.body.appendChild($editConsumableModalContainer);
@@ -139,6 +144,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           $editConsumableModal.classList.add("hidden");
+          showNotification(
+            "product aangepast",
+            "product is succesvol aangepast.",
+            "success"
+          );
+          const consumables = await getAllConsumables();
+          const $tableBody = document.querySelector("#consumablesTableBody");
+          $tableBody.innerHTML = "";
+          consumables.forEach((consumable) => {
+            renderConsumableRow(consumable, $tableBody);
+          });
+          editConsumable();
+          deleteConsumable();
+        } else {
+          const errorData = await response.json();
+          showNotification(
+            "Fout bij het aanpassen",
+            errorData.message,
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
+        showNotification(
+          "Fout bij het aanpassen",
+          "Er is een probleem opgetreden bij het aanpassen van het product.",
+          "error"
+        );
+        if (response.ok) {
+          $editConsumableModal.classList.add("hidden");
           getShowNotification()(
             "Product aangepast",
             "Product is succesvol aangepast.",
@@ -163,4 +198,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}

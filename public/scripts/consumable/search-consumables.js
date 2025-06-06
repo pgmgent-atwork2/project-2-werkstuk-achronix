@@ -2,6 +2,8 @@ import { InitShoppingCart } from "../shoppingCart.js";
 import renderConsumableRow from "./consumable-table.js";
 import renderConsumableCard from "./consumable-card.js";
 import renderConsumableCardDisabled from "./consumable-card-disabled.js";
+import { deleteConsumable } from "./delete-consumable.js";
+import {editConsumable} from "./edit-consumable.js";
 
 if (document.getElementById("consumablesTableBody")) {
   const $tableBody = document.getElementById("consumablesTableBody");
@@ -28,6 +30,8 @@ if (document.getElementById("consumablesTableBody")) {
       consumables.forEach((consumable) => {
         renderConsumableRow(consumable, $tableBody);
       });
+      deleteConsumable();
+      editConsumable();
     } catch (error) {
       console.error("Fout bij het ophalen van producten:", error);
       $tableBody.innerHTML =
@@ -58,6 +62,8 @@ if (document.getElementById("consumablesTableBody")) {
       consumables.forEach((consumable) => {
         renderConsumableRow(consumable, $tableBody);
       });
+      deleteConsumable();
+      editConsumable();
     } catch (error) {
       console.error("Fout bij het ophalen van producten:", error);
       $tableBody.innerHTML =

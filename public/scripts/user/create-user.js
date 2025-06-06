@@ -1,6 +1,12 @@
 import { getShowNotification } from "./utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+import { deleteUser } from "./delete-user.js";
+import { editUser } from "./edit-user.js";
+
+export function createUser() {
   let newUserModalContainer = document.createElement("div");
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
@@ -106,7 +112,16 @@ document.addEventListener("DOMContentLoaded", function () {
             "De nieuwe gebruiker is succesvol toegevoegd.",
             "success"
           );
-          setTimeout(() => window.location.reload(), 1500);
+
+          const users = await getAllUsers();
+          const $tableBody = document.querySelector("#userTableBody");
+          $tableBody.innerHTML = "";
+          users.forEach((user) => {
+            renderUserRow(user, $tableBody);
+          });
+          createUser();
+          editUser();
+          deleteUser();
         } else {
           const errorData = await response.json();
           getShowNotification()(
@@ -125,4 +140,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}
