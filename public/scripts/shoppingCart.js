@@ -1,4 +1,7 @@
 import { addOrderToDb } from "./order.js";
+import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
+import renderConsumableCard from "./consumable/consumable-card.js";
+
 let orderIntialized = false;
 
 export function InitShoppingCart() {
@@ -216,6 +219,7 @@ function removeItemFromCart() {
 }
 
 function handleOrder(key) {
+  const $consumablesContainer = document.querySelector(".consumables");
   const $orderBtn = document.getElementById("order-btn");
 
   $orderBtn.addEventListener("click", async (e) => {
@@ -227,18 +231,39 @@ function handleOrder(key) {
       return;
     }
 
-    const itemStock = cart.every((item) => {
-      const stockAmount = parseInt(item.stock);
-      const currentValue = parseInt(item.quantity);
-      return currentValue <= stockAmount;
+    const consumables = await getAllConsumables();
+
+    const InsufficientStock = cart.some((item) => {
+      const consumable = consumables.find((c) => c.id === item.consumable_id);
+      return consumable && item.quantity > consumable.stock;
     });
 
-    if (!itemStock) {
-      alert("Een of meer producten hebben niet genoeg voorraad.");
+    if (InsufficientStock) {
+      alert(
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      );
       return;
     }
 
     await addOrderToDb(cart);
+
+    $consumablesContainer.innerHTML = "";
+
+    consumables.forEach((consumable) => {
+      if (consumable.stock === 0) {
+        renderConsumableCardDisabled(
+          consumable,
+          $consumablesContainer,
+          cart[0].user_id
+        );
+      } else {
+        renderConsumableCard(
+          consumable,
+          $consumablesContainer,
+          cart[0].user_id
+        );
+      }
+    });
 
     for (const item of cart) {
       await updateStock({ stock: item.quantity }, item.consumable_id);
@@ -262,6 +287,20 @@ function handleInstantOrder(key) {
 
     if (cart.length === 0) {
       alert("Je hebt geen producten in je winkelwagentje.");
+      return;
+    }
+
+    const consumables = await getAllConsumables();
+
+    const InsufficientStock = cart.some((item) => {
+      const consumable = consumables.find((c) => c.id === item.consumable_id);
+      return consumable && item.quantity > consumable.stock;
+    });
+
+    if (InsufficientStock) {
+      alert(
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      );
       return;
     }
 
@@ -354,4 +393,18 @@ function handleAboveStockAmount() {
       }
     });
   });
+}
+
+async function getAllConsumables() {
+  try {
+    const response = await fetch("/api/consumables");
+    if (!response.ok) {
+      throw new Error("Fout bij het ophalen van producten");
+    }
+    const consumables = await response.json();
+    return consumables;
+  } catch (error) {
+    console.error("Fout bij het ophalen van producten:", error);
+    return [];
+  }
 }
