@@ -1,11 +1,9 @@
+import { getShowNotification } from "../utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   let $editConsumableModalContainer = document.createElement("div");
   $editConsumableModalContainer.id = "edit-consumable-modal-container";
   document.body.appendChild($editConsumableModalContainer);
-
-  let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
 
   const editConsumableHTML = `
     <div id="editConsumableModal" class="modal hidden">
@@ -94,8 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
         $editConsumableModal.classList.remove("hidden");
       } catch (error) {
         console.error("Error fetching user data:", error);
-        alert(
-          "Er is een probleem opgetreden bij het ophalen van de gebruikersgegevens."
+        getShowNotification()(
+          "Fout bij ophalen",
+          "Er is een probleem opgetreden bij het ophalen van de gebruikersgegevens.",
+          "error"
         );
       }
     });
@@ -131,32 +131,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const formData = new FormData($editConsumableForm);
 
-
       try {
         const response = await fetch("/upload/consumable-image", {
           method: "PUT",
           body: formData,
         });
 
-      if (response.ok) {
-        $editConsumableModal.classList.add("hidden");
-        showNotification(
-          "product aangepast",
-          "product is succesvol aangepast.",
-          "success"
+        if (response.ok) {
+          $editConsumableModal.classList.add("hidden");
+          getShowNotification()(
+            "Product aangepast",
+            "Product is succesvol aangepast.",
+            "success"
+          );
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          const errorData = await response.json();
+          getShowNotification()(
+            "Fout bij het aanpassen",
+            errorData.message,
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
+        getShowNotification()(
+          "Fout bij het aanpassen",
+          "Er is een probleem opgetreden bij het aanpassen van het product.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij het aanpassen", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      showNotification(
-        "Fout bij het aanpassen",
-        "Er is een probleem opgetreden bij het aanpassen van het product.",
-        "error"
-      );
       }
     });
   }
