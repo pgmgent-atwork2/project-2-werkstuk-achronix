@@ -38,7 +38,29 @@
 
 <div class="consumables">
   <% if (consumables && consumables.length > 0) { %> <%
-  consumables.forEach(consumable => { %>
+  consumables.forEach(consumable => { %> <% if(consumable.stock <= 0) { %>
+  <article class="consumable disabled">
+    <img
+      class="consumable__image"
+      src="<%= consumable.image_url %>"
+      alt="<%= consumable.name %>"
+    />
+    <div class="consumable__details">
+      <div class="consumable__info">
+        <h2 class="consumable__name"><%= consumable.name %></h2>
+        <p class="consumable__price">€ <%= consumable.price %></p>
+      </div>
+
+      <button
+        disabled
+        class="consumable__button btn btn--primary"
+        data-id="<%= consumable.id %>"
+      >
+        Toevoegen
+      </button>
+    </div>
+  </article>
+  <% } else { %>
   <article class="consumable">
     <img
       class="consumable__image"
@@ -93,7 +115,7 @@
       </form>
     </div>
   </article>
-  <% }); %> <% } %>
+  <% } %> <% }); %> <% } %>
 </div>
 
 <div class="cart-btn-container hidden">
