@@ -227,6 +227,17 @@ function handleOrder(key) {
       return;
     }
 
+    const itemStock = cart.every((item) => {
+      const stockAmount = parseInt(item.stock);
+      const currentValue = parseInt(item.quantity);
+      return currentValue <= stockAmount;
+    });
+
+    if (!itemStock) {
+      alert("Een of meer producten hebben niet genoeg voorraad.");
+      return;
+    }
+
     await addOrderToDb(cart);
 
     for (const item of cart) {
