@@ -40,7 +40,7 @@ export const dashboard = async (req, res) => {
 
 export const bestellen = async (req, res) => {
   const user = req.user;
-  const consumables = await Consumable.query();
+  const consumables = await Consumable.query().orderBy("stock", "desc");
   const categories = await Category.query();
 
   res.render("pages/bestellen", {
@@ -74,9 +74,13 @@ export const wedstrijden = async (req, res) => {
   });
 
   // Get attendance data for all users
-  const allAttendanceData = await Attendance.query()
-    .select("user_id", "match_id", "status", "is_selected");
-  
+  const allAttendanceData = await Attendance.query().select(
+    "user_id",
+    "match_id",
+    "status",
+    "is_selected"
+  );
+
   // Create attendance data for each user
   const userAttendance = {};
   allAttendanceData.forEach((attendance) => {
@@ -85,12 +89,12 @@ export const wedstrijden = async (req, res) => {
     }
     userAttendance[attendance.user_id][attendance.match_id] = {
       status: attendance.status,
-      is_selected: attendance.is_selected
+      is_selected: attendance.is_selected,
     };
   });
-  
+
   // Add attendance data to each user
-  users.forEach(user => {
+  users.forEach((user) => {
     user.attendance = userAttendance[user.id] || {};
   });
 
