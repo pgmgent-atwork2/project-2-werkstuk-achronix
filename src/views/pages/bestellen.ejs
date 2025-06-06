@@ -38,7 +38,34 @@
 
 <div class="consumables">
   <% if (consumables && consumables.length > 0) { %> <%
-  consumables.forEach(consumable => { %>
+  consumables.forEach(consumable => { %> <% if(consumable.stock <= 0) { %>
+  <article class="consumable disabled">
+    <div class="consumable__overlay">
+      <p class="consumable__overlay-text">Niet op voorraad</p>
+    </div>
+    <div class="consumable__content">
+      <img
+        class="consumable__image"
+        src="<%= consumable.image_url %>"
+        alt="<%= consumable.name %>"
+      />
+      <div class="consumable__details">
+        <div class="consumable__info">
+          <h2 class="consumable__name"><%= consumable.name %></h2>
+          <p class="consumable__price">€ <%= consumable.price %></p>
+        </div>
+
+        <button
+          disabled
+          class="consumable__button btn btn--primary"
+          data-id="<%= consumable.id %>"
+        >
+          Toevoegen
+        </button>
+      </div>
+    </div>
+  </article>
+  <% } else { %>
   <article class="consumable">
     <img
       class="consumable__image"
@@ -82,18 +109,19 @@
         <button name="reduce" type="submit" class="reduce-count">-</button>
         <input
           data-consumable-id="<%= consumable.id %>"
+          data-consumable-stock="<%= consumable.stock %>"
           class="consumable__quantity"
           type="number"
           name="quantity"
           min="0"
-          max="10"
+          max="<%= consumable.stock %>"
           value="0"
         />
         <button name="increase" type="submit" class="increase-count">+</button>
       </form>
     </div>
   </article>
-  <% }); %> <% } %>
+  <% } %> <% }); %> <% } %>
 </div>
 
 <div class="cart-btn-container hidden">

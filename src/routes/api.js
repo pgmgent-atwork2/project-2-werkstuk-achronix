@@ -30,6 +30,7 @@ router.get(
 );
 router.post("/consumables", API_ConsumableController.store);
 router.put("/consumables/:id", API_ConsumableController.update);
+router.put("/consumables/:id/stock", API_ConsumableController.updateStock);
 router.delete("/consumables/:id", API_ConsumableController.destroy);
 
 // Categories

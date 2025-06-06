@@ -1,8 +1,10 @@
 import { addOrderToDb } from "./order.js";
+import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
+import renderConsumableCard from "./consumable/consumable-card.js";
+
 let orderIntialized = false;
 
 export function InitShoppingCart() {
-  
   const $consumables = document.querySelectorAll(".consumable");
   const $cart = document.querySelector(".cart");
   const $showCart = document.getElementById("show-cart");
@@ -10,6 +12,8 @@ export function InitShoppingCart() {
 
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
+
+  handleAboveStockAmount();
 
   if (!orderIntialized) {
     orderIntialized = true;
@@ -123,7 +127,6 @@ function handleShoppingCart(data) {
   $showCart.parentElement.classList.remove("hidden");
   showCart(cart);
   removeItemFromCart();
-
 }
 
 function showCart(items) {
@@ -216,6 +219,7 @@ function removeItemFromCart() {
 }
 
 function handleOrder(key) {
+  const $consumablesContainer = document.querySelector(".consumables");
   const $orderBtn = document.getElementById("order-btn");
 
   $orderBtn.addEventListener("click", async (e) => {
@@ -227,7 +231,43 @@ function handleOrder(key) {
       return;
     }
 
+    const consumables = await getAllConsumables();
+
+    const InsufficientStock = cart.some((item) => {
+      const consumable = consumables.find((c) => c.id === item.consumable_id);
+      return consumable && item.quantity > consumable.stock;
+    });
+
+    if (InsufficientStock) {
+      alert(
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      );
+      return;
+    }
+
     await addOrderToDb(cart);
+
+    $consumablesContainer.innerHTML = "";
+
+    consumables.forEach((consumable) => {
+      if (consumable.stock === 0) {
+        renderConsumableCardDisabled(
+          consumable,
+          $consumablesContainer,
+          cart[0].user_id
+        );
+      } else {
+        renderConsumableCard(
+          consumable,
+          $consumablesContainer,
+          cart[0].user_id
+        );
+      }
+    });
+
+    for (const item of cart) {
+      await updateStock({ stock: item.quantity }, item.consumable_id);
+    }
 
     clearInputs();
 
@@ -247,6 +287,20 @@ function handleInstantOrder(key) {
 
     if (cart.length === 0) {
       alert("Je hebt geen producten in je winkelwagentje.");
+      return;
+    }
+
+    const consumables = await getAllConsumables();
+
+    const InsufficientStock = cart.some((item) => {
+      const consumable = consumables.find((c) => c.id === item.consumable_id);
+      return consumable && item.quantity > consumable.stock;
+    });
+
+    if (InsufficientStock) {
+      alert(
+        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje."
+      );
       return;
     }
 
@@ -275,6 +329,10 @@ function handleInstantOrder(key) {
         showCart([]);
         clearInputs();
 
+        for (const item of cart) {
+          await updateStock({ stock: item.quantity }, item.consumable_id);
+        }
+
         const paymentData = await response.json();
 
         window.location.href = paymentData.paymentUrl;
@@ -298,4 +356,55 @@ function clearInputs() {
       }
     }
   });
+}
+
+async function updateStock(data, id) {
+  try {
+    const response = await fetch(`/api/consumables/${id}/stock`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update stock");
+    }
+
+    const result = await response.json();
+    console.log("Stock updated successfully:", result);
+  } catch (error) {
+    console.error("Error updating stock:", error);
+  }
+}
+
+function handleAboveStockAmount() {
+  const $quantityInputs = document.querySelectorAll(".consumable__quantity");
+
+  $quantityInputs.forEach(($input) => {
+    $input.addEventListener("input", () => {
+      const stockAmount = parseInt($input.dataset.consumableStock);
+      const currentValue = parseInt($input.value);
+
+      if (currentValue > stockAmount) {
+        alert(`De voorraad is niet voldoende. `);
+        $input.value = stockAmount;
+      }
+    });
+  });
+}
+
+async function getAllConsumables() {
+  try {
+    const response = await fetch("/api/consumables");
+    if (!response.ok) {
+      throw new Error("Fout bij het ophalen van producten");
+    }
+    const consumables = await response.json();
+    return consumables;
+  } catch (error) {
+    console.error("Fout bij het ophalen van producten:", error);
+    return [];
+  }
 }

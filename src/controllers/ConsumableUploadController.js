@@ -24,6 +24,7 @@ export const uploadConsumableImage = async (req, res) => {
     const consumableData = {
       name: req.body.name,
       price: parseFloat(req.body.price),
+      stock: parseInt(req.body.stock),
       image_url: imageUrl,
       category_id: parseInt(req.body.category),
     };
@@ -42,7 +43,7 @@ export const uploadConsumableImage = async (req, res) => {
 
 export const updateConsumableImage = async (req, res) => {
   try {
-    const { id, name, price, category } = req.body;
+    const { id, name, stock, price, category } = req.body;
 
     const consumable = await Consumable.query().findById(id);
 
@@ -54,6 +55,7 @@ export const updateConsumableImage = async (req, res) => {
       await Consumable.query().patchAndFetchById(id, {
         name,
         price: parseFloat(price),
+        stock: parseInt(stock),
         category_id: parseInt(category),
       });
 
@@ -81,6 +83,7 @@ export const updateConsumableImage = async (req, res) => {
     await Consumable.query().patchAndFetchById(id, {
       name,
       price: parseFloat(price),
+      stock: parseInt(stock),
       image_url: imageUrl,
       category_id: parseInt(category),
     });

@@ -33,10 +33,8 @@ export async function addOrderToDb(cart) {
         }),
       });
     });
-      return orderId
+    return orderId;
   } catch (error) {
     console.error("Error placing order:", error);
   }
-
-
 }

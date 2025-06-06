@@ -40,7 +40,7 @@ export const dashboard = async (req, res) => {
 
 export const bestellen = async (req, res) => {
   const user = req.user;
-  const consumables = await Consumable.query();
+  const consumables = await Consumable.query().orderBy("stock", "desc");
   const categories = await Category.query();
 
   res.render("pages/bestellen", {

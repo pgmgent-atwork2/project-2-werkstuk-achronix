@@ -15,12 +15,13 @@ export const index = async (req, res) => {
 };
 
 export const store = async (req, res) => {
-  const { name, price, image_url, category_id } = req.body;
+  const { name, price, stock, image_url, category_id } = req.body;
 
   try {
     const consumable = await Consumable.query().insert({
       name,
       price,
+      stock,
       image_url,
       category_id,
     });
@@ -33,7 +34,7 @@ export const store = async (req, res) => {
 
 export const update = async (req, res) => {
   const id = req.params.id;
-  const { name, price, image_url, category_id } = req.body;
+  const { name, price, stock, image_url, category_id } = req.body;
 
   try {
     const consumableExists = await Consumable.query().findById(id);
@@ -43,6 +44,7 @@ export const update = async (req, res) => {
     const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
       name,
       price,
+      stock,
       image_url,
       category_id,
     });
@@ -66,6 +68,26 @@ export const destroy = async (req, res) => {
   } catch (error) {
     console.error("Error deleting consumable:", error);
     return res.json({ error: "Failed to delete consumable" });
+  }
+};
+
+export const updateStock = async (req, res) => {
+  const { stock } = req.body;
+  const id = req.params.id;
+
+  try {
+    const consumableExists = await Consumable.query().findById(id);
+    if (!consumableExists) {
+      return res.status(404).json({ error: "Consumable not found" });
+    }
+    const newStock = consumableExists.stock - stock;
+    const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
+      stock: newStock,
+    });
+    return res.json(updatedConsumable);
+  } catch (error) {
+    console.error("Error updating stock:", error);
+    return res.status(400).json({ error: "Failed to update stock" });
   }
 };
 

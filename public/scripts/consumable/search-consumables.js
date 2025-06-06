@@ -1,6 +1,7 @@
 import { InitShoppingCart } from "../shoppingCart.js";
 import renderConsumableRow from "./consumable-table.js";
 import renderConsumableCard from "./consumable-card.js";
+import renderConsumableCardDisabled from "./consumable-card-disabled.js";
 
 if (document.getElementById("consumablesTableBody")) {
   const $tableBody = document.getElementById("consumablesTableBody");
@@ -86,7 +87,11 @@ if (document.querySelector(".consumables")) {
       }
 
       consumables.forEach((consumable) => {
-        renderConsumableCard(consumable, $consumablesContainer, userId);
+        if (consumable.stock === 0) {
+          renderConsumableCardDisabled(consumable, $consumablesContainer, userId);
+        } else {
+          renderConsumableCard(consumable, $consumablesContainer, userId);
+        }
       });
       InitShoppingCart();
     } catch (error) {
@@ -111,9 +116,13 @@ if (document.querySelector(".consumables")) {
         return;
       }
       consumables.forEach((consumable) => {
-        renderConsumableCard(consumable, $consumablesContainer, userId);
+        if (consumable.stock === 0) {
+          renderConsumableCardDisabled(consumable, $consumablesContainer,userId);
+        } else {
+          renderConsumableCard(consumable, $consumablesContainer, userId);
+        }
       });
-      
+
       InitShoppingCart();
     } catch (error) {
       console.error("Fout bij het ophalen van producten:", error);

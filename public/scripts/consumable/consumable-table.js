@@ -4,6 +4,7 @@ export default function renderConsumableRow(consumable, $tableBody) {
               <td>${consumable.id}</td>
               <td>${consumable.name}</td>
               <td>${consumable.price}</td>
+              <td>${consumable.stock}</td>
               <td> <img src=${consumable.image_url} alt="${consumable.name}"></td>
                 <td>${consumable.category_id}</td>
               <td>
