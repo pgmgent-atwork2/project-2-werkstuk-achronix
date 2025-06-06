@@ -1,6 +1,4 @@
 import { getShowNotification } from "../utils/notifications.js";
-
-document.addEventListener("DOMContentLoaded", function () {
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
 import { deleteConsumable } from "./delete-consumable.js";
@@ -144,7 +142,7 @@ export function editConsumable() {
 
         if (response.ok) {
           $editConsumableModal.classList.add("hidden");
-          showNotification(
+          getShowNotification(
             "product aangepast",
             "product is succesvol aangepast.",
             "success"
@@ -159,7 +157,7 @@ export function editConsumable() {
           deleteConsumable();
         } else {
           const errorData = await response.json();
-          showNotification(
+          getShowNotification(
             "Fout bij het aanpassen",
             errorData.message,
             "error"
@@ -167,30 +165,7 @@ export function editConsumable() {
         }
       } catch (error) {
         console.error("Error updating user:", error);
-        showNotification(
-          "Fout bij het aanpassen",
-          "Er is een probleem opgetreden bij het aanpassen van het product.",
-          "error"
-        );
-        if (response.ok) {
-          $editConsumableModal.classList.add("hidden");
-          getShowNotification()(
-            "Product aangepast",
-            "Product is succesvol aangepast.",
-            "success"
-          );
-          setTimeout(() => window.location.reload(), 1500);
-        } else {
-          const errorData = await response.json();
-          getShowNotification()(
-            "Fout bij het aanpassen",
-            errorData.message,
-            "error"
-          );
-        }
-      } catch (error) {
-        console.error("Error updating user:", error);
-        getShowNotification()(
+        getShowNotification(
           "Fout bij het aanpassen",
           "Er is een probleem opgetreden bij het aanpassen van het product.",
           "error"

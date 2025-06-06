@@ -1,6 +1,5 @@
-import { getShowNotification } from "./utils/notifications.js";
+import { getShowNotification } from "../utils/notifications.js";
 
-document.addEventListener("DOMContentLoaded", function () {
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
 import { editUser } from "./edit-user.js";
@@ -80,7 +79,7 @@ export function deleteUser() {
 
         if (response.ok) {
           deleteModal.classList.add("hidden");
-          showNotification(
+          getShowNotification(
             "Gebruiker verwijderd",
             "De gebruiker is succesvol verwijderd.",
             "success"
@@ -95,32 +94,13 @@ export function deleteUser() {
           editUser();
         } else {
           const errorData = await response.json();
-          showNotification("Fout bij verwijderen", errorData.message, "error");
+          getShowNotification("Fout bij verwijderen", errorData.message, "error");
         }
       } catch (error) {
         console.error("Error updating user:", error);
-        showNotification(
+        getShowNotification(
           "Fout bij verwijderen",
           "Er is een probleem opgetreden bij het verwijden van de gebruiker.",
-          "error"
-        );
-        if (response.ok) {
-          deleteModal.classList.add("hidden");
-          getShowNotification()(
-            "Gebruiker verwijderd",
-            "De gebruiker is succesvol verwijderd.",
-            "success"
-          );
-          setTimeout(() => window.location.reload(), 1500);
-        } else {
-          const errorData = await response.json();
-          getShowNotification()("Fout bij verwijderen", errorData.message, "error");
-        }
-      } catch (error) {
-        console.error("Error updating user:", error);
-        getShowNotification()(
-          "Fout bij verwijderen",
-          "Er is een probleem opgetreden bij het verwijderen van de gebruiker.",
           "error"
         );
       }

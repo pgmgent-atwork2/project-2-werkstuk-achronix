@@ -1,6 +1,5 @@
 import { getShowNotification } from "../utils/notifications.js";
 
-document.addEventListener("DOMContentLoaded", function () {
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
 import { deleteConsumable } from "./delete-consumable.js";
@@ -10,12 +9,6 @@ export function createConsumable() {
   let $newConsumableModalContainer = document.createElement("div");
   $newConsumableModalContainer.id = "new-consumable-modal-container";
   document.body.appendChild($newConsumableModalContainer);
-
-  let showNotification =
-    window.showNotification ||
-    function (title, message, type) {
-      alert(`${type.toUpperCase()}: ${title} - ${message}`);
-    };
 
   const newConsumableHTML = `
     <div id="newConsumableModal" class="modal hidden">
@@ -117,7 +110,7 @@ export function createConsumable() {
 
         if (response.ok) {
           $newConsumableModal.classList.add("hidden");
-          showNotification(
+          getShowNotification(
             "Product toegevoegd",
             "product is succesvol toegevoegd.",
             "success"
@@ -133,34 +126,15 @@ export function createConsumable() {
           deleteConsumable();
         } else {
           const errorData = await response.json();
-          showNotification("Fout bij bijwerken", errorData.message, "error");
+          getShowNotification("Fout bij bijwerken", errorData.message, "error");
         }
       } catch (error) {
         console.error("Error updating user:", error);
-        showNotification(
+        getShowNotification(
           "Fout bij product toevoegen",
           "Er is een probleem opgetreden bij het toevoegen van het product.",
           "error"
         );
-     if (response.ok) {
-        $newConsumableModal.classList.add("hidden");
-        getShowNotification(
-          "Product toegevoegd",
-          "product is succesvol toegevoegd.",
-          "success"
-        );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        getShowNotification("Fout bij bijwerken", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      getShowNotification(
-        "Fout bij product toevoegen",
-        "Er is een probleem opgetreden bij het toevoegen van het product.",
-        "error"
-      );
       }
     });
   }

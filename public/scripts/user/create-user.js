@@ -1,6 +1,5 @@
-import { getShowNotification } from "./utils/notifications.js";
+import { getShowNotification } from "../utils/notifications.js";
 
-document.addEventListener("DOMContentLoaded", function () {
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
 import { deleteUser } from "./delete-user.js";

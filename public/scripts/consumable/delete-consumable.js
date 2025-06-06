@@ -1,20 +1,13 @@
 import { getShowNotification } from "../utils/notifications.js";
 
-document.addEventListener("DOMContentLoaded", function () {
 import getAllConsumables from "../getAllConsumables.js";
 import renderConsumableRow from "./consumable-table.js";
-import {editConsumable} from "./edit-consumable.js";
+import { editConsumable } from "./edit-consumable.js";
 
 export function deleteConsumable() {
   let deleteConsumableModalContainer = document.createElement("div");
   deleteConsumableModalContainer.id = "delete-consumable-modal-container";
   document.body.appendChild(deleteConsumableModalContainer);
-
-  let showNotification =
-    window.showNotification ||
-    function (title, message, type) {
-      alert(`${type.toUpperCase()}: ${title} - ${message}`);
-    };
 
   const deleteConsumableModalHTML = `
     <div id="deleteConsumableModal" class="modal hidden">
@@ -92,7 +85,7 @@ export function deleteConsumable() {
 
         if (response.ok) {
           deleteModal.classList.add("hidden");
-          showNotification(
+          getShowNotification(
             "product is verwijderd",
             "product is succesvol verwijderd.",
             "success"
@@ -107,7 +100,7 @@ export function deleteConsumable() {
           editConsumable();
         } else {
           const errorData = await response.json();
-          showNotification(
+          getShowNotification(
             "Fout bij het verwijderen",
             errorData.message,
             "error"
@@ -115,26 +108,7 @@ export function deleteConsumable() {
         }
       } catch (error) {
         console.error("Error removing product:", error);
-        showNotification(
-          "Fout bij het verwijderen",
-          "Er is een probleem opgetreden bij het verwijderen van het product.",
-          "error"
-        );
-        if (response.ok) {
-          deleteModal.classList.add("hidden");
-          getShowNotification()(
-            "Product is verwijderd",
-            "Product is succesvol verwijderd.",
-            "success"
-          );
-          setTimeout(() => window.location.reload(), 1500);
-        } else {
-          const errorData = await response.json();
-          getShowNotification()("Fout bij het verwijderen", errorData.message, "error");
-        }
-      } catch (error) {
-        console.error("Error removing product:", error);
-        getShowNotification()(
+        getShowNotification(
           "Fout bij het verwijderen",
           "Er is een probleem opgetreden bij het verwijderen van het product.",
           "error"

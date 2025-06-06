@@ -1,11 +1,9 @@
+import { getShowNotification } from "../utils/notifications.js";
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
-import {deleteUser} from "./delete-user.js";
+import { deleteUser } from "./delete-user.js";
 
 export function editUser() {
-import { getShowNotification } from "./utils/notifications.js";
-
-document.addEventListener("DOMContentLoaded", function () {
   let editModalContainer = document.createElement("div");
   editModalContainer.id = "edit-modal-container";
   document.body.appendChild(editModalContainer);
