@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <div>
             <label for="edit_category">Categorie</label>
             <select id="consumableCategory" name="category" required>
-              <option value="2">Drank</option>
-              <option value="1">Eten</option>
+              <option value="1">Drank</option>
+              <option value="2">Eten</option>
             </select>
           </div>
 
