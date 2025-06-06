@@ -1,119 +1,132 @@
 <div class="wedstrijden-container">
-    <h1>Wedstrijden</h1>
+    <h1>Wedstrijden <%= typeof teamLetter !=='undefined' ? 'Team ' + teamLetter.toUpperCase() : '' %>
+    </h1>
 
-    <% if (matches && matches.length> 0) { %>
-        <div class="wedstrijden-grid">
-            <% matches.forEach(match=> { %>
-                <div class="wedstrijd-blok">
-                    <!-- Match header -->
-                    <div class="wedstrijd-header">
-                        <h2>
-                            <%= match.team ? match.team.name : '-' %>
-                        </h2>
-                        <div class="wedstrijd-details">
-                            <p class="wedstrijd-date">
-                                <%= new Date(match.date).toLocaleDateString('nl-BE') %>
-                            </p>
-                            <% if (match.start_time) { %>
-                                <p class="wedstrijd-time">
-                                    <%= match.start_time %>
-                                        <% if (match.end_time) { %> - <%= match.end_time %>
-                                                <% } %>
-                                </p>
-                                <% } %>
-                                    <p class="wedstrijd-location">
-                                        <%= match.location %>
+    <% if (teamLetter) { %>
+        <div class="back-link">
+            <a href="/wedstrijden" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Terug naar teams
+                overzicht</a>
+        </div>
+        <% } %>
+
+            <% if (matches && matches.length> 0) { %>
+                <div class="wedstrijden-grid">
+                    <% matches.forEach(match=> { %>
+                        <div class="wedstrijd-blok">
+                            <!-- Match header -->
+                            <div class="wedstrijd-header">
+                                <h2>
+                                    <%= match.team ? match.team.name : '-' %>
+                                </h2>
+                                <div class="wedstrijd-details">
+                                    <p class="wedstrijd-date">
+                                        <%= new Date(match.date).toLocaleDateString('nl-BE') %>
                                     </p>
-                                    <p class="wedstrijd-home-away">
-                                        <%= match.home_away %>
-                                    </p>
-                        </div>
-                    </div>
-
-                    <!-- Ingelogde gebruiker eerst tonen -->
-                    <div class="wedstrijd-participants">
-
-                        <!-- Toon eerst de ingelogde gebruiker status -->
-                        <div class="user ingelogd-user">
-                            <div class="user-status-container">
-                                <p class="user-status-text">Jouw status</p>
-                                <button class="attendance-button status-unknown" data-status="unknown"
-                                    data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
-                                    <i class="fas fa-question"></i>
-                                </button>
-                            </div>
-                            <div class="selection-status">
-                                <p
-                                    class="selection-text <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                    <%= user.attendance && user.attendance[match.id] &&
-                                        user.attendance[match.id].is_selected==='selected' ? 'Geselecteerd'
-                                        : 'Niet geselecteerd' %>
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Toon daarna alle andere gebruikers -->
-                        <div class="other-users">
-                            <% if (locals.users && users.length> 0) { %>
-                                <% users.forEach(otherUser=> { %>
-                                    <% if (otherUser.id !==user.id) { %>
-                                        <div class="user">
-                                            <p>
-                                                <%= otherUser.firstname %>
-                                                    <%= otherUser.lastname %>
+                                    <% if (match.start_time) { %>
+                                        <p class="wedstrijd-time">
+                                            <%= match.start_time %>
+                                                <% if (match.end_time) { %> - <%= match.end_time %>
+                                                        <% } %>
+                                        </p>
+                                        <% } %>
+                                            <p class="wedstrijd-location">
+                                                <%= match.location %>
                                             </p>
-                                            <div class="attendence">
+                                            <p class="wedstrijd-home-away">
+                                                <%= match.home_away %>
+                                            </p>
+                                </div>
+                            </div>
 
-                                                <p class="attendence-status">
-                                                    <% if (otherUser.attendance && otherUser.attendance[match.id]) { %>
-                                                        <span
-                                                            class="<%= otherUser.attendance[match.id].status === 'available' ? 'attendence--green' : 
+                            <!-- Ingelogde gebruiker eerst tonen -->
+                            <div class="wedstrijd-participants">
+
+                                <!-- Toon eerst de ingelogde gebruiker status -->
+                                <div class="user ingelogd-user">
+                                    <div class="user-status-container">
+                                        <p class="user-status-text">Jouw status</p>
+                                        <button class="attendance-button status-unknown" data-status="unknown"
+                                            data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
+                                            <i class="fas fa-question"></i>
+                                        </button>
+                                    </div>
+                                    <div class="selection-status">
+                                        <p
+                                            class="selection-text <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                            <%= user.attendance && user.attendance[match.id] &&
+                                                user.attendance[match.id].is_selected==='selected' ? 'Geselecteerd'
+                                                : 'Niet geselecteerd' %>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Toon daarna alle andere gebruikers -->
+                                <div class="other-users">
+                                    <% if (locals.users && users.length> 0) { %>
+                                        <% users.forEach(otherUser=> { %>
+                                            <% if (otherUser.id !==user.id) { %>
+                                                <div class="user">
+                                                    <p>
+                                                        <%= otherUser.firstname %>
+                                                            <%= otherUser.lastname %>
+                                                    </p>
+                                                    <div class="attendence">
+
+                                                        <p class="attendence-status">
+                                                            <% if (otherUser.attendance &&
+                                                                otherUser.attendance[match.id]) { %>
+                                                                <span
+                                                                    class="<%= otherUser.attendance[match.id].status === 'available' ? 'attendence--green' : 
                                                                        otherUser.attendance[match.id].status === 'unavailable' ? 'attendence--red' : 
                                                                        otherUser.attendance[match.id].status === 'reserve' ? 'attendence--orange' : '' %>">
-                                                            <%= otherUser.attendance[match.id].status==='available'
-                                                                ? 'Beschikbaar' :
-                                                                otherUser.attendance[match.id].status==='unavailable'
-                                                                ? 'Niet beschikbaar' :
-                                                                otherUser.attendance[match.id].status==='reserve'
-                                                                ? 'Reserve' : 'Onbekend' %>
-                                                        </span>
-                                                        <% } else { %>
-                                                            <span>Onbekend</span>
-                                                            <% } %>
-                                                </p>
-                                                <% if (user.is_admin) { %>
-                                                    <p
-                                                        class="selection-status <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                                        <button class="select-player-button"
-                                                            data-user-id="<%= otherUser.id %>"
-                                                            data-match-id="<%= match.id %>"
-                                                            data-is-selected="<%= otherUser.attendance && otherUser.attendance[match.id] ? otherUser.attendance[match.id].is_selected : 'not_selected' %>">
-                                                            <%= otherUser.attendance && otherUser.attendance[match.id]
-                                                                &&
-                                                                otherUser.attendance[match.id].is_selected==='selected'
-                                                                ? 'Geselecteerd' : 'Selecteer speler' %>
-                                                        </button>
-                                                    </p>
-                                                    <% } else { %>
-                                                        <p
-                                                            class="<%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                                            <%= otherUser.attendance && otherUser.attendance[match.id]
-                                                                &&
-                                                                otherUser.attendance[match.id].is_selected==='selected'
-                                                                ? 'Geselecteerd' : 'Niet geselecteerd' %>
+                                                                    <%= otherUser.attendance[match.id].status==='available'
+                                                                        ? 'Beschikbaar' :
+                                                                        otherUser.attendance[match.id].status==='unavailable'
+                                                                        ? 'Niet beschikbaar' :
+                                                                        otherUser.attendance[match.id].status==='reserve'
+                                                                        ? 'Reserve' : 'Onbekend' %>
+                                                                </span>
+                                                                <% } else { %>
+                                                                    <span>Onbekend</span>
+                                                                    <% } %>
                                                         </p>
-                                                        <% } %>
-                                            </div>
-                                        </div>
-                                        <% } %>
-                                            <% }); %>
+                                                        <% if (user.is_admin) { %>
+                                                            <p
+                                                                class="selection-status <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                                                <button class="select-player-button"
+                                                                    data-user-id="<%= otherUser.id %>"
+                                                                    data-match-id="<%= match.id %>"
+                                                                    data-is-selected="<%= otherUser.attendance && otherUser.attendance[match.id] ? otherUser.attendance[match.id].is_selected : 'not_selected' %>">
+                                                                    <%= otherUser.attendance &&
+                                                                        otherUser.attendance[match.id] &&
+                                                                        otherUser.attendance[match.id].is_selected==='selected'
+                                                                        ? 'Geselecteerd' : 'Selecteer speler' %>
+                                                                </button>
+                                                            </p>
+                                                            <% } else { %>
+                                                                <p
+                                                                    class="<%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
+                                                                    <%= otherUser.attendance &&
+                                                                        otherUser.attendance[match.id] &&
+                                                                        otherUser.attendance[match.id].is_selected==='selected'
+                                                                        ? 'Geselecteerd' : 'Niet geselecteerd' %>
+                                                                </p>
+                                                                <% } %>
+                                                    </div>
+                                                </div>
                                                 <% } %>
+                                                    <% }); %>
+                                                        <% } %>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <% }); %>
                 </div>
-                <% }); %>
-        </div>
-        <% } else { %>
-            <p>Er zijn momenteel geen wedstrijden gepland.</p>
-            <% } %>
+                <% } else { %>
+                    <% if (teamLetter) { %>
+                        <p>Er zijn momenteel geen wedstrijden gepland voor Team <%= teamLetter.toUpperCase() %>.</p>
+                        <% } else { %>
+                            <p>Er zijn momenteel geen wedstrijden gepland.</p>
+                            <% } %>
+                                <% } %>
 </div>
