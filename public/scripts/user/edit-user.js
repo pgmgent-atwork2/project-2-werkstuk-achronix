@@ -1,5 +1,6 @@
 import getAllUsers from "./getAllUsers.js";
 import renderUserRow from "./user-table.js";
+import {deleteUser} from "./delete-user.js";
 
 export function editUser() {
   let editModalContainer = document.createElement("div");
@@ -155,6 +156,7 @@ export function editUser() {
           renderUserRow(user, $tableBody);
         });
         editUser();
+        deleteUser();
       } else {
         const errorData = await response.json();
         showNotification("Fout bij bijwerken", errorData.message, "error");

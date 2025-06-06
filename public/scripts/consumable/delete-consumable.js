@@ -1,5 +1,6 @@
 import getAllConsumables from "../getAllConsumables.js";
 import renderConsumableRow from "./consumable-table.js";
+import {editConsumable} from "./edit-consumable.js";
 
 export function deleteConsumable() {
   let deleteConsumableModalContainer = document.createElement("div");
@@ -100,6 +101,7 @@ export function deleteConsumable() {
             renderConsumableRow(consumable, $tableBody);
           });
           deleteConsumable();
+          editConsumable();
         } else {
           const errorData = await response.json();
           showNotification(

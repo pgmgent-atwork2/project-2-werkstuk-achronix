@@ -1,7 +1,8 @@
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
+import { deleteConsumable } from "./delete-consumable.js";
 
-export function editConsumables() {
+export function editConsumable() {
   let $editConsumableModalContainer = document.createElement("div");
   $editConsumableModalContainer.id = "edit-consumable-modal-container";
   document.body.appendChild($editConsumableModalContainer);
@@ -155,7 +156,8 @@ export function editConsumables() {
           consumables.forEach((consumable) => {
             renderConsumableRow(consumable, $tableBody);
           });
-          editConsumables();
+          editConsumable();
+          deleteConsumable();
         } else {
           const errorData = await response.json();
           showNotification(
