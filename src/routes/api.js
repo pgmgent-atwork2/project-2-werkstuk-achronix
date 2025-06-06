@@ -15,6 +15,7 @@ const router = new Router();
 // users
 router.get("/users", API_UserController.index);
 router.post("/users", API_UserController.store);
+router.put("/users/profile", jwtAuth, API_UserController.updateProfile);
 router.get("/users/:id", API_UserController.show);
 router.get("/users/name/:name", API_UserController.findByName);
 router.put("/users/:id", API_UserController.update);

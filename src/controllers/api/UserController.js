@@ -159,3 +159,73 @@ export const findByName = async (req, res) => {
     });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { email, password, current_password, receive_notifications } =
+      req.body;
+
+    const user = await User.query().findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Gebruiker niet gevonden",
+      });
+    }
+
+    if (email !== user.email) {
+      const existingUser = await User.query()
+        .where("email", email)
+        .whereNot("id", userId)
+        .first();
+
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Dit e-mailadres is al in gebruik",
+        });
+      }
+    }
+
+    const userData = {
+      email,
+      receive_notifications,
+    };
+
+    if (password && current_password) {
+      const passwordMatches = await bcrypt.compare(
+        current_password,
+        user.password
+      );
+
+      if (!passwordMatches) {
+        return res.status(400).json({
+          success: false,
+          message: "Huidig wachtwoord is onjuist",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      userData.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await User.query().patchAndFetchById(userId, userData);
+
+    return res.status(200).json({
+      success: true,
+      message: "Profiel succesvol bijgewerkt",
+      data: {
+        email: updatedUser.email,
+        receive_notifications: updatedUser.receive_notifications,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Er is een fout opgetreden bij het bijwerken van je profiel",
+      error: error.message,
+    });
+  }
+};
