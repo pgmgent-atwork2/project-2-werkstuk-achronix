@@ -8,6 +8,7 @@ import "./delete-match.js";
 import "./create-match.js";
 import "./match-attendance.js";
 import "./player-selection.js";
+import "./match-filter.js";
 
 import "./search-orders.js";
 

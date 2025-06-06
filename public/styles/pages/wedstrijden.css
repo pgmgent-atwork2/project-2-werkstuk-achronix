@@ -1,6 +1,5 @@
-/* Wedstrijden (matches) styling */
-
 .wedstrijden-container {
+  margin-top: 2rem;
 }
 
 .wedstrijden-container h1 {
@@ -10,7 +9,6 @@
   font-weight: 700;
 }
 
-/* Attendance button styling */
 .attendance-button {
   display: inline-flex;
   align-items: center;
@@ -127,9 +125,6 @@
 
 .user {
   padding: 0.3rem 0.75rem;
-  /*border-radius: var(--radius);*/
-  /*margin-bottom: 0.2rem;*/
-  /*background-color: #f3f4f6;*/
   border-bottom: 1px solid black;
 }
 
@@ -187,7 +182,6 @@
 
 .other-users {
   margin-top: 0.75rem;
-  /*background-color: #f3f4f6;*/
   border-radius: var(--radius);
   overflow: hidden;
 }

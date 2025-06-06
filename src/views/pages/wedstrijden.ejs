@@ -1,11 +1,34 @@
+<div class="back-link">
+    <a href="/wedstrijden" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Terug naar teams
+        overzicht</a>
+</div>
+<h1>Wedstrijden <%= typeof teamLetter !=='undefined' ? 'Team ' + teamLetter.toUpperCase() : '' %>
+</h1>
+<div class="table-controls">
+
+    <div class="filter-container">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="filter-icon">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+        </svg>
+        <div class="filter">
+            <select id="filterSelect" class="filter-select">
+                <option value="upcoming">Aankomende wedstrijden</option>
+                <option value="past">Afgelopen wedstrijden</option>
+                <option value="all">Alle wedstrijden</option>
+            </select>
+        </div>
+    </div>
+</div>
+
 <div class="wedstrijden-container">
-    <h1>Wedstrijden</h1>
+
 
     <% if (matches && matches.length> 0) { %>
         <div class="wedstrijden-grid">
             <% matches.forEach(match=> { %>
-                <div class="wedstrijd-blok">
-                    <!-- Match header -->
+                <div class="wedstrijd-blok" data-date="<%= match.date %>">
                     <div class="wedstrijd-header">
                         <h2>
                             <%= match.team ? match.team.name : '-' %>
@@ -30,10 +53,8 @@
                         </div>
                     </div>
 
-                    <!-- Ingelogde gebruiker eerst tonen -->
                     <div class="wedstrijd-participants">
 
-                        <!-- Toon eerst de ingelogde gebruiker status -->
                         <div class="user ingelogd-user">
                             <div class="user-status-container">
                                 <p class="user-status-text">Jouw status</p>
@@ -52,7 +73,6 @@
                             </div>
                         </div>
 
-                        <!-- Toon daarna alle andere gebruikers -->
                         <div class="other-users">
                             <% if (locals.users && users.length> 0) { %>
                                 <% users.forEach(otherUser=> { %>
@@ -114,6 +134,10 @@
                 <% }); %>
         </div>
         <% } else { %>
-            <p>Er zijn momenteel geen wedstrijden gepland.</p>
-            <% } %>
+            <% if (teamLetter) { %>
+                <p>Er zijn momenteel geen wedstrijden gepland voor Team <%= teamLetter.toUpperCase() %>.</p>
+                <% } else { %>
+                    <p>Er zijn momenteel geen wedstrijden gepland.</p>
+                    <% } %>
+                        <% } %>
 </div>
