@@ -142,7 +142,7 @@ export function editConsumable() {
 
         if (response.ok) {
           $editConsumableModal.classList.add("hidden");
-          getShowNotification(
+          getShowNotification()(
             "product aangepast",
             "product is succesvol aangepast.",
             "success"
