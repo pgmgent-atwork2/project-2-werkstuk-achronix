@@ -1,11 +1,15 @@
+import getAllConsumables from "../getAllConsumables.js";
+import renderConsumableRow from "./consumable-table.js";
 document.addEventListener("DOMContentLoaded", function () {
   let deleteConsumableModalContainer = document.createElement("div");
   deleteConsumableModalContainer.id = "delete-consumable-modal-container";
   document.body.appendChild(deleteConsumableModalContainer);
 
-  let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
+  let showNotification =
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    };
 
   const deleteConsumableModalHTML = `
     <div id="deleteConsumableModal" class="modal hidden">
@@ -81,25 +85,34 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         });
 
-          if (response.ok) {
-        deleteModal.classList.add("hidden");
+        if (response.ok) {
+          deleteModal.classList.add("hidden");
+          showNotification(
+            "product is verwijderd",
+            "product is succesvol verwijderd.",
+            "success"
+          );
+          const consumables = await getAllConsumables();
+          const $tableBody = document.querySelector("#consumablesTableBody");
+          $tableBody.innerHTML = "";
+          consumables.forEach((consumable) => {
+            renderConsumableRow(consumable, $tableBody);
+          });
+        } else {
+          const errorData = await response.json();
+          showNotification(
+            "Fout bij het verwijderen",
+            errorData.message,
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error("Error removing product:", error);
         showNotification(
-          "product is verwijderd",
-          "product is succesvol verwijderd.",
-          "success"
+          "Fout bij het verwijderen",
+          "Er is een probleem opgetreden bij het verwijderen van het product.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij het verwijderen", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error removing product:", error);
-      showNotification(
-        "Fout bij het verwijderen",
-        "Er is een probleem opgetreden bij het verwijderen van het product.",
-        "error"
-      );
       }
     });
   }
