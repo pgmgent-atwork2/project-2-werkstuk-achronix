@@ -1,12 +1,9 @@
+import { getShowNotification } from "./utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   let editMatchModalContainer = document.createElement("div");
   editMatchModalContainer.id = "edit-match-modal-container";
   document.body.appendChild(editMatchModalContainer);
-
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
 
   const editMatchModalHTML = `
     <div id="editMatchModal" class="modal hidden">
@@ -189,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
        if (response.ok) {
         modal.classList.add("hidden");
-        showNotification(
+        getShowNotification(
           "Wedstrijd bijgewerkt",
           "wedstrijd is succesvol bijgewerkt.",
           "success"
@@ -197,11 +194,11 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => window.location.reload(), 1500);
       } else {
         const errorData = await response.json();
-        showNotification("Fout bij het bijwerken", errorData.message, "error");
+        getShowNotification("Fout bij het bijwerken", errorData.message, "error");
       }
     } catch (error) {
       console.error("Error editing product:", error);
-      showNotification(
+      getShowNotification(
         "Fout bij het bijwerken",
         "Er is een probleem opgetreden bij het bijwerken van de wedstrijd.",
         "error"
