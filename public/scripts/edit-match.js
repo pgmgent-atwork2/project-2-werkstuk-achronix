@@ -1,12 +1,9 @@
+import { getShowNotification } from "./utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   let editMatchModalContainer = document.createElement("div");
   editMatchModalContainer.id = "edit-match-modal-container";
   document.body.appendChild(editMatchModalContainer);
-
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
 
   const editMatchModalHTML = `
     <div id="editMatchModal" class="modal hidden">
@@ -129,8 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
           modal.classList.remove("hidden");
         } catch (error) {
           console.error("Error fetching match data:", error);
-          alert(
-            "Er is een probleem opgetreden bij het ophalen van de wedstrijdgegevens."
+          getShowNotification()(
+            "Fout bij ophalen",
+            "Er is een probleem opgetreden bij het ophalen van de wedstrijdgegevens.",
+            "error"
           );
         }
       });
@@ -154,17 +153,29 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       if (!dateInput.value) {
-        alert("Vul een geldige datum in.");
+        getShowNotification()(
+          "Validatiefout",
+          "Vul een geldige datum in.",
+          "warning"
+        );
         return;
       }
 
       if (!locationInput.value) {
-        alert("Vul een locatie in.");
+        getShowNotification()(
+          "Validatiefout",
+          "Vul een locatie in.",
+          "warning"
+        );
         return;
       }
 
       if (!homeAwayInput.value) {
-        alert("Selecteer Thuis of Uit.");
+        getShowNotification()(
+          "Validatiefout",
+          "Selecteer Thuis of Uit.",
+          "warning"
+        );
         return;
       }
 
@@ -187,25 +198,29 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify(matchData),
         });
 
-       if (response.ok) {
-        modal.classList.add("hidden");
-        showNotification(
-          "Wedstrijd bijgewerkt",
-          "wedstrijd is succesvol bijgewerkt.",
-          "success"
+        if (response.ok) {
+          modal.classList.add("hidden");
+          getShowNotification()(
+            "Wedstrijd bijgewerkt",
+            "Wedstrijd is succesvol bijgewerkt.",
+            "success"
+          );
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          const errorData = await response.json();
+          getShowNotification()(
+            "Fout bij het bijwerken",
+            errorData.message,
+            "error"
+          );
+        }
+      } catch (error) {
+        console.error("Error editing match:", error);
+        getShowNotification()(
+          "Fout bij het bijwerken",
+          "Er is een probleem opgetreden bij het bijwerken van de wedstrijd.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij het bijwerken", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error editing product:", error);
-      showNotification(
-        "Fout bij het bijwerken",
-        "Er is een probleem opgetreden bij het bijwerken van de wedstrijd.",
-        "error"
-      );
       }
     });
   }

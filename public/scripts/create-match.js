@@ -1,11 +1,9 @@
+import { getShowNotification } from "./utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   let newMatchModalContainer = document.createElement("div");
   newMatchModalContainer.id = "new-match-modal-container";
   document.body.appendChild(newMatchModalContainer);
-
-   let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
 
   const newMatchModalHTML = `
     <div id="newMatchModal" class="modal hidden">
@@ -114,17 +112,17 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       if (!document.getElementById("new_date").value) {
-        alert("Vul een geldige datum in.");
+        getShowNotification()("Validatiefout", "Vul een geldige datum in.", "warning");
         return;
       }
 
       if (!document.getElementById("new_location").value) {
-        alert("Vul een locatie in.");
+        getShowNotification()("Validatiefout", "Vul een locatie in.", "warning");
         return;
       }
 
       if (!document.getElementById("new_home_away").value) {
-        alert("Selecteer Thuis of Uit.");
+        getShowNotification()("Validatiefout", "Selecteer Thuis of Uit.", "warning");
         return;
       }
 
@@ -148,25 +146,25 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify(matchData),
         });
 
-          if (response.ok) {
-        newMatchModal.classList.add("hidden");
-        showNotification(
-          "Wedstrijd toegevoegd",
-          "deze wedstrijd is succesvol toegevoegd.",
-          "success"
+        if (response.ok) {
+          newMatchModal.classList.add("hidden");
+          getShowNotification()(
+            "Wedstrijd toegevoegd",
+            "Deze wedstrijd is succesvol toegevoegd.",
+            "success"
+          );
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          const errorData = await response.json();
+          getShowNotification()("Fout bij het toevoegen", errorData.message, "error");
+        }
+      } catch (error) {
+        console.error("Error adding match:", error);
+        getShowNotification()(
+          "Fout bij het toevoegen",
+          "Er is een probleem opgetreden bij het toevoegen van de wedstrijd.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij het verwijderen", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error removing match:", error);
-      showNotification(
-        "Fout bij het toevoegen",
-        "Er is een probleem opgetreden bij het toevoegen van de wedstrijd.",
-        "error"
-      );
       }
     });
   }

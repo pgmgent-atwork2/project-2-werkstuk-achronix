@@ -1,9 +1,5 @@
-import "./utils/notifications.js";
 import "./sidebar.js";
-import "./edit-user.js";
-import "./create-user.js";
-import "./delete-user.js";
-import "./search-users.js";
+import "./user/search-users.js";
 import "./edit-match.js";
 import "./delete-match.js";
 import "./create-match.js";
@@ -13,13 +9,28 @@ import "./match-filter.js";
 
 import "/scripts/profile.js";
 
+
 import "./search-orders.js";
 
-import "./consumable/create-consumable.js";
-import "./consumable/edit-consumable.js";
-import "./consumable/delete-consumable.js";
 import "./consumable/search-consumables.js";
 
 import { InitShoppingCart } from "./shoppingCart.js";
+import { createConsumable } from "./consumable/create-consumable.js";
+import { editConsumable } from "./consumable/edit-consumable.js";
+import { deleteConsumable } from "./consumable/delete-consumable.js";
 
-InitShoppingCart();
+import { createUser } from "./user/create-user.js";
+import { editUser } from "./user/edit-user.js";
+import { deleteUser } from "./user/delete-user.js";
+
+document.addEventListener("DOMContentLoaded", function () {
+  createConsumable();
+  editConsumable();
+  deleteConsumable();
+
+  createUser();
+  editUser();
+  deleteUser();
+
+  InitShoppingCart();
+});

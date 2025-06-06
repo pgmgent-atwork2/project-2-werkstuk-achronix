@@ -1,12 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
+import { getShowNotification } from "../utils/notifications.js";
+
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+import { deleteUser } from "./delete-user.js";
+import { editUser } from "./edit-user.js";
+
+export function createUser() {
   let newUserModalContainer = document.createElement("div");
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
-
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
 
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
@@ -104,19 +106,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           newUserModal.classList.add("hidden");
-          showNotification(
+          getShowNotification()(
             "Gebruiker toegevoegd",
             "De nieuwe gebruiker is succesvol toegevoegd.",
             "success"
           );
-          setTimeout(() => window.location.reload(), 1500);
+
+          const users = await getAllUsers();
+          const $tableBody = document.querySelector("#userTableBody");
+          $tableBody.innerHTML = "";
+          users.forEach((user) => {
+            renderUserRow(user, $tableBody);
+          });
+          createUser();
+          editUser();
+          deleteUser();
         } else {
           const errorData = await response.json();
-          showNotification("Fout bij aanmaken", errorData.message, "error");
+          getShowNotification()(
+            "Fout bij aanmaken",
+            errorData.message,
+            "error"
+          );
         }
       } catch (error) {
         console.error("Error creating user:", error);
-        showNotification(
+        getShowNotification()(
           "Fout bij aanmaken",
           "Er is een probleem opgetreden bij het aanmaken van de gebruiker.",
           "error"
@@ -124,4 +139,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}

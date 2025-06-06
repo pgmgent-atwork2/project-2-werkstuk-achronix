@@ -1,4 +1,9 @@
-function showNotification(title, message, type = "info", duration = 5000) {
+export function showNotification(
+  title,
+  message,
+  type = "info",
+  duration = 5000
+) {
   let container = document.getElementById("notification-container");
   if (!container) {
     container = document.createElement("div");
@@ -55,7 +60,7 @@ function showNotification(title, message, type = "info", duration = 5000) {
   return notificationId;
 }
 
-function closeNotification(notificationId) {
+export function closeNotification(notificationId) {
   const notification = document.getElementById(notificationId);
   if (notification) {
     notification.classList.add("notification--hide");
@@ -68,7 +73,7 @@ function closeNotification(notificationId) {
   }
 }
 
-function closeAllNotifications() {
+export function closeAllNotifications() {
   const container = document.getElementById("notification-container");
   if (container) {
     const notifications = container.querySelectorAll(".notification");
@@ -111,7 +116,7 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-const notifications = {
+export const notifications = {
   success: (title, message, duration) =>
     showNotification(title, message, "success", duration),
   error: (title, message, duration) =>
@@ -122,7 +127,18 @@ const notifications = {
     showNotification(title, message, "info", duration),
 };
 
-window.showNotification = showNotification;
-window.closeNotification = closeNotification;
-window.closeAllNotifications = closeAllNotifications;
-window.notifications = notifications;
+export const getShowNotification = () => {
+  return (
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    }
+  );
+};
+
+Object.assign(window, {
+  showNotification,
+  closeNotification,
+  closeAllNotifications,
+  notifications
+});

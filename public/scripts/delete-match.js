@@ -1,10 +1,6 @@
+import { getShowNotification } from "./utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
-
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
-
   let deleteMatchModalContainer = document.createElement("div");
   deleteMatchModalContainer.id = "delete-match-modal-container";
   document.body.appendChild(deleteMatchModalContainer);
@@ -78,24 +74,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (response.ok) {
-        deleteModal.classList.add("hidden");
-        showNotification(
-          "Wedstrijd verwijderd",
-          "deze wedstrijd is succesvol verwijderd.",
-          "success"
+          deleteModal.classList.add("hidden");
+          getShowNotification()(
+            "Wedstrijd verwijderd",
+            "Deze wedstrijd is succesvol verwijderd.",
+            "success"
+          );
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          const errorData = await response.json();
+          getShowNotification()("Fout bij het verwijderen", errorData.message, "error");
+        }
+      } catch (error) {
+        console.error("Error removing match:", error);
+        getShowNotification()(
+          "Fout bij het verwijderen",
+          "Er is een probleem opgetreden bij het verwijderen van de wedstrijd.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij het verwijderen", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error removing match:", error);
-      showNotification(
-        "Fout bij het verwijderen",
-        "Er is een probleem opgetreden bij het verwijderen van de wedstrijd.",
-        "error"
-      );
       }
     });
   }
