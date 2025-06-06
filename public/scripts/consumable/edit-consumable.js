@@ -26,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
             <input type="number" id="consumablePrice" name="price" step="0.01" min="0" required>
           </div>
 
+           <div>
+            <label for="edit_stock">Stock</label>
+            <input type="number" id="consumableStock" name="stock" step="1" min="0" required>
+          </div>
+
           <div>
             <label for="edit_image">Afbeelding uploaden</label>
             <input type="file" id="consumableImage" name="image" accept="image/*">
@@ -56,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const $consumablePrice = document.getElementById("consumablePrice");
   const $consumableImage = document.getElementById("consumableImage");
   const $consumableCategory = document.getElementById("consumableCategory");
+  const $consumableStock = document.getElementById("consumableStock");
 
   const $editImage = document.getElementById("edit_image");
 
@@ -78,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $consumableName.value = consumableData.name;
         $consumablePrice.value = consumableData.price;
         $consumableCategory.value = consumableData.category_id;
+        $consumableStock.value = consumableData.stock;
         $editImage.src = consumableData.image_url;
 
         $editConsumableModal.classList.remove("hidden");
@@ -119,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       const formData = new FormData($editConsumableForm);
+
 
       try {
         const response = await fetch("/upload/consumable-image", {
