@@ -5,6 +5,7 @@ export function up(knex) {
     table.increments("id").primary();
     table.string("name").notNullable();
     table.double("price").notNullable();
+    table.integer("stock");
     table.string("image_url");
     table.integer("category_id").notNullable();
 
