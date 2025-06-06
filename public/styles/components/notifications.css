@@ -1,0 +1,243 @@
+.notification-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.notification {
+  background: var(--color-gray-50);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 25px var(--shadow-dark), 0 4px 6px var(--shadow-light);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  pointer-events: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 80px;
+  backdrop-filter: blur(10px);
+}
+
+.notification--show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.notification--hide {
+  transform: translateX(100%);
+  opacity: 0;
+  margin-bottom: -100px;
+}
+
+.notification__content {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.notification__icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.125rem;
+}
+
+.notification__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.notification__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification__title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+  color: var(--color-gray-900);
+}
+
+.notification__message {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-gray-600);
+  word-break: break-word;
+}
+
+.notification__close {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--muted-foreground);
+  transition: color 0.2s ease;
+  margin-top: 0.125rem;
+}
+
+.notification__close:hover {
+  color: var(--color-gray-700);
+}
+
+.notification__close svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Progress Bar */
+.notification__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  opacity: 0.8;
+}
+
+.notification__progress--active {
+  animation: progressShrink linear forwards;
+}
+
+.notification--success {
+  border-left: 4px solid var(--success);
+  background: var(--success-light);
+}
+
+.notification--success .notification__icon {
+  color: var(--success);
+}
+
+.notification--success .notification__title {
+  color: var(--success);
+}
+
+.notification__progress--success {
+  background: linear-gradient(90deg, var(--success), var(--success-light));
+}
+
+.notification--error {
+  border-left: 4px solid var(--destructive);
+  background: var(--destructive-light);
+}
+
+.notification--error .notification__icon {
+  color: var(--destructive);
+}
+
+.notification--error .notification__title {
+  color: var(--destructive);
+}
+
+.notification__progress--error {
+  background: linear-gradient(
+    90deg,
+    var(--destructive),
+    var(--destructive-light)
+  );
+}
+
+.notification--warning {
+  border-left: 4px solid var(--warning);
+  background: var(--warning-light);
+}
+
+.notification--warning .notification__icon {
+  color: var(--warning);
+}
+
+.notification--warning .notification__title {
+  color: var(--warning);
+}
+
+.notification__progress--warning {
+  background: linear-gradient(90deg, var(--warning), var(--warning-light));
+}
+
+.notification--info {
+  border-left: 4px solid var(--primary);
+  background: var(--primary-light);
+}
+
+.notification--info .notification__icon {
+  color: var(--primary);
+}
+
+.notification--info .notification__title {
+  color: var(--primary);
+}
+
+.notification__progress--info {
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+@keyframes progressShrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@media (max-width: 640px) {
+  .notification-container {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+
+  .notification {
+    transform: translateY(-100%);
+  }
+
+  .notification--show {
+    transform: translateY(0);
+  }
+
+  .notification--hide {
+    transform: translateY(-100%);
+    margin-bottom: 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .notification {
+    background: var(--color-gray-800);
+    border: 1px solid var(--color-gray-700);
+  }
+
+  .notification__title {
+    color: var(--color-gray-100);
+  }
+
+  .notification__message {
+    color: var(--color-gray-300);
+  }
+
+  .notification__close {
+    color: var(--color-gray-400);
+  }
+
+  .notification__close:hover {
+    color: var(--color-gray-200);
+  }
+}
+
+

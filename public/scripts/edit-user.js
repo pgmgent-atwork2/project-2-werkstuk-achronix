@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   editModalContainer.id = "edit-modal-container";
   document.body.appendChild(editModalContainer);
 
+  let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
   const editUserModalHTML = `
     <div id="editUserModal" class="modal hidden">
       <div class="modal-content">
@@ -88,8 +92,10 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.classList.remove("hidden");
       } catch (error) {
         console.error("Error fetching user data:", error);
-        alert(
-          "Er is een probleem opgetreden bij het ophalen van de gebruikersgegevens."
+        showNotification(
+          "Fout bij ophalen",
+          "Er is een probleem opgetreden bij het ophalen van de gebruikersgegevens.",
+          "error"
         );
       }
     });
@@ -132,15 +138,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (response.ok) {
         modal.classList.add("hidden");
-        window.location.reload();
+        showNotification(
+          "Gebruiker bijgewerkt",
+          "De gebruiker is succesvol bijgewerkt.",
+          "success"
+        );
+        setTimeout(() => window.location.reload(), 1500);
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
+        showNotification("Fout bij bijwerken", errorData.message, "error");
       }
     } catch (error) {
       console.error("Error updating user:", error);
-      alert(
-        "Er is een probleem opgetreden bij het bijwerken van de gebruiker."
+      showNotification(
+        "Fout bij bijwerken",
+        "Er is een probleem opgetreden bij het bijwerken van de gebruiker.",
+        "error"
       );
     }
   });

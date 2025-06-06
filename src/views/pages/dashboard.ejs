@@ -1,4 +1,3 @@
-
 <div class="dashboard-container">
   <div class="dashboard-header">
     <h1 class="dashboard-title">Welkom, <%= user.firstname %></h1>
@@ -34,7 +33,11 @@
         <div class="order-items-container">
           <% order.orderItems.forEach(item=> { %>
           <div class="order-item">
-            <p class="item-name"><%= item.consumable.name %></p>
+            <% if (item.consumable) { %>
+              <p class="item-name"><%= item.consumable.name %></p>
+            <% } else { %>
+              <p class="item-name">Product niet meer beschikbaar</p>
+            <% } %>
             <p class="item-quantity"><%= item.quantity %> st.</p>
             <p class="item-price">€<%= item.price.toFixed(2) %></p>
           </div>

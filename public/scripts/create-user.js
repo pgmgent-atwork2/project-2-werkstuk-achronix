@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
 
+    let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
+
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
       <div class="modal-content">
@@ -99,15 +104,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           newUserModal.classList.add("hidden");
-          window.location.reload();
+          showNotification(
+            "Gebruiker toegevoegd",
+            "De nieuwe gebruiker is succesvol toegevoegd.",
+            "success"
+          );
+          setTimeout(() => window.location.reload(), 1500);
         } else {
           const errorData = await response.json();
-          alert(`Fout: ${errorData.message}`);
+          showNotification("Fout bij aanmaken", errorData.message, "error");
         }
       } catch (error) {
         console.error("Error creating user:", error);
-        alert(
-          "Er is een probleem opgetreden bij het aanmaken van de gebruiker."
+        showNotification(
+          "Fout bij aanmaken",
+          "Er is een probleem opgetreden bij het aanmaken van de gebruiker.",
+          "error"
         );
       }
     });

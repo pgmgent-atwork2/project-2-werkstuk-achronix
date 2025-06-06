@@ -116,9 +116,14 @@ export const store = async (req, res) => {
       receive_notifications: receive_notifications !== false,
     });
 
-    return res.status(201).json(newUser);
+    return res.status(201).json({
+      success: true,
+      message: "Gebruiker succesvol aangemaakt",
+      data: newUser,
+    });
   } catch (error) {
     return res.status(400).json({
+      success: false,
       message: "Er is een fout opgetreden bij het aanmaken van de gebruiker.",
       error: error.message,
     });

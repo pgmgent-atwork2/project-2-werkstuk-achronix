@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   deleteUserModalContainer.id = "delete-user-modal-container";
   document.body.appendChild(deleteUserModalContainer);
 
+   let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
+
   const deleteUserModalHTML = `
     <div id="deleteUserModal" class="modal hidden">
       <div class="modal-content">
@@ -71,18 +76,25 @@ document.addEventListener("DOMContentLoaded", function () {
           method: "DELETE",
         });
 
-        if (response.ok) {
-          deleteModal.classList.add("hidden");
-          window.location.reload();
-        } else {
-          const errorData = await response.json();
-          alert(`Fout: ${errorData.message}`);
-        }
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        alert(
-          "Er is een probleem opgetreden bij het verwijderen van de gebruiker."
+       if (response.ok) {
+        deleteModal.classList.add("hidden");
+        showNotification(
+          "Gebruiker verwijderd",
+          "De gebruiker is succesvol verwijderd.",
+          "success"
         );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        const errorData = await response.json();
+        showNotification("Fout bij verwijderen", errorData.message, "error");
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      showNotification(
+        "Fout bij verwijderen",
+        "Er is een probleem opgetreden bij het verwijden van de gebruiker.",
+        "error"
+      );
       }
     });
   }

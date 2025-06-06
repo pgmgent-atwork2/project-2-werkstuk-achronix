@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   editMatchModalContainer.id = "edit-match-modal-container";
   document.body.appendChild(editMatchModalContainer);
 
+    let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
+
   const editMatchModalHTML = `
     <div id="editMatchModal" class="modal hidden">
       <div class="modal-content">
@@ -182,19 +187,25 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify(matchData),
         });
 
-        const responseData = await response.json();
-
-        if (response.ok) {
-          modal.classList.add("hidden");
-          window.location.reload();
-        } else {
-          alert(`Fout: ${responseData.message}`);
-        }
-      } catch (error) {
-        console.error("Error updating match:", error);
-        alert(
-          "Er is een probleem opgetreden bij het bijwerken van de wedstrijd."
+       if (response.ok) {
+        modal.classList.add("hidden");
+        showNotification(
+          "Wedstrijd bijgewerkt",
+          "wedstrijd is succesvol bijgewerkt.",
+          "success"
         );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        const errorData = await response.json();
+        showNotification("Fout bij het bijwerken", errorData.message, "error");
+      }
+    } catch (error) {
+      console.error("Error editing product:", error);
+      showNotification(
+        "Fout bij het bijwerken",
+        "Er is een probleem opgetreden bij het bijwerken van de wedstrijd.",
+        "error"
+      );
       }
     });
   }

@@ -1,3 +1,4 @@
+import "./utils/notifications.js";
 import "./sidebar.js";
 import "./edit-user.js";
 import "./create-user.js";
@@ -11,7 +12,6 @@ import "./player-selection.js";
 import "./match-filter.js";
 
 import "./search-orders.js";
-
 
 import "./consumable/create-consumable.js";
 import "./consumable/edit-consumable.js";
