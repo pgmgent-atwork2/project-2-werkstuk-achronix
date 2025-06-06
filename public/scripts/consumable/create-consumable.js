@@ -1,7 +1,7 @@
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
 import { deleteConsumable } from "./delete-consumable.js";
-import {editConsumable} from "./edit-consumable.js";
+import { editConsumable } from "./edit-consumable.js";
 
 export function createConsumable() {
   let $newConsumableModalContainer = document.createElement("div");

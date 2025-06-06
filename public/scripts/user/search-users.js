@@ -1,3 +1,6 @@
+import { deleteUser } from "./delete-user.js";
+import { editUser } from "./edit-user.js";
+
 if (document.getElementById("userTableBody")) {
   const $tableBody = document.getElementById("userTableBody");
   const $searchInput = document.getElementById("searchInput-user");
@@ -38,6 +41,8 @@ if (document.getElementById("userTableBody")) {
           </td>
         `;
         $tableBody.appendChild($row);
+        deleteUser();
+        editUser();
       });
     } catch (error) {
       console.error("Fout bij het ophalen van gebruikers:", error);
