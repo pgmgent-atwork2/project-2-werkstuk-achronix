@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   deleteConsumableModalContainer.id = "delete-consumable-modal-container";
   document.body.appendChild(deleteConsumableModalContainer);
 
+  let showNotification = window.showNotification || function (title, message, type) {
+    alert(`${type.toUpperCase()}: ${title} - ${message}`);
+  };
+
   const deleteConsumableModalHTML = `
     <div id="deleteConsumableModal" class="modal hidden">
       <div class="modal-content">
@@ -77,18 +81,25 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         });
 
-        if (response.ok) {
-          deleteModal.classList.add("hidden");
-          window.location.reload();
-        } else {
-          const errorData = await response.json();
-          alert(`Fout: ${errorData.message}`);
-        }
-      } catch (error) {
-        console.error("Error deleting consumable:", error);
-        alert(
-          "Er is een probleem opgetreden bij het verwijderen van de gebruiker."
+          if (response.ok) {
+        deleteModal.classList.add("hidden");
+        showNotification(
+          "product is verwijderd",
+          "product is succesvol verwijderd.",
+          "success"
         );
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        const errorData = await response.json();
+        showNotification("Fout bij het verwijderen", errorData.message, "error");
+      }
+    } catch (error) {
+      console.error("Error removing product:", error);
+      showNotification(
+        "Fout bij het verwijderen",
+        "Er is een probleem opgetreden bij het verwijderen van het product.",
+        "error"
+      );
       }
     });
   }
