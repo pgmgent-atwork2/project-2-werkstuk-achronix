@@ -1,7 +1,7 @@
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
 
-document.addEventListener("DOMContentLoaded", function () {
+export function editConsumables() {
   let $editConsumableModalContainer = document.createElement("div");
   $editConsumableModalContainer.id = "edit-consumable-modal-container";
   document.body.appendChild($editConsumableModalContainer);
@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
           consumables.forEach((consumable) => {
             renderConsumableRow(consumable, $tableBody);
           });
+          editConsumables();
         } else {
           const errorData = await response.json();
           showNotification(
@@ -173,4 +174,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}

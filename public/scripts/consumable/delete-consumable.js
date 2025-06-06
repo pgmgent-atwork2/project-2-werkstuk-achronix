@@ -1,6 +1,7 @@
 import getAllConsumables from "../getAllConsumables.js";
 import renderConsumableRow from "./consumable-table.js";
-document.addEventListener("DOMContentLoaded", function () {
+
+export function deleteConsumable() {
   let deleteConsumableModalContainer = document.createElement("div");
   deleteConsumableModalContainer.id = "delete-consumable-modal-container";
   document.body.appendChild(deleteConsumableModalContainer);
@@ -98,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
           consumables.forEach((consumable) => {
             renderConsumableRow(consumable, $tableBody);
           });
+          deleteConsumable();
         } else {
           const errorData = await response.json();
           showNotification(
@@ -116,4 +118,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}

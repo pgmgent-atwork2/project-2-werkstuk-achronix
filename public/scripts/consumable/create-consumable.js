@@ -1,6 +1,7 @@
 import renderConsumableRow from "./consumable-table.js";
 import getAllConsumables from "../getAllConsumables.js";
-document.addEventListener("DOMContentLoaded", function () {
+
+export function createConsumable() {
   let $newConsumableModalContainer = document.createElement("div");
   $newConsumableModalContainer.id = "new-consumable-modal-container";
   document.body.appendChild($newConsumableModalContainer);
@@ -122,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
           consumables.forEach((consumable) => {
             renderConsumableRow(consumable, $tableBody);
           });
+          createConsumable();
         } else {
           const errorData = await response.json();
           showNotification("Fout bij bijwerken", errorData.message, "error");
@@ -136,4 +138,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}
