@@ -77,8 +77,8 @@
         <td><%= order.id %></td>
         <td><%= order.user.firstname %></td>
         <td><%= order.user.lastname %></td>
-        <td><%= item.consumable.id %></td>
-        <td><%= item.consumable.name %></td>
+        <td><%= item.consumable ? item.consumable.id : 'unkown' %></td>
+        <td><%= item.consumable ? item.consumable.name : 'unkown' %></td>
         <td><%= item.quantity %></td>
         <td>€<%= item.price.toFixed(2) %></td>
         <td class="<%= order.status === 'PAID' ? 'success' : 'error' %>">
