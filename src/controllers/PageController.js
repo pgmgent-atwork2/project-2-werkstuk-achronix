@@ -51,11 +51,20 @@ export const bestellen = async (req, res) => {
   });
 };
 
-export const wedstrijden = async (req, res) => {
+export const wedstrijden = async (req, res, teamLetter) => {
   const user = req.user;
-  const matches = await Match.query()
+  let matches = await Match.query()
     .withGraphFetched("team")
     .orderBy("date", "asc");
+
+  // Filter matches by team letter if provided
+  if (teamLetter) {
+    const teamName = `${teamLetter.toUpperCase()}`;
+    matches = matches.filter(
+      (match) => match.team && match.team.name === teamName
+    );
+  }
+
   const teams = await Team.query().orderBy("name", "asc");
   const users = await User.query().orderBy("firstname", "asc");
 
@@ -74,9 +83,13 @@ export const wedstrijden = async (req, res) => {
   });
 
   // Get attendance data for all users
-  const allAttendanceData = await Attendance.query()
-    .select("user_id", "match_id", "status", "is_selected");
-  
+  const allAttendanceData = await Attendance.query().select(
+    "user_id",
+    "match_id",
+    "status",
+    "is_selected"
+  );
+
   // Create attendance data for each user
   const userAttendance = {};
   allAttendanceData.forEach((attendance) => {
@@ -85,22 +98,33 @@ export const wedstrijden = async (req, res) => {
     }
     userAttendance[attendance.user_id][attendance.match_id] = {
       status: attendance.status,
-      is_selected: attendance.is_selected
+      is_selected: attendance.is_selected,
     };
   });
-  
+
   // Add attendance data to each user
-  users.forEach(user => {
+  users.forEach((user) => {
     user.attendance = userAttendance[user.id] || {};
   });
 
   res.render("pages/wedstrijden", {
-    pageTitle: "Wedstrijden | Ping Pong Tool",
+    pageTitle: `Wedstrijden ${
+      teamLetter ? `Team ${teamLetter.toUpperCase()}` : ""
+    } | Ping Pong Tool`,
     user,
     matches: matches,
     teams: teams,
     users: users,
     attendanceMap: attendanceMap,
+    teamLetter: teamLetter,
+  });
+};
+export const wedstrijdenTeamsOverview = (req, res) => {
+  const user = req.user;
+
+  res.render("pages/wedstrijdenTeamsOverview", {
+    pageTitle: "Wedstrijden Overview | Ping Pong Tool",
+    user,
   });
 };
 

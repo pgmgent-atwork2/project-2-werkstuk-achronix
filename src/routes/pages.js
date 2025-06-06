@@ -6,9 +6,7 @@ import checkAdmin from "../middleware/checkAdmin.js";
 
 const router = new Router();
 
-
 router.use(PageController.addCurrentPath);
-
 
 router.get("/", (req, res) => {
   res.redirect("/dashboard");
@@ -16,7 +14,16 @@ router.get("/", (req, res) => {
 
 router.get("/dashboard", jwtAuth, PageController.dashboard);
 router.get("/bestellen", jwtAuth, PageController.bestellen);
-router.get("/wedstrijden", jwtAuth, PageController.wedstrijden);
+router.get("/wedstrijden/a", jwtAuth, (req, res) =>
+  PageController.wedstrijden(req, res, "a")
+);
+router.get("/wedstrijden/b", jwtAuth, (req, res) =>
+  PageController.wedstrijden(req, res, "b")
+);
+router.get("/wedstrijden/c", jwtAuth, (req, res) =>
+  PageController.wedstrijden(req, res, "c")
+);
+router.get("/wedstrijden", jwtAuth, PageController.wedstrijdenTeamsOverview);
 router.get("/profiel", jwtAuth, PageController.profiel);
 
 // Page routes beheerderspaneel
@@ -64,11 +71,8 @@ router.get("/password-reset/expired-token", PageController.expiredToken);
 router.get("/betaling/mislukt", PageController.orderFailed);
 router.get("/betaling/bedankt", PageController.orderComplete);
 
-
-
 router.use(jwtAuth, (req, res) => {
   return PageController.pageNotFound(req, res);
 });
-
 
 export default router;
