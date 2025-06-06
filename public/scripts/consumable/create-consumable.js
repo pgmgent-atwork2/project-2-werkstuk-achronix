@@ -1,12 +1,15 @@
+import renderConsumableRow from "./consumable-table.js";
+import getAllConsumables from "../getAllConsumables.js";
 document.addEventListener("DOMContentLoaded", function () {
   let $newConsumableModalContainer = document.createElement("div");
   $newConsumableModalContainer.id = "new-consumable-modal-container";
   document.body.appendChild($newConsumableModalContainer);
 
-     let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
+  let showNotification =
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    };
 
   const newConsumableHTML = `
     <div id="newConsumableModal" class="modal hidden">
@@ -23,9 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
             <input type="text" id="new_name" name="name" required>
           </div>
 
+        
           <div>
             <label for="new_price">Prijs</label>
             <input type="number" id="new_price" name="price" step="0.01" min="0" required>
+          </div>
+
+          <div>
+            <label for="new_stock">Voorraad</label>
+            <input type="number" id="new_stock" name="stock" step="1" min="0" required>
           </div>
 
           <div>
@@ -100,25 +109,30 @@ document.addEventListener("DOMContentLoaded", function () {
           body: formData,
         });
 
-     if (response.ok) {
-        $newConsumableModal.classList.add("hidden");
+        if (response.ok) {
+          $newConsumableModal.classList.add("hidden");
+          showNotification(
+            "Product toegevoegd",
+            "product is succesvol toegevoegd.",
+            "success"
+          );
+          const consumables = await getAllConsumables();
+          const $tableBody = document.querySelector("#consumablesTableBody");
+          $tableBody.innerHTML = "";
+          consumables.forEach((consumable) => {
+            renderConsumableRow(consumable, $tableBody);
+          });
+        } else {
+          const errorData = await response.json();
+          showNotification("Fout bij bijwerken", errorData.message, "error");
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
         showNotification(
-          "Product toegevoegd",
-          "product is succesvol toegevoegd.",
-          "success"
+          "Fout bij product toevoegen",
+          "Er is een probleem opgetreden bij het toevoegen van het product.",
+          "error"
         );
-        setTimeout(() => window.location.reload(), 1500);
-      } else {
-        const errorData = await response.json();
-        showNotification("Fout bij bijwerken", errorData.message, "error");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      showNotification(
-        "Fout bij product toevoegen",
-        "Er is een probleem opgetreden bij het toevoegen van het product.",
-        "error"
-      );
       }
     });
   }
