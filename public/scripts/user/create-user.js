@@ -1,12 +1,16 @@
-document.addEventListener("DOMContentLoaded", function () {
+import getAllUsers from "./getAllUsers.js";
+import renderUserRow from "./user-table.js";
+
+export function createUser() {
   let newUserModalContainer = document.createElement("div");
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
 
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
+  let showNotification =
+    window.showNotification ||
+    function (title, message, type) {
+      alert(`${type.toUpperCase()}: ${title} - ${message}`);
+    };
 
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
@@ -109,7 +113,14 @@ document.addEventListener("DOMContentLoaded", function () {
             "De nieuwe gebruiker is succesvol toegevoegd.",
             "success"
           );
-          setTimeout(() => window.location.reload(), 1500);
+
+          const users = await getAllUsers();
+          const $tableBody = document.querySelector("#userTableBody");
+          $tableBody.innerHTML = "";
+          users.forEach((user) => {
+            renderUserRow(user, $tableBody);
+          });
+          createUser();
         } else {
           const errorData = await response.json();
           showNotification("Fout bij aanmaken", errorData.message, "error");
@@ -124,4 +135,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-});
+}
