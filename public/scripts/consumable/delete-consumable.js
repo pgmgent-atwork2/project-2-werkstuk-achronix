@@ -85,7 +85,7 @@ export function deleteConsumable() {
 
         if (response.ok) {
           deleteModal.classList.add("hidden");
-          getShowNotification(
+          getShowNotification()(
             "product is verwijderd",
             "product is succesvol verwijderd.",
             "success"
@@ -100,7 +100,7 @@ export function deleteConsumable() {
           editConsumable();
         } else {
           const errorData = await response.json();
-          getShowNotification(
+          getShowNotification()(
             "Fout bij het verwijderen",
             errorData.message,
             "error"
@@ -108,7 +108,7 @@ export function deleteConsumable() {
         }
       } catch (error) {
         console.error("Error removing product:", error);
-        getShowNotification(
+        getShowNotification()(
           "Fout bij het verwijderen",
           "Er is een probleem opgetreden bij het verwijderen van het product.",
           "error"

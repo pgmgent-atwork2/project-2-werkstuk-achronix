@@ -110,7 +110,7 @@ export function createConsumable() {
 
         if (response.ok) {
           $newConsumableModal.classList.add("hidden");
-          getShowNotification(
+          getShowNotification()(
             "Product toegevoegd",
             "product is succesvol toegevoegd.",
             "success"
@@ -126,11 +126,11 @@ export function createConsumable() {
           deleteConsumable();
         } else {
           const errorData = await response.json();
-          getShowNotification("Fout bij bijwerken", errorData.message, "error");
+          getShowNotification()("Fout bij bijwerken", errorData.message, "error");
         }
       } catch (error) {
         console.error("Error updating user:", error);
-        getShowNotification(
+        getShowNotification()(
           "Fout bij product toevoegen",
           "Er is een probleem opgetreden bij het toevoegen van het product.",
           "error"
