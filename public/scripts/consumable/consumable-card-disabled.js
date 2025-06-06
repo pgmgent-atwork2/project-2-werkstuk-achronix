@@ -1,11 +1,16 @@
-export default function renderConsumableCard(
+export default function renderConsumableCardDisabled(
   consumable,
   $consumablesContainer,
   userId
 ) {
   const $consumableCard = document.createElement("article");
-  $consumableCard.classList.add("consumable");
+  $consumableCard.classList.add("consumable", "disabled");
+
   $consumableCard.innerHTML = `
+   <div class="consumable__overlay">
+      <p class="consumable__overlay-text">Niet op voorraad</p>
+    </div>
+    <div class="consumable__content">
           <img class="consumable__image" src="${consumable.image_url}" alt="${consumable.name}">
          <div class="consumable__details">
       <div class="consumable__info">
@@ -14,6 +19,7 @@ export default function renderConsumableCard(
       </div>
 
       <button
+      disabled
         class="consumable__button btn btn--primary"
         data-id=" ${consumable.id}"
       >
@@ -41,8 +47,9 @@ export default function renderConsumableCard(
           name="consumable_price"
           value="${consumable.price}"
         />
-        <button name="reduce" type="submit" class="reduce-count">-</button>
+        <button disabled name="reduce" type="submit" class="reduce-count">-</button>
         <input
+          disabled
           data-consumable-id="${consumable.id}"
           class="consumable__quantity"
           type="number"
@@ -51,9 +58,11 @@ export default function renderConsumableCard(
           max="${consumable.stock}"
           value="0"
         />
-        <button name="increase" type="submit" class="increase-count">+</button>
+        <button disabled name="increase" type="submit" class="increase-count">+</button>
       </form>
     </div>
-        `;
+    </div>
+        
+`;
   $consumablesContainer.appendChild($consumableCard);
 }
