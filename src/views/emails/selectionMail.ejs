@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Je bent geselecteerd!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: rgb(15, 44, 73);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .content {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .match-details {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #f94d1c;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🏓 Je bent geselecteerd!</h1>
+    </div>
+
+    <div class="content">
+        <p>Beste <%= data.user.firstname %>
+                <%= data.user.lastname %>
+        </p>
+        <p>Je bent geselecteerd voor de volgende wedstrijd:</p>
+        <div class="match-details">
+            <p><strong>Datum:</strong>
+                <%= data.match.date %>
+            </p>
+            <p><strong>Tijd:</strong>
+                <%= data.match.start_time %> - <%= data.match.end_time %>
+            </p>
+            <p><strong>Locatie:</strong>
+                <%= data.match.location %>
+            </p>
+            <p><strong>Thuis/Uit:</strong>
+                <%= data.match.home_away %>
+            </p>
+            <p><strong>Team:</strong>
+                <%= data.match.team ? data.match.team.name : 'Onbekend' %>
+            </p>
+            <p>
+                <a href="http://localhost:3000/wedstrijden/<%=data.match.team.name%>" class="button">Bekijk Planning</a>
+            </p>
+        </div>
+
+        <p>Veel succes met de wedstrijd!</p>
+
+        <p>Met sportieve groeten,<br>
+            Het Ping Pong Team</p>
+    </div>
+
+</body>
+
+</html>
+</div>
