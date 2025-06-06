@@ -1,4 +1,5 @@
 import Attendance from "../../models/Attendance.js";
+import { sendMail } from "../../utils/mailer.js";
 import User from "../../models/User.js";
 import Match from "../../models/Match.js";
 
@@ -56,7 +57,6 @@ export const store = async (req, res) => {
       });
     }
 
-    // Check if attendance record already exists
     const existingRecord = await Attendance.query()
       .where("match_id", match_id)
       .where("user_id", user_id)
@@ -69,7 +69,6 @@ export const store = async (req, res) => {
       });
     }
 
-    // Create new attendance record
     const attendanceRecord = await Attendance.query().insert({
       match_id,
       user_id,
@@ -96,13 +95,11 @@ export const update = async (req, res) => {
     const id = req.params.id;
     const { matchId, userId, status, match_id, user_id } = req.body;
 
-    // If this is the /api/attendance/update endpoint
     if (!id && (matchId || match_id) && (userId || user_id)) {
       const matchIdToUse = matchId || match_id;
       const userIdToUse = userId || user_id;
       const statusToUse = status || "unknown";
 
-      // Check if the match exists
       const match = await Match.query().findById(matchIdToUse);
       if (!match) {
         return res.status(404).json({
@@ -111,7 +108,6 @@ export const update = async (req, res) => {
         });
       }
 
-      // Check if the user exists
       const user = await User.query().findById(userIdToUse);
       if (!user) {
         return res.status(404).json({
@@ -120,7 +116,6 @@ export const update = async (req, res) => {
         });
       }
 
-      // Check if attendance record already exists
       let attendanceRecord = await Attendance.query()
         .where("match_id", matchIdToUse)
         .where("user_id", userIdToUse)
@@ -129,7 +124,6 @@ export const update = async (req, res) => {
       let message;
 
       if (attendanceRecord) {
-        // Update existing record
         attendanceRecord = await Attendance.query().updateAndFetchById(
           attendanceRecord.id,
           {
@@ -140,7 +134,6 @@ export const update = async (req, res) => {
         );
         message = "Attendance status updated";
       } else {
-        // Create new record
         attendanceRecord = await Attendance.query().insert({
           match_id: matchIdToUse,
           user_id: userIdToUse,
@@ -155,7 +148,6 @@ export const update = async (req, res) => {
         data: attendanceRecord,
       });
     }
-    // Regular update endpoint using ID
     else if (id) {
       const attendance = await Attendance.query().findById(id);
 
@@ -237,12 +229,10 @@ export const getAttendance = async (req, res) => {
 
     let query = Attendance.query().where("match_id", matchId);
 
-    // If userId is provided, filter by user
     if (userId) {
       query = query.where("user_id", userId);
     }
 
-    // Get attendance records
     const attendanceRecords = await query.withGraphFetched("[user, match]");
 
     return res.status(200).json({
@@ -259,7 +249,6 @@ export const getAttendance = async (req, res) => {
   }
 };
 
-// Alias for the route
 export const updateAttendance = update;
 
 export const updateSelection = async (req, res) => {
@@ -273,7 +262,6 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    // Check if the user making the request is an admin
     if (req.user && !req.user.is_admin) {
       return res.status(403).json({
         success: false,
@@ -281,8 +269,9 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    // Check if the match exists
-    const match = await Match.query().findById(match_id);
+    const match = await Match.query()
+      .findById(match_id)
+      .withGraphFetched("team");
     if (!match) {
       return res.status(404).json({
         success: false,
@@ -290,7 +279,6 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    // Check if the user exists
     const user = await User.query().findById(user_id);
     if (!user) {
       return res.status(404).json({
@@ -299,7 +287,6 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    // Check if attendance record already exists
     let attendanceRecord = await Attendance.query()
       .where("match_id", match_id)
       .where("user_id", user_id)
@@ -308,21 +295,18 @@ export const updateSelection = async (req, res) => {
     let message;
 
     if (attendanceRecord) {
-      // Update existing record - include all required fields
       attendanceRecord = await Attendance.query().updateAndFetchById(
         attendanceRecord.id,
         {
-          match_id, // Include this even though it's not changing
-          user_id, // Include this even though it's not changing
+          match_id,
+          user_id,
           is_selected,
-          // Keep the existing status
           status: attendanceRecord.status || "unknown",
         }
       );
       message =
         is_selected === "selected" ? "Player selected" : "Player deselected";
     } else {
-      // Create new record with unknown status but selection status set
       attendanceRecord = await Attendance.query().insert({
         match_id,
         user_id,
@@ -331,6 +315,14 @@ export const updateSelection = async (req, res) => {
       });
       message =
         is_selected === "selected" ? "Player selected" : "Player deselected";
+    }
+
+    if (
+      is_selected === "selected" &&
+      user.email &&
+      user.receive_notifications
+    ) {
+      await sendSelectionEmail(user, match);
     }
 
     return res.status(200).json({
@@ -347,3 +339,33 @@ export const updateSelection = async (req, res) => {
     });
   }
 };
+
+async function sendSelectionEmail(user, match) {
+  try {
+    if (!user || !user.email || !match) {
+      console.log("Missing required data for email sending");
+      return;
+    }
+
+    const matchDate = new Date(match.date);
+    const emailData = {
+      user: user,
+      match: match,
+      matchDate: matchDate,
+      teamName: match.team ? match.team.name : "het team",
+    };
+
+    console.log("Email data being sent:", emailData);
+
+    await sendMail(
+      user.email,
+      "Je bent geselecteerd! | Ping Pong Tool",
+      "selectionMail.ejs",
+      emailData
+    );
+
+    console.log("Selection email sent successfully");
+  } catch (error) {
+    console.error("Error sending selection email:", error);
+  }
+}
