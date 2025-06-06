@@ -11,6 +11,8 @@ import "./match-attendance.js";
 import "./player-selection.js";
 import "./match-filter.js";
 
+import "/scripts/profile.js";
+
 import "./search-orders.js";
 
 import "./consumable/create-consumable.js";
