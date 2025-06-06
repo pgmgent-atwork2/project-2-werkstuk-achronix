@@ -1,12 +1,9 @@
+import { getShowNotification } from "./utils/notifications.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   let newUserModalContainer = document.createElement("div");
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
-
-    let showNotification = window.showNotification || function (title, message, type) {
-    alert(`${type.toUpperCase()}: ${title} - ${message}`);
-  };
-
 
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
@@ -104,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           newUserModal.classList.add("hidden");
-          showNotification(
+          getShowNotification()(
             "Gebruiker toegevoegd",
             "De nieuwe gebruiker is succesvol toegevoegd.",
             "success"
@@ -112,11 +109,15 @@ document.addEventListener("DOMContentLoaded", function () {
           setTimeout(() => window.location.reload(), 1500);
         } else {
           const errorData = await response.json();
-          showNotification("Fout bij aanmaken", errorData.message, "error");
+          getShowNotification()(
+            "Fout bij aanmaken",
+            errorData.message,
+            "error"
+          );
         }
       } catch (error) {
         console.error("Error creating user:", error);
-        showNotification(
+        getShowNotification()(
           "Fout bij aanmaken",
           "Er is een probleem opgetreden bij het aanmaken van de gebruiker.",
           "error"
