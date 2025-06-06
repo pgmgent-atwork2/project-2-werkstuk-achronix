@@ -109,11 +109,12 @@
         <button name="reduce" type="submit" class="reduce-count">-</button>
         <input
           data-consumable-id="<%= consumable.id %>"
+          data-consumable-stock="<%= consumable.stock %>"
           class="consumable__quantity"
           type="number"
           name="quantity"
           min="0"
-          max="10"
+          max="<%= consumable.stock %>"
           value="0"
         />
         <button name="increase" type="submit" class="increase-count">+</button>

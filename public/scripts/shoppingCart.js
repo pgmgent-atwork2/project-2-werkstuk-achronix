@@ -10,6 +10,8 @@ export function InitShoppingCart() {
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
 
+  handleAboveStockAmount();
+
   if (!orderIntialized) {
     orderIntialized = true;
     handleOrder(key);
@@ -325,4 +327,20 @@ async function updateStock(data, id) {
   } catch (error) {
     console.error("Error updating stock:", error);
   }
+}
+
+function handleAboveStockAmount() {
+  const $quantityInputs = document.querySelectorAll(".consumable__quantity");
+
+  $quantityInputs.forEach(($input) => {
+    $input.addEventListener("input", () => {
+      const stockAmount = parseInt($input.dataset.consumableStock);
+      const currentValue = parseInt($input.value);
+
+      if (currentValue > stockAmount) {
+        alert(`De voorraad is niet voldoende. `);
+        $input.value = stockAmount;
+      }
+    });
+  });
 }
