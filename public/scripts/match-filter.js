@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const filterSelect = document.getElementById("filterSelect");
+  const filterSelect = document.getElementById("filterSelect-matches");
 
   // Function to filter matches based on selected option
   const filterMatches = function () {
@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Check if any matches are visible after filtering
-    const visibleMatches = [...matchBlocks].filter(block => 
-      block.style.display !== 'none'
+    const visibleMatches = [...matchBlocks].filter(
+      (block) => block.style.display !== "none"
     );
     const noMatchesMessage = document.querySelector(".no-matches-message");
     const wedstrijdenGrid = document.querySelector(".wedstrijden-grid");
