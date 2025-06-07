@@ -43,9 +43,14 @@ export const bestellen = async (req, res) => {
   const consumables = await Consumable.query().orderBy("stock", "desc");
   const categories = await Category.query();
 
+  const users = await User.query()
+    .where("is_admin", false)
+    .orderBy("firstname", "asc");
+
   res.render("pages/bestellen", {
     pageTitle: "Bestellen | Ping Pong Tool",
     user,
+    users,
     consumables,
     categories,
   });
