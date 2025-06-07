@@ -24,136 +24,151 @@ export function InitShoppingCart() {
   }
 
   if (cart.length > 0) {
-    $showCart.parentElement.classList.remove("hidden");
+    if ($showCart) {
+      $showCart.parentElement.classList.remove("hidden");
+    }
     showCountOnInput(cart);
     handleShoppingCart(cart);
 
     removeItemFromCart();
   } else {
-    $cart.classList.remove("show");
-    $showCart.parentElement.classList.add("hidden");
-  }
-
-  $showCart.addEventListener("click", () => {
-    $cart.classList.add("show");
-  });
-
-  $closeCart.addEventListener("click", () => {
-    $cart.classList.remove("show");
-  });
-
-  $consumables.forEach(($consumable) => {
-    const $btn = $consumable.querySelector(".consumable__button");
-    const $form = $consumable.querySelector(".consumable__form");
-
-    const $quantityInput = $form.querySelector(".consumable__quantity");
-    const $reduceBtn = $form.querySelector(".reduce-count");
-    const $increaseBtn = $form.querySelector(".increase-count");
-
-    $btn.addEventListener("click", () => {
-      $form.classList.add("show");
-    });
-
-    $reduceBtn.addEventListener("click", () => {
-      let currentValue = parseInt($quantityInput.value);
-      if (currentValue > 0) {
-        currentValue--;
-        $quantityInput.value = currentValue;
-      }
-
-      if (currentValue === 0) {
-        $form.classList.remove("show");
-      }
-    });
-
-    $increaseBtn.addEventListener("click", () => {
-      let currentValue = parseInt($quantityInput.value);
-      currentValue++;
-      $quantityInput.value = currentValue;
-    });
-
-    $form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData($form);
-      const consumableId = formData.get("consumable_id");
-      const userId = formData.get("user_id");
-      const quantity = formData.get("quantity");
-      const price = formData.get("consumable_price");
-      const consumableName = formData.get("consumable_name");
-      const consumableImage = formData.get("consumable_image");
-      const newPrice = quantity * price;
-
-      const data = {
-        consumable_id: parseInt(consumableId),
-        user_id: parseInt(userId),
-        quantity: parseInt(quantity),
-        price: newPrice,
-        consumableName,
-        consumableImage,
-      };
-
-      handleShoppingCart(data);
-    });
-  });
-}
-
-function handleShoppingCart(data) {
-  const $showCart = document.getElementById("show-cart");
-  const $cartItemCount = document.getElementById("item__count");
-
-  const key = "cart";
-  let cart = JSON.parse(localStorage.getItem(key)) || [];
-
-  if (parseInt(data.quantity) === 0) {
-    cart = cart.filter((item) => item.consumable_id !== data.consumable_id);
-  } else {
-    const existingItem = cart.find(
-      (item) => item.consumable_id === data.consumable_id
-    );
-
-    if (existingItem) {
-      existingItem.quantity = data.quantity;
-      existingItem.price = data.price;
-    } else {
-      cart.push(data);
+    if ($cart) {
+      $cart.classList.remove("show");
+    }
+    if ($showCart) {
+      $showCart.parentElement.classList.add("hidden");
     }
   }
 
-  cart = cart.filter((item) => Number(item.quantity) > 0);
-
-  localStorage.setItem(key, JSON.stringify(cart));
-
-  $cartItemCount.textContent = cart.length;
-
-  $showCart.parentElement.classList.remove("hidden");
-  showCart(cart);
-  removeItemFromCart();
-}
-
-function showCart(items) {
-  const $showCart = document.getElementById("show-cart");
-  const $cart = document.querySelector(".cart");
-
-  if (!items || items.length === 0) {
-    $cart.classList.remove("show");
-    $showCart.parentElement.classList.add("hidden");
-    return;
+  if ($showCart) {
+    $showCart.addEventListener("click", () => {
+      $cart.classList.add("show");
+    });
   }
 
-  const $cartItems = $cart.querySelector(".cart__items");
-  const $cartTotal = $cart.querySelector(".cart__total");
+  if ($closeCart) {
+    $closeCart.addEventListener("click", () => {
+      $cart.classList.remove("show");
+    });
+  }
 
-  $showCart.parentElement.classList.remove("hidden");
-  $cartItems.innerHTML = "";
+  if ($consumables && $consumables.length > 0) {
+    $consumables.forEach(($consumable) => {
+      const $btn = $consumable.querySelector(".consumable__button");
+      const $form = $consumable.querySelector(".consumable__form");
 
-  items.forEach((item, i) => {
-    $cartItems.innerHTML += `
+      if (!$btn || !$form) return;
+
+      const $quantityInput = $form.querySelector(".consumable__quantity");
+      const $reduceBtn = $form.querySelector(".reduce-count");
+      const $increaseBtn = $form.querySelector(".increase-count");
+
+      if (!$quantityInput || !$reduceBtn || !$increaseBtn) return;
+
+      $btn.addEventListener("click", () => {
+        $form.classList.add("show");
+      });
+
+      $reduceBtn.addEventListener("click", () => {
+        let currentValue = parseInt($quantityInput.value);
+        if (currentValue > 0) {
+          currentValue--;
+          $quantityInput.value = currentValue;
+        }
+
+        if (currentValue === 0) {
+          $form.classList.remove("show");
+        }
+      });
+
+      $increaseBtn.addEventListener("click", () => {
+        let currentValue = parseInt($quantityInput.value);
+        currentValue++;
+        $quantityInput.value = currentValue;
+      });
+
+      $form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData($form);
+        const consumableId = formData.get("consumable_id");
+        const userId = formData.get("user_id");
+        const quantity = formData.get("quantity");
+        const price = formData.get("consumable_price");
+        const consumableName = formData.get("consumable_name");
+        const consumableImage = formData.get("consumable_image");
+        const newPrice = quantity * price;
+
+        const data = {
+          consumable_id: parseInt(consumableId),
+          user_id: parseInt(userId),
+          quantity: parseInt(quantity),
+          price: newPrice,
+          consumableName,
+          consumableImage,
+        };
+
+        handleShoppingCart(data);
+      });
+    });
+  }
+
+  function handleShoppingCart(data) {
+    const $showCart = document.getElementById("show-cart");
+    const $cartItemCount = document.getElementById("item__count");
+
+    const key = "cart";
+    let cart = JSON.parse(localStorage.getItem(key)) || [];
+
+    if (parseInt(data.quantity) === 0) {
+      cart = cart.filter((item) => item.consumable_id !== data.consumable_id);
+    } else {
+      const existingItem = cart.find(
+        (item) => item.consumable_id === data.consumable_id
+      );
+
+      if (existingItem) {
+        existingItem.quantity = data.quantity;
+        existingItem.price = data.price;
+      } else {
+        cart.push(data);
+      }
+    }
+
+    cart = cart.filter((item) => Number(item.quantity) > 0);
+
+    localStorage.setItem(key, JSON.stringify(cart));
+
+    $cartItemCount.textContent = cart.length;
+
+    $showCart.parentElement.classList.remove("hidden");
+    showCart(cart);
+    removeItemFromCart();
+  }
+
+  function showCart(items) {
+    const $showCart = document.getElementById("show-cart");
+    const $cart = document.querySelector(".cart");
+
+    if (!items || items.length === 0) {
+      $cart.classList.remove("show");
+      $showCart.parentElement.classList.add("hidden");
+      return;
+    }
+
+    const $cartItems = $cart.querySelector(".cart__items");
+    const $cartTotal = $cart.querySelector(".cart__total");
+
+    $showCart.parentElement.classList.remove("hidden");
+    $cartItems.innerHTML = "";
+
+    items.forEach((item, i) => {
+      $cartItems.innerHTML += `
     <li class="cart__item">
     <div class="cart__item__info">
       <img class="cart__item-image" src="${item.consumableImage}" alt="${
-      item.consumableName
-    }">
+        item.consumableName
+      }">
       <div class="cart__item-details">
       <span class="cart__item-name">${item.consumableName}</span>
       <span class="cart__item-quantity">${item.quantity}</span>
@@ -165,44 +180,212 @@ function showCart(items) {
 </svg>
 </button>
     </li>`;
-  });
+    });
 
-  $cartTotal.innerHTML = `totaal: € ${items
-    .reduce((acc, item) => acc + item.price, 0)
-    .toFixed(2)}`;
-}
+    $cartTotal.innerHTML = `totaal: € ${items
+      .reduce((acc, item) => acc + item.price, 0)
+      .toFixed(2)}`;
+  }
 
-function showCountOnInput(data) {
-  data.forEach((item) => {
-    const $input = document.querySelector(
-      `[data-consumable-id="${item.consumable_id}"]`
-    );
-
-    if ($input) {
-      $input.value = item.quantity;
-    }
-  });
-}
-
-function removeItemFromCart() {
-  const $removeButtons = document.querySelectorAll(".cart__item-remove");
-  const $cartItemCount = document.getElementById("item__count");
-
-  $removeButtons.forEach(($button) => {
-    $button.addEventListener("click", () => {
-      const key = "cart";
-      const cart = JSON.parse(localStorage.getItem(key)) || [];
-
-      const index = parseInt($button.dataset.index);
-
-      const removedItemId = cart[index].consumable_id;
-
-      cart.splice(index, 1);
-
+  function showCountOnInput(data) {
+    data.forEach((item) => {
       const $input = document.querySelector(
-        `[data-consumable-id="${removedItemId}"]`
+        `[data-consumable-id="${item.consumable_id}"]`
       );
 
+      if ($input) {
+        $input.value = item.quantity;
+      }
+    });
+  }
+
+  function removeItemFromCart() {
+    const $removeButtons = document.querySelectorAll(".cart__item-remove");
+    const $cartItemCount = document.getElementById("item__count");
+
+    $removeButtons.forEach(($button) => {
+      $button.addEventListener("click", () => {
+        const key = "cart";
+        const cart = JSON.parse(localStorage.getItem(key)) || [];
+
+        const index = parseInt($button.dataset.index);
+
+        const removedItemId = cart[index].consumable_id;
+
+        cart.splice(index, 1);
+
+        const $input = document.querySelector(
+          `[data-consumable-id="${removedItemId}"]`
+        );
+
+        if ($input) {
+          $input.value = 0;
+
+          const $form = $input.parentElement;
+          if ($form) {
+            $form.classList.remove("show");
+          }
+        }
+
+        $cartItemCount.textContent = cart.length;
+
+        localStorage.setItem(key, JSON.stringify(cart));
+        showCart(cart);
+      });
+    });
+  }
+
+  function handleOrder(key) {
+    const $consumablesContainer = document.querySelector(".consumables");
+    const $orderBtn = document.getElementById("order-btn");
+
+    if (!$orderBtn) return; // Skip if button doesn't exist on this page
+
+    $orderBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const cart = JSON.parse(localStorage.getItem(key) || []);
+      if (cart.length === 0) {
+        getShowNotification()(
+          "geen producten",
+          "Je hebt geen producten in je winkelwagentje.",
+          "error"
+        );
+        return;
+      }
+
+      const consumables = await getAllConsumables();
+
+      const InsufficientStock = cart.some((item) => {
+        const consumable = consumables.find((c) => c.id === item.consumable_id);
+        return consumable && item.quantity > consumable.stock;
+      });
+
+      if (InsufficientStock) {
+        getShowNotification()(
+          "Onvoldoende voorraad",
+          "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
+          "error"
+        );
+        return;
+      }
+
+      await addToExistingOrder(cart);
+
+      $consumablesContainer.innerHTML = "";
+
+      consumables.forEach((consumable) => {
+        if (consumable.stock === 0) {
+          renderConsumableCardDisabled(
+            consumable,
+            $consumablesContainer,
+            cart[0].user_id
+          );
+        } else {
+          renderConsumableCard(
+            consumable,
+            $consumablesContainer,
+            cart[0].user_id
+          );
+        }
+      });
+
+      for (const item of cart) {
+        await updateStock({ stock: item.quantity }, item.consumable_id);
+      }
+
+      clearInputs();
+
+      localStorage.removeItem(key);
+
+      showCart([]);
+
+      getShowNotification()(
+        "Bestelling geplaatst",
+        "Je bestelling is succesvol geplaatst.",
+        "success"
+      );
+    });
+  }
+
+  function handleInstantOrder(key) {
+    const $instantOrderbtn = document.getElementById("instant-order-btn");
+
+    if (!$instantOrderbtn) return; // Skip if button doesn't exist on this page
+
+    $instantOrderbtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const cart = JSON.parse(localStorage.getItem(key) || []);
+
+      if (cart.length === 0) {
+        getShowNotification()(
+          "Geen producten",
+          "Je hebt geen producten in je winkelwagentje.",
+          "error"
+        );
+        return;
+      }
+
+      const consumables = await getAllConsumables();
+
+      const InsufficientStock = cart.some((item) => {
+        const consumable = consumables.find((c) => c.id === item.consumable_id);
+        return consumable && item.quantity > consumable.stock;
+      });
+
+      if (InsufficientStock) {
+        getShowNotification()(
+          "Onvoldoende voorraad",
+          "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
+          "error"
+        );
+        return;
+      }
+
+      const orderId = await addOrderToDb(cart);
+
+      if (orderId) {
+        const userId = cart[0].user_id;
+        const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+
+        try {
+          const response = await fetch(`create-payment`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify({
+              orderId,
+              userId,
+              amount: totalPrice.toFixed(2),
+            }),
+          });
+
+          localStorage.removeItem(key);
+          showCart([]);
+          clearInputs();
+
+          for (const item of cart) {
+            await updateStock({ stock: item.quantity }, item.consumable_id);
+          }
+
+          const paymentData = await response.json();
+
+          window.location.href = paymentData.paymentUrl;
+        } catch (err) {
+          console.log("Fout bij het verwerken van de betaling:", err);
+        }
+      }
+    });
+  }
+
+  function clearInputs() {
+    const $inputs = document.querySelectorAll(".consumable__quantity");
+
+    $inputs.forEach(($input) => {
       if ($input) {
         $input.value = 0;
 
@@ -211,210 +394,47 @@ function removeItemFromCart() {
           $form.classList.remove("show");
         }
       }
-
-      $cartItemCount.textContent = cart.length;
-
-      localStorage.setItem(key, JSON.stringify(cart));
-      showCart(cart);
     });
-  });
-}
-
-function handleOrder(key) {
-  const $consumablesContainer = document.querySelector(".consumables");
-  const $orderBtn = document.getElementById("order-btn");
-
-  $orderBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const cart = JSON.parse(localStorage.getItem(key) || []);
-    if (cart.length === 0) {
-      getShowNotification()(
-        "geen producten",
-        "Je hebt geen producten in je winkelwagentje.",
-        "error"
-      );
-      return;
-    }
-
-    const consumables = await getAllConsumables();
-
-    const InsufficientStock = cart.some((item) => {
-      const consumable = consumables.find((c) => c.id === item.consumable_id);
-      return consumable && item.quantity > consumable.stock;
-    });
-
-    if (InsufficientStock) {
-      getShowNotification()(
-        "Onvoldoende voorraad",
-        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
-        "error"
-      );
-      return;
-    }
-
-    await addToExistingOrder(cart);
-
-    $consumablesContainer.innerHTML = "";
-
-    consumables.forEach((consumable) => {
-      if (consumable.stock === 0) {
-        renderConsumableCardDisabled(
-          consumable,
-          $consumablesContainer,
-          cart[0].user_id
-        );
-      } else {
-        renderConsumableCard(
-          consumable,
-          $consumablesContainer,
-          cart[0].user_id
-        );
-      }
-    });
-
-    for (const item of cart) {
-      await updateStock({ stock: item.quantity }, item.consumable_id);
-    }
-
-    clearInputs();
-
-    localStorage.removeItem(key);
-
-    showCart([]);
-
-    getShowNotification()(
-      "Bestelling geplaatst",
-      "Je bestelling is succesvol geplaatst.",
-      "success"
-    );
-  });
-}
-
-function handleInstantOrder(key) {
-  const $instantOrderbtn = document.getElementById("instant-order-btn");
-
-  $instantOrderbtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const cart = JSON.parse(localStorage.getItem(key) || []);
-
-    if (cart.length === 0) {
-      getShowNotification()(
-        "Geen producten",
-        "Je hebt geen producten in je winkelwagentje.",
-        "error"
-      );
-      return;
-    }
-
-    const consumables = await getAllConsumables();
-
-    const InsufficientStock = cart.some((item) => {
-      const consumable = consumables.find((c) => c.id === item.consumable_id);
-      return consumable && item.quantity > consumable.stock;
-    });
-
-    if (InsufficientStock) {
-      getShowNotification()(
-        "Onvoldoende voorraad",
-        "Er is onvoldoende voorraad voor een of meer producten in je winkelwagentje.",
-        "error"
-      );
-      return;
-    }
-
-    const orderId = await addOrderToDb(cart);
-
-    if (orderId) {
-      const userId = cart[0].user_id;
-      const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
-
-      try {
-        const response = await fetch(`create-payment`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-Requested-With": "XMLHttpRequest",
-          },
-          body: JSON.stringify({
-            orderId,
-            userId,
-            amount: totalPrice.toFixed(2),
-          }),
-        });
-
-        localStorage.removeItem(key);
-        showCart([]);
-        clearInputs();
-
-        for (const item of cart) {
-          await updateStock({ stock: item.quantity }, item.consumable_id);
-        }
-
-        const paymentData = await response.json();
-
-        window.location.href = paymentData.paymentUrl;
-      } catch (err) {
-        console.log("Fout bij het verwerken van de betaling:", err);
-      }
-    }
-  });
-}
-
-function clearInputs() {
-  const $inputs = document.querySelectorAll(".consumable__quantity");
-
-  $inputs.forEach(($input) => {
-    if ($input) {
-      $input.value = 0;
-
-      const $form = $input.parentElement;
-      if ($form) {
-        $form.classList.remove("show");
-      }
-    }
-  });
-}
-
-async function updateStock(data, id) {
-  try {
-    const response = await fetch(`/api/consumables/${id}/stock`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to update stock");
-    }
-
-    const result = await response.json();
-    console.log("Stock updated successfully:", result);
-  } catch (error) {
-    console.error("Error updating stock:", error);
   }
-}
 
-function handleAboveStockAmount() {
-  const $quantityInputs = document.querySelectorAll(".consumable__quantity");
+  async function updateStock(data, id) {
+    try {
+      const response = await fetch(`/api/consumables/${id}/stock`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-  $quantityInputs.forEach(($input) => {
-    $input.addEventListener("input", () => {
-      const stockAmount = parseInt($input.dataset.consumableStock);
-      const currentValue = parseInt($input.value);
-
-      if (currentValue > stockAmount) {
-        getShowNotification()(
-          "Onvoldoende voorraad",
-          "Je kunt niet meer bestellen dan de beschikbare voorraad.",
-          "error"
-        );
-        $input.value = stockAmount;
+      if (!response.ok) {
+        throw new Error("Failed to update stock");
       }
+
+      const result = await response.json();
+      console.log("Stock updated successfully:", result);
+    } catch (error) {
+      console.error("Error updating stock:", error);
+    }
+  }
+
+  function handleAboveStockAmount() {
+    const $quantityInputs = document.querySelectorAll(".consumable__quantity");
+
+    $quantityInputs.forEach(($input) => {
+      $input.addEventListener("input", () => {
+        const stockAmount = parseInt($input.dataset.consumableStock);
+        const currentValue = parseInt($input.value);
+
+        if (currentValue > stockAmount) {
+          getShowNotification()(
+            "Onvoldoende voorraad",
+            "Je kunt niet meer bestellen dan de beschikbare voorraad.",
+            "error"
+          );
+          $input.value = stockAmount;
+        }
+      });
     });
-  });
+  }
 }
