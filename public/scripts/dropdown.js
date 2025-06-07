@@ -7,6 +7,7 @@ export default function initDropdown() {
   const $searchInputUsers = document.getElementById("search-input-users");
   const $searchUsers = document.querySelectorAll(".search-user");
   const $userIdOrder = document.querySelectorAll(".user-id-order");
+  const $dropdownMenu = document.querySelector(".dropdown-content");
   let users = [];
 
   $searchUsers.forEach(($searchUser) => {
@@ -21,6 +22,7 @@ export default function initDropdown() {
       if (name) {
         $button.textContent = name;
       }
+      $dropdownMenu.classList.add("hidden");
     });
   });
 
