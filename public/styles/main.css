@@ -16,7 +16,11 @@
 @import url("components/cart.css");
 @import url("components/consumables.css");
 @import url("components/notifications.css");
+
+@import url("components/dropdown.css");
+
 @import url("components/notification-form.css");
+
 
 /* alle imports van de pages styles */
 

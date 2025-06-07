@@ -1,5 +1,5 @@
 <div class="table-controls">
-  <input type="hidden" id="logged-in-user" value="<%= user.id %>" />
+  <input type="hidden" id="logged-in-user" value=" <%= user.id %>" />
 
   <div class="search-container">
     <input
@@ -8,6 +8,48 @@
       placeholder="Zoeken op product"
       class="search-input"
     />
+    <% if(user.is_admin) { %>
+    <div class="dropdown">
+      <button class="btn btn--secondary dropdown-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+        </svg>
+        Bestellen op gebruiker
+      </button>
+      <div class="dropdown-content hidden">
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-input-users"
+            placeholder="Zoeken op gebruiker"
+            class="search-input"
+          />
+        </div>
+        <ul class="dropdown-list">
+          <% if (users && users.length > 0) { %> <% users.forEach(user => { %>
+          <li class="dropdown-item">
+            <span class="search-user" data-id="<%= user.id %>">
+              <%= user.firstname %> <%= user.lastname %>
+            </span>
+          </li>
+          <% }); %> <% } else { %>
+          <li>Geen gebruikers gevonden</li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+    <% } %>
   </div>
   <div class="filter-container">
     <svg
@@ -100,7 +142,7 @@
           name="consumable_image"
           value="<%= consumable.image_url %>"
         />
-        <input type="hidden" name="user_id" value="<%= user.id %>" />
+        <input class="user-id-order" type="hidden" name="user_id" value="<%= user.id %>" />
         <input
           type="hidden"
           name="consumable_price"

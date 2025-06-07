@@ -239,7 +239,7 @@ export function InitShoppingCart() {
     const $consumablesContainer = document.querySelector(".consumables");
     const $orderBtn = document.getElementById("order-btn");
 
-    if (!$orderBtn) return; // Skip if button doesn't exist on this page
+    if (!$orderBtn) return;
 
     $orderBtn.addEventListener("click", async (e) => {
       e.preventDefault();
@@ -311,7 +311,7 @@ export function InitShoppingCart() {
   function handleInstantOrder(key) {
     const $instantOrderbtn = document.getElementById("instant-order-btn");
 
-    if (!$instantOrderbtn) return; // Skip if button doesn't exist on this page
+    if (!$instantOrderbtn) return;
 
     $instantOrderbtn.addEventListener("click", async (e) => {
       e.preventDefault();

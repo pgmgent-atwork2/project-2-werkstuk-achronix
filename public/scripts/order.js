@@ -1,4 +1,3 @@
-
 export async function addOrderToDb(cart) {
   try {
     const response = await fetch("/api/orders", {
@@ -20,6 +19,8 @@ export async function addOrderToDb(cart) {
 
     const orderData = await response.json();
     const orderId = orderData.id;
+    console.log("Order placed successfully with ID:", orderId);
+    console.log(cart);
 
     cart.forEach(async (item) => {
       await fetch("/api/order-items", {
@@ -42,20 +43,22 @@ export async function addOrderToDb(cart) {
 }
 
 export async function addToExistingOrder(cart) {
+  const userId = cart[0].user_id;
   try {
-    const response = await fetch("/api/orders/status/NOT_PAID", {
+    const response = await fetch(`/api/orders/${userId}/status/NOT_PAID`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const orderData = await response.json();
-
-    if (!orderData || orderData.length === 0) {
+    if (response.status === 204) {
       await addOrderToDb(cart);
       return;
     }
+
+    const orderData = await response.json();
+
     const orderId = orderData[0].id;
 
     const existingItemsResponse = await fetch(
