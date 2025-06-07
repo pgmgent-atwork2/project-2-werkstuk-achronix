@@ -19,6 +19,8 @@ export async function addOrderToDb(cart) {
 
     const orderData = await response.json();
     const orderId = orderData.id;
+    console.log("Order placed successfully with ID:", orderId);
+    console.log(cart);
 
     cart.forEach(async (item) => {
       await fetch("/api/order-items", {
@@ -100,6 +102,7 @@ export async function addToExistingOrder(cart) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            order_id: orderId,
             consumable_id: item.consumable_id,
             quantity: item.quantity,
             price: item.price,
