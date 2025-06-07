@@ -137,6 +137,27 @@ export const profiel = (req, res) => {
   });
 };
 
+export const rekening = async (req, res) => {
+  const user = req.user;
+  const orders = await Order.query()
+    .withGraphFetched("orderItems.consumable")
+    .where("user_id", user.id);
+
+  const totalPrice = orders.reduce((acc, order) => {
+    const orderTotal = order.orderItems.reduce((sum, item) => {
+      return sum + item.price;
+    }, 0);
+    return acc + orderTotal;
+  }, 0);
+
+  res.render("pages/rekening", {
+    pageTitle: "Rekening | Ping Pong Tool",
+    user,
+    orders,
+    totalPrice: totalPrice.toFixed(2),
+  });
+};
+
 //Beheerderspaneel
 
 export const beheerderspaneel = async (req, res) => {
