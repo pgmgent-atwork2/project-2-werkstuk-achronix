@@ -10,6 +10,7 @@ import * as API_OrderItemsController from "../controllers/api/OrderItemsControll
 import * as API_AttendanceController from "../controllers/api/AttendanceController.js";
 import * as API_NotificationController from "../controllers/api/NotificationController.js";
 import jwtAuth from "../middleware/jwtAuth.js";
+import checkAdmin from "../middleware/checkAdmin.js";
 
 const router = new Router();
 
@@ -99,15 +100,62 @@ router.put("/order-items/:id", API_OrderItemsController.update);
 router.delete("/order-items/:id", API_OrderItemsController.destroy);
 
 // Notifications
-router.post(
-  "/notifications/back-in-stock/:consumableId/dismiss",
+router.get(
+  "/notifications",
   jwtAuth,
-  API_NotificationController.dismissBackInStockNotification
+  checkAdmin,
+  API_NotificationController.index
+);
+router.get(
+  "/notifications/:id",
+  jwtAuth,
+  checkAdmin,
+  API_NotificationController.show
+);
+router.post(
+  "/notifications",
+  jwtAuth,
+  checkAdmin,
+  API_NotificationController.store
+);
+router.put(
+  "/notifications/:id",
+  jwtAuth,
+  checkAdmin,
+  API_NotificationController.update
+);
+router.delete(
+  "/notifications/:id",
+  jwtAuth,
+  checkAdmin,
+  API_NotificationController.destroy
+);
+
+router.get(
+  "/notifications/title/:title",
+  jwtAuth,
+  checkAdmin,
+  API_NotificationController.findByTitle
 );
 router.post(
   "/notifications/back-in-stock/dismiss-all",
   jwtAuth,
-  API_NotificationController.dismissAllBackInStockNotifications
+  API_NotificationController.dismissAllBackInStock
+);
+router.post(
+  "/notifications/back-in-stock/:consumableId/dismiss",
+  jwtAuth,
+  API_NotificationController.dismissBackInStock
+);
+router.post(
+  "/notifications/admin-message/dismiss-all",
+  jwtAuth,
+  API_NotificationController.dismissAllAdminNotifications
+);
+router.post(
+  "/notifications/:id/dismiss",
+  jwtAuth,
+  API_NotificationController.dismissAdminNotification
 );
 
 export default router;
