@@ -37,6 +37,8 @@ export const dashboard = async (req, res) => {
   }, 0);
 
   let backInStockNotifications = [];
+  let adminNotifications = [];
+
   try {
     const Notification = (await import("../models/Notification.js")).default;
 
@@ -44,39 +46,32 @@ export const dashboard = async (req, res) => {
       `Fetching notifications for user ${user.id} (${user.firstname})...`
     );
 
-    const notifications = await Notification.query()
+    // Haal back in stock notificaties op
+    const stockNotifications = await Notification.query()
       .where("user_id", user.id)
       .where("type", "back_in_stock")
       .where("is_read", false)
       .orderBy("created_at", "desc");
 
-    console.log(
-      `Found ${notifications.length} raw notifications for user ${user.id}`
-    );
-
-    const allNotifications = await Notification.query()
-      .where("type", "back_in_stock")
-      .where("is_read", false);
-    console.log("All notifications in database:");
-    allNotifications.forEach((notif) => {
-      console.log(
-        `- ID: ${notif.id}, User: ${notif.user_id}, Consumable: ${notif.consumable_id}, Message: ${notif.message}`
-      );
-    });
-
-    for (const notification of notifications) {
+    for (const notification of stockNotifications) {
       const consumable = await Consumable.query().findById(
         notification.consumable_id
       );
       if (consumable) {
         notification.consumable = consumable;
         backInStockNotifications.push(notification);
-        console.log(`Added notification for ${consumable.name}`);
       }
     }
 
+    // Haal admin berichten op (consumable_id = 0 voor admin berichten)
+    adminNotifications = await Notification.query()
+      .where("user_id", user.id)
+      .where("type", "admin_message")
+      .where("is_read", false)
+      .orderBy("created_at", "desc");
+
     console.log(
-      `Found ${backInStockNotifications.length} complete notifications for user ${user.id}`
+      `Found ${backInStockNotifications.length} stock notifications and ${adminNotifications.length} admin notifications for user ${user.id}`
     );
   } catch (error) {
     console.error("Error fetching notifications:", error);
@@ -88,6 +83,7 @@ export const dashboard = async (req, res) => {
     orders,
     totalPrice: totalPrice.toFixed(2),
     backInStockNotifications,
+    adminNotifications,
   });
 };
 
@@ -278,6 +274,42 @@ export const consumablesBeheer = async (req, res) => {
     consumables,
     categories,
   });
+};
+
+export const notificatiesBeheer = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const Notification = (await import("../models/Notification.js")).default;
+
+    const rawNotifications = await Notification.query()
+      .where("type", "admin_message")
+      .orderBy("created_at", "desc");
+
+    const uniqueNotifications = [];
+    const seen = {};
+
+    rawNotifications.forEach((notification) => {
+      const key = `${notification.title}-${notification.message}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueNotifications.push(notification);
+      }
+    });
+
+    res.render("pages/beheer/notificaties", {
+      pageTitle: "Notificaties beheren | Ping Pong Tool",
+      user,
+      notifications: uniqueNotifications,
+    });
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    res.render("pages/beheer/notificaties", {
+      pageTitle: "Notificaties beheren | Ping Pong Tool",
+      user,
+      notifications: [],
+    });
+  }
 };
 
 export const forgotPasswordConfirmation = async (req, res) => {
