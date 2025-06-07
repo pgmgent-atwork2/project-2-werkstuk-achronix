@@ -1,0 +1,38 @@
+<a class="back back-link" href="/beheerderspaneel"></a>
+   
+    Ga terug naar beheerderspaneel overzicht</a>
+
+<div>
+    <h1 class="title">Notificaties versturen</h1>
+
+    <% if (locals.flash) { %>
+        <% ['success', 'error' , 'warning' ].forEach(type=> { %>
+            <% if (flash[type]) { %>
+                <div class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>">
+                    <%= flash[type] %>
+                </div>
+                <% } %>
+                    <% }) %>
+                        <% } %>
+
+                            <section>
+                                <div class="notification-form-section">
+                                    <h2>Nieuwe notificatie aanmaken</h2>
+                                    <form id="newNotificationForm" class="notification-form">
+                                        <div class="notification-form__field">
+                                            <label for="new_title" class="notification-form__label">Titel</label>
+                                            <input type="text" id="new_title" name="title" class="notification-form__input" required>
+                                        </div>
+
+                                        <div class="notification-form__field">
+                                            <label for="new_message" class="notification-form__label">Bericht</label>
+                                            <textarea id="new_message" name="message" rows="4" class="notification-form__textarea" required></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn--primary notification-form__button">Versturen naar alle gebruikers</button>
+                                    </form>
+                                </div>
+                            </section>
+</div>
+
+<script type="module" src="/scripts/notification/notification-management.js"></script>

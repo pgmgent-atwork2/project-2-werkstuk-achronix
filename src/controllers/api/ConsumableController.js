@@ -41,6 +41,10 @@ export const update = async (req, res) => {
     if (!consumableExists) {
       return res.status(404).json({ error: "Consumable not found" });
     }
+
+    const wasOutOfStock = consumableExists.stock === 0;
+    const isNowInStock = parseInt(stock) > 0;
+
     const updatedConsumable = await Consumable.query().patchAndFetchById(id, {
       name,
       price,
@@ -48,6 +52,17 @@ export const update = async (req, res) => {
       image_url,
       category_id,
     });
+
+    if (wasOutOfStock && isNowInStock) {
+      console.log(
+        `Product ${updatedConsumable.name} is weer op voorraad! Creating notifications...`
+      );
+
+      setTimeout(async () => {
+        await createBackInStockNotifications(updatedConsumable);
+      }, 100);
+    }
+
     return res.json(updatedConsumable);
   } catch (error) {
     console.error("Error updating consumable:", error);
@@ -152,3 +167,62 @@ export const findByCategory = async (req, res) => {
     });
   }
 };
+
+let notificationLock = new Set();
+
+async function createBackInStockNotifications(consumable) {
+  const lockKey = `notification_${consumable.id}`;
+  if (notificationLock.has(lockKey)) {
+    console.log(
+      `Notification creation already in progress for consumable ${consumable.id}, skipping...`
+    );
+    return;
+  }
+
+  notificationLock.add(lockKey);
+
+  try {
+    const User = (await import("../../models/User.js")).default;
+    const Notification = (await import("../../models/Notification.js")).default;
+
+    console.log(
+      `Starting notification creation for consumable ${consumable.id}: ${consumable.name}`
+    );
+
+    const deletedCount = await Notification.query()
+      .delete()
+      .where("type", "back_in_stock");
+
+    console.log(
+      `Deleted ${deletedCount} old back_in_stock notifications from all users`
+    );
+
+    const users = await User.query();
+    console.log(`Found ${users.length} total users`);
+
+    for (const user of users) {
+      const newNotification = await Notification.query().insert({
+        user_id: user.id,
+        consumable_id: consumable.id,
+        title: "Product terug beschikbaar",
+        message: `${consumable.name} is weer beschikbaar!`,
+        type: "back_in_stock",
+        is_read: false,
+      });
+
+      console.log(
+        `Created notification ${newNotification.id} for user ${user.id} (${user.firstname}): ${consumable.name} is back in stock!`
+      );
+    }
+
+    console.log(
+      `Finished creating notifications for consumable ${consumable.name}`
+    );
+  } catch (error) {
+    console.error("Error creating back in stock notifications:", error);
+    }
+    
+    setTimeout(() => {
+    notificationLock.delete(lockKey);
+    }, 5000);
+  }

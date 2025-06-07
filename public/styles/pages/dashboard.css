@@ -2,24 +2,53 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem 1rem;
-  
 }
 
 .dashboard-header {
   margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.dashboard-header--main {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 0.125rem 0.5rem var(--shadow-light);
+  overflow: hidden;
+  position: relative;
+}
+
+.dashboard-header__content {
+  position: relative;
+  z-index: 2;
 }
 
 .dashboard-title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--primary);
-  margin-bottom: 0.3rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-title--primary {
+  color: var(--primary);
+
 }
 
 .dashboard-subtitle {
   font-size: 0.9rem;
   color: var(--color-gray-600);
+  margin: 0;
   line-height: 1.4;
+}
+
+.dashboard-subtitle--muted {
+  color: var(--color-gray-600);
+}
+
+@keyframes pulse {
+  from { opacity: 0.1; }
+  to { opacity: 0.25; }
 }
 
 .dashboard-grid {
@@ -162,6 +191,84 @@
   color: var(--color-gray-500);
   font-style: italic;
   font-size: 0.9rem;
+}
+
+.notifications-section {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.5rem var(--shadow-light);
+  margin-bottom: 1.5rem;
+  max-width: 25rem;
+}
+
+.notifications-container {
+  padding: 0.75rem;
+  width: 25rem;
+}
+
+.notification-item {
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 0.125rem 0.25rem var(--shadow-light);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.notification-dismiss {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.notification-content {
+  padding-right: 2rem;
+}
+
+.notification-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin: 0 0 0.5rem 0;
+}
+
+.notification-message {
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.notification-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.notification-action:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
 }
 
 @media (min-width: 768px) {

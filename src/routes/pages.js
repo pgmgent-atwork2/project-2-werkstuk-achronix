@@ -60,6 +60,12 @@ router.get(
   checkAdmin,
   PageController.consumablesBeheer
 );
+router.get(
+  "/beheerderspaneel/notificaties",
+  jwtAuth,
+  checkAdmin,
+  PageController.notificatiesBeheer
+);
 
 router.get(
   "/forgot-password-confirmation",

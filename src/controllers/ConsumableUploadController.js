@@ -51,42 +51,56 @@ export const updateConsumableImage = async (req, res) => {
       return res.status(404).json({ error: "Consumable not found" });
     }
 
+    const wasOutOfStock = consumable.stock === 0;
+    const isNowInStock = parseInt(stock) > 0;
+
+    let updatedConsumable;
+
     if (!req.files) {
-      await Consumable.query().patchAndFetchById(id, {
+      updatedConsumable = await Consumable.query().patchAndFetchById(id, {
         name,
         price: parseFloat(price),
         stock: parseInt(stock),
         category_id: parseInt(category),
       });
+    } else {
+      const oldImagePath = path.join(
+        __dirname,
+        "../../public",
+        consumable.image_url
+      );
 
-      return res.status(200).json({
-        message: "Consumable updated successfully ",
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+
+      const imageUrl = `/uploads/consumables/${req.files.image.name}`;
+      const image = req.files.image;
+      const uploadDir = path.join(
+        __dirname,
+        "../../public/uploads/consumables"
+      );
+      const filePath = path.join(uploadDir, req.files.image.name);
+      await image.mv(filePath);
+
+      updatedConsumable = await Consumable.query().patchAndFetchById(id, {
+        name,
+        price: parseFloat(price),
+        stock: parseInt(stock),
+        image_url: imageUrl,
+        category_id: parseInt(category),
       });
     }
 
-    const oldImagePath = path.join(
-      __dirname,
-      "../../public",
-      consumable.image_url
-    );
+    if (wasOutOfStock && isNowInStock) {
+      console.log(
+        `Product ${updatedConsumable.name} is weer op voorraad via upload! Creating notifications...`
+      );
 
-    if (fs.existsSync(oldImagePath)) {
-      fs.unlinkSync(oldImagePath);
+      setTimeout(async () => {
+        await createBackInStockNotifications(updatedConsumable);
+      }, 100);
     }
-
-    const imageUrl = `/uploads/consumables/${req.files.image.name}`;
-    const image = req.files.image;
-    const uploadDir = path.join(__dirname, "../../public/uploads/consumables");
-    const filePath = path.join(uploadDir, req.files.image.name);
-    await image.mv(filePath);
-
-    await Consumable.query().patchAndFetchById(id, {
-      name,
-      price: parseFloat(price),
-      stock: parseInt(stock),
-      image_url: imageUrl,
-      category_id: parseInt(category),
-    });
 
     res.status(200).json({
       message: "Consumable updated successfully",
@@ -117,3 +131,68 @@ export const deleteConsumable = async (req, res) => {
     message: "Consumable deleted successfully",
   });
 };
+
+let notificationLock = new Set();
+
+async function createBackInStockNotifications(consumable) {
+  const lockKey = `notification_${consumable.id}`;
+  if (notificationLock.has(lockKey)) {
+    console.log(
+      `Notification creation already in progress for consumable ${consumable.id}, skipping...`
+    );
+    return;
+  }
+
+  notificationLock.add(lockKey);
+
+  try {
+    const User = (await import("../models/User.js")).default;
+    const Notification = (await import("../models/Notification.js")).default;
+
+    console.log(
+      `Starting notification creation for consumable ${consumable.id}: ${consumable.name}`
+    );
+
+    const deletedCount = await Notification.query()
+      .delete()
+      .where("type", "back_in_stock");
+
+    console.log(
+      `Deleted ${deletedCount} old back_in_stock notifications from all users`
+    );
+
+    const users = await User.query();
+    console.log(`Found ${users.length} total users`);
+
+    users.forEach((user) => {
+      console.log(
+        `User ${user.id} (${user.firstname}): receive_notifications = ${user.receive_notifications}`
+      );
+    });
+
+    for (const user of users) {
+      const newNotification = await Notification.query().insert({
+        user_id: user.id,
+        consumable_id: consumable.id,
+        title: "Product terug beschikbaar",
+        message: `${consumable.name} is weer beschikbaar!`,
+        type: "back_in_stock",
+        is_read: false,
+      });
+
+      console.log(
+        `Created notification ${newNotification.id} for user ${user.id} (${user.firstname}): ${consumable.name} is back in stock!`
+      );
+    }
+
+    console.log(
+      `Finished creating notifications for consumable ${consumable.name}`
+    );
+  } catch (error) {
+    console.error("Error creating back in stock notifications:", error);
+  }
+
+  setTimeout(() => {
+    notificationLock.delete(lockKey);
+  }, 5000);
+}
