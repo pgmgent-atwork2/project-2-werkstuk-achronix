@@ -8,14 +8,17 @@ class Notification extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["user_id", "consumable_id", "title", "message"],
+      required: ["user_id", "title", "message", "type"],
       properties: {
         id: { type: "integer" },
         user_id: { type: "integer" },
-        consumable_id: { type: "integer" },
+        consumable_id: {
+          type: ["integer", "null"],
+          default: null,
+        },
         title: { type: "string" },
         message: { type: "string" },
-        type: { type: "string", default: "back_in_stock" },
+        type: { type: "string" },
         is_read: { type: "boolean", default: false },
         created_at: { type: "string" },
         updated_at: { type: "string" },
