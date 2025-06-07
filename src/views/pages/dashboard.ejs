@@ -57,8 +57,7 @@
           </h2>
           <div class="notifications-container">
             <% adminNotifications.forEach(notification=> { %>
-              <div class="notification-item notification-item--info"
-                data-admin-notification-id="<%= notification.id %>">
+              <div class="notification-item notification-item--info" data-admin-notification-id="<%= notification.id %>">
                 <div class="notification-content">
                   <h3 class="notification-title">
                     <%= notification.title %>
@@ -67,17 +66,22 @@
                     <%= notification.message %>
                   </p>
                   <small class="notification-date">
-                    <%= new Date(notification.created_at).toLocaleDateString('nl-BE', { year: 'numeric' , month: 'long'
-                      , day: 'numeric' }) %>
+                    <%= new Date(notification.created_at).toLocaleDateString('nl-BE', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    }) %>
                   </small>
                 </div>
               </div>
               <% }) %>
-                <% if (adminNotifications.length> 1) { %>
-                  <button class="btn btn--secondary" onclick="dismissAllAdminNotifications()">
+                <button class="btn btn--secondary" onclick="dismissAllAdminNotifications()">
+                  <% if (adminNotifications.length === 1) { %>
+                    Bericht wegvegen
+                  <% } else { %>
                     Alle berichten wegvegen
-                  </button>
                   <% } %>
+                </button>
           </div>
         </div>
         <% } %>

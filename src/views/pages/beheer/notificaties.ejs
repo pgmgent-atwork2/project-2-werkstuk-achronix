@@ -1,0 +1,88 @@
+<a class="back" href="/beheerderspaneel">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+    Ga terug naar beheerderspaneel overzicht</a>
+
+<div>
+    <h1 class="title">Notificaties beheren</h1>
+
+    <% if (locals.flash) { %>
+        <% ['success', 'error' , 'warning' ].forEach(type=> { %>
+            <% if (flash[type]) { %>
+                <div class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>">
+                    <%= flash[type] %>
+                </div>
+                <% } %>
+                    <% }) %>
+                        <% } %>
+
+                            <section>
+                                <div>
+                                    <button id="addNewNotification" class="btn btn--primary">
+                                        Nieuwe notificatie
+                                    </button>
+                                </div>
+
+                                <div class="table-controls">
+                                    <div class="search-container">
+                                        <input type="text" id="searchInput-notifications" placeholder="Zoeken op titel"
+                                            class="search-input" />
+                                    </div>
+                                </div>
+
+                                <% if (locals.notifications && notifications.length> 0) { %>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Titel</th>
+                                                <th>Bericht</th>
+                                                <th>Type</th>
+                                                <th>Aangemaakt</th>
+                                                <th>Acties</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="notificationsTableBody">
+                                            <% notifications.forEach(notification=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= notification.id %>
+                                                    </td>
+                                                    <td>
+                                                        <%= notification.title %>
+                                                    </td>
+                                                    <td>
+                                                        <%= notification.message.length> 50 ?
+                                                            notification.message.substring(0, 50) + '...' :
+                                                            notification.message %>
+                                                    </td>
+                                                    <td>
+                                                        <%= notification.type %>
+                                                    </td>
+                                                    <td>
+                                                        <%= new
+                                                            Date(notification.created_at).toLocaleDateString('nl-BE') %>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn--secondary edit-notification"
+                                                            data-id="<%= notification.id %>">
+                                                            Bewerken
+                                                        </button>
+                                                        <button class="btn btn--danger delete-notification"
+                                                            data-id="<%= notification.id %>">
+                                                            Verwijderen
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <p>Geen notificaties gevonden.</p>
+                                        <% } %>
+                            </section>
+</div>
+
+<script type="module" src="/scripts/notification/notification-management.js"></script>
