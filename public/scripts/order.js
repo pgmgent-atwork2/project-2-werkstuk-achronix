@@ -1,4 +1,3 @@
-
 export async function addOrderToDb(cart) {
   try {
     const response = await fetch("/api/orders", {
@@ -42,20 +41,22 @@ export async function addOrderToDb(cart) {
 }
 
 export async function addToExistingOrder(cart) {
+  const userId = cart[0].user_id;
   try {
-    const response = await fetch("/api/orders/status/NOT_PAID", {
+    const response = await fetch(`/api/orders/${userId}/status/NOT_PAID`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const orderData = await response.json();
-
-    if (!orderData || orderData.length === 0) {
+    if (response.status === 204) {
       await addOrderToDb(cart);
       return;
     }
+
+    const orderData = await response.json();
+
     const orderId = orderData[0].id;
 
     const existingItemsResponse = await fetch(
@@ -99,7 +100,6 @@ export async function addToExistingOrder(cart) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            order_id: orderId,
             consumable_id: item.consumable_id,
             quantity: item.quantity,
             price: item.price,

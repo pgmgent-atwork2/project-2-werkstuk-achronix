@@ -128,3 +128,28 @@ export const findByStatus = async (req, res) => {
     res.status(500).json({ message: "Error fetching orders by status", error });
   }
 };
+
+export const findStatusByUser = async (req, res) => {
+  const { user_id, status } = req.params;
+
+  try {
+    const orders = await Order.query()
+      .where("user_id", user_id)
+      .andWhere("status", status)
+      .withGraphFetched("user")
+      .withGraphFetched("orderItems.consumable")
+      .orderBy("order_on", "desc");
+
+    if (!orders || orders.length === 0) {
+      return res.status(204).json({ message: "No orders found" });
+    }
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders by user and status:", error);
+    res.status(500).json({
+      message: "Error fetching orders by user and status",
+      error,
+    });
+  }
+};

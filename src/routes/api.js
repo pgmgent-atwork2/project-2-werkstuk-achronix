@@ -85,6 +85,7 @@ router.delete("/attendance/:id", API_AttendanceController.destroy);
 router.get("/orders", API_OrderController.index);
 router.get("/orders/:id", API_OrderController.show);
 router.get("/orders/name/:name", API_OrderController.findByName);
+router.get("/orders/:user_id/status/:status", API_OrderController.findStatusByUser);
 router.get("/orders/status/:status", API_OrderController.findByStatus);
 router.post("/orders", API_OrderController.store);
 router.put("/orders/:id", API_OrderController.update);
