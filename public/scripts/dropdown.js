@@ -2,6 +2,23 @@ export default function initDropdown() {
   if (!document.querySelector(".dropdown")) {
     return;
   }
+  const $button = document.querySelector(".dropdown-btn");
+  const $loggedInUser = document.getElementById("logged-in-user");
+  const $searchInputUsers = document.getElementById("search-input-users");
+  const $searchUsers = document.querySelectorAll(".search-user");
+  let users = [];
+
+  $searchUsers.forEach(($searchUser) => {
+    users.push($searchUser.textContent);
+    $searchUser.addEventListener("click", function (e) {
+      const name = $searchUser.textContent;
+      $loggedInUser.value = e.target.dataset.userId;
+      if (name) {
+        $button.textContent = name;
+      }
+    });
+  });
+
   const $dropdowns = document.querySelectorAll(".dropdown");
   $dropdowns.forEach(($dropdown) => {
     const $button = $dropdown.querySelector(".dropdown-btn");
@@ -9,6 +26,27 @@ export default function initDropdown() {
     $button.addEventListener("click", function (event) {
       event.stopPropagation();
       $menu.classList.toggle("hidden");
+    });
+
+    const $list = $menu.querySelector(".dropdown-list");
+
+    $searchInputUsers.addEventListener("input", function (e) {
+      const searchTerm = e.target.value.toLowerCase();
+      $list.innerHTML = "";
+
+      if (searchTerm.length > 0) {
+        const filteredUsers = users.filter((user) =>
+          user.toLowerCase().includes(searchTerm)
+        );
+
+        $list.innerHTML = filteredUsers
+          .map(
+            (user) => `<li class="dropdown-item">
+            <a href="#" class="search-user" data-user-id="${user.id}">${user}</a>
+            </li>`
+          )
+          .join("");
+      }
     });
   });
 }

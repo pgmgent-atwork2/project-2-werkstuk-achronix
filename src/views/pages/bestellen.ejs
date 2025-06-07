@@ -1,5 +1,5 @@
 <div class="table-controls">
-  <input type="hidden" id="logged-in-user" value="<%= user.id %>" />
+  <input type="hidden" id="logged-in-user" value=" <%= user.id %>" />
 
   <div class="search-container">
     <input
@@ -31,7 +31,7 @@
         <div class="search-container">
           <input
             type="text"
-            id="searchInput-consumables"
+            id="search-input-users"
             placeholder="Zoeken op gebruiker"
             class="search-input"
           />
@@ -39,9 +39,9 @@
         <ul class="dropdown-list">
           <% if (users && users.length > 0) { %> <% users.forEach(user => { %>
           <li class="dropdown-item">
-            <a href="#" class="search-user" data-id="<%= user.id %>">
+            <span class="search-user" data-id="<%= user.id %>">
               <%= user.firstname %> <%= user.lastname %>
-            </a>
+            </span>
           </li>
           <% }); %> <% } else { %>
           <li>Geen gebruikers gevonden</li>
