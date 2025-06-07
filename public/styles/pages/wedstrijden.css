@@ -70,6 +70,12 @@
   flex-direction: column;
 }
 
+.wedstrijd-participants {
+  padding: 1.25rem;
+  background-color: #ffffff;
+  flex-grow: 1;
+}
+
 .wedstrijd-header {
   background-color: rgb(15 44 73 / 90%);
   padding: 1.25rem;
@@ -133,6 +139,7 @@
   padding: 0.75rem;
   border-bottom: none;
   border-radius: var(--radius);
+  margin-bottom: 0.5rem;
 }
 
 .user-status-container {
@@ -181,9 +188,9 @@
 }
 
 .other-users {
-  margin-top: 0.75rem;
   border-radius: var(--radius);
   overflow: hidden;
+  padding: 0 0.5rem;
 }
 
 .other-users .user:last-child {
@@ -196,6 +203,64 @@
   justify-content: space-between;
   font-size: 0.8rem;
 }
+
+/* Match user search styles */
+.match-user-search-container {
+  position: relative;
+  margin: 0.5rem;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollable container voor zoekveld en gebruikerslijst */
+.scrollable-users-container {
+  overflow-y: auto;
+  height: 18rem;
+  scrollbar-width: thin;
+  margin-top: 0.5rem;
+  border-radius: var(--radius);
+  background-color: #f9fafb;
+}
+
+.match-user-search-container svg {
+  position: absolute;
+  left: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #666;
+}
+
+.match-user-search-input {
+  width: 100%;
+  padding: 0.6rem 0.6rem 0.6rem 2.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.match-user-search-input:focus {
+  outline: none;
+  border-color: #f94d1c;
+  box-shadow: 0 0 0 3px rgba(249, 77, 28, 0.2);
+  background-color: #fff;
+}
+
+.no-results {
+  padding: 0.75rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  background-color: #f9f9f9;
+  border-radius: var(--radius);
+  margin: 0.5rem;
+}
+
+/* Existing styles */
 .attendence--green {
   color: green;
 }
@@ -204,12 +269,6 @@
 }
 .attendence--red {
   color: red;
-}
-.attendence-status {
-  background-color: #e8e8e8;
-  padding: 0.1rem 0.5rem;
-  border-radius: 20rem;
-  display: inline-block;
 }
 
 /* Media Queries */

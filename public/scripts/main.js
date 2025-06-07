@@ -6,9 +6,9 @@ import "./create-match.js";
 import "./match-attendance.js";
 import "./player-selection.js";
 import "./match-filter.js";
+import "./match-user-search.js";
 
 import "/scripts/profile.js";
-
 
 import "./search-orders.js";
 
