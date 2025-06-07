@@ -8,6 +8,7 @@ import * as API_MatchController from "../controllers/api/MatchController.js";
 import * as API_OrderController from "../controllers/api/OrderController.js";
 import * as API_OrderItemsController from "../controllers/api/OrderItemsController.js";
 import * as API_AttendanceController from "../controllers/api/AttendanceController.js";
+import * as API_NotificationController from "../controllers/api/NotificationController.js";
 import jwtAuth from "../middleware/jwtAuth.js";
 
 const router = new Router();
@@ -89,9 +90,24 @@ router.delete("/orders/:id", API_OrderController.destroy);
 // Order items
 router.get("/order-items", API_OrderItemsController.index);
 router.get("/order-items/:id", API_OrderItemsController.show);
-router.get("/order-items/order/:orderId", API_OrderItemsController.getItemsByOrder);
+router.get(
+  "/order-items/order/:orderId",
+  API_OrderItemsController.getItemsByOrder
+);
 router.post("/order-items", API_OrderItemsController.store);
 router.put("/order-items/:id", API_OrderItemsController.update);
 router.delete("/order-items/:id", API_OrderItemsController.destroy);
+
+// Notifications
+router.post(
+  "/notifications/back-in-stock/:consumableId/dismiss",
+  jwtAuth,
+  API_NotificationController.dismissBackInStockNotification
+);
+router.post(
+  "/notifications/back-in-stock/dismiss-all",
+  jwtAuth,
+  API_NotificationController.dismissAllBackInStockNotifications
+);
 
 export default router;
