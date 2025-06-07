@@ -287,7 +287,7 @@ export const notificatiesBeheer = async (req, res) => {
       .orderBy("created_at", "desc");
 
     const uniqueNotifications = [];
-    const seen = {};
+    const seen = new Set();
 
     rawNotifications.forEach((notification) => {
       const key = `${notification.title}-${notification.message}`;
