@@ -147,8 +147,7 @@ export const update = async (req, res) => {
         message: message,
         data: attendanceRecord,
       });
-    }
-    else if (id) {
+    } else if (id) {
       const attendance = await Attendance.query().findById(id);
 
       if (!attendance) {
@@ -355,17 +354,80 @@ async function sendSelectionEmail(user, match) {
       teamName: match.team ? match.team.name : "het team",
     };
 
-    console.log("Email data being sent:", emailData);
-
     await sendMail(
       user.email,
       "Je bent geselecteerd! | Ping Pong Tool",
       "selectionMail.ejs",
       emailData
     );
-
-    console.log("Selection email sent successfully");
   } catch (error) {
     console.error("Error sending selection email:", error);
   }
 }
+
+export const searchUsersInMatch = async (req, res) => {
+  try {
+    const { matchId, searchTerm } = req.params;
+
+    if (!matchId) {
+      return res.status(400).json({
+        success: false,
+        message: "Match ID is required",
+      });
+    }
+
+    const match = await Match.query().findById(matchId).select("team_id");
+
+    if (!match) {
+      return res.status(404).json({
+        success: false,
+        message: "Match not found",
+      });
+    }
+
+    if (searchTerm === "undefined" || !searchTerm.trim()) {
+      const usersWithAttendance = await User.query()
+        .withGraphJoined("attendance")
+        .where("attendance.match_id", matchId);
+
+      return res.json({
+        success: true,
+        data: usersWithAttendance,
+      });
+    }
+
+    const users = await User.query()
+      .leftJoinRelated("attendance")
+      .where((builder) => {
+        if (searchTerm && searchTerm !== "undefined") {
+          builder
+            .where("firstname", "like", `%${searchTerm}%`)
+            .orWhere("lastname", "like", `%${searchTerm}%`)
+            .orWhereRaw("LOWER(firstname || lastname) LIKE ?", [
+              `%${searchTerm.toLowerCase()}%`,
+            ])
+            .orWhereRaw("LOWER(firstname || ' ' || lastname) LIKE ?", [
+              `%${searchTerm.toLowerCase()}%`,
+            ]);
+        }
+      })
+      .withGraphFetched("attendance(filterByMatch)")
+      .modifiers({
+        filterByMatch(builder) {
+          builder.where("match_id", matchId);
+        },
+      });
+
+    return res.json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    console.error("Error searching users in match:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to search users in match",
+      error: error.message,
+    });
+  }
+};
