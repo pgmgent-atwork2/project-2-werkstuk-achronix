@@ -15,6 +15,8 @@ import "./search-orders.js";
 import "./consumable/search-consumables.js";
 
 import { InitShoppingCart } from "./shoppingCart.js";
+import initDropdown from "./dropdown.js";
+
 import { createConsumable } from "./consumable/create-consumable.js";
 import { editConsumable } from "./consumable/edit-consumable.js";
 import { deleteConsumable } from "./consumable/delete-consumable.js";
@@ -33,4 +35,5 @@ document.addEventListener("DOMContentLoaded", function () {
   deleteUser();
 
   InitShoppingCart();
+  initDropdown();
 });
