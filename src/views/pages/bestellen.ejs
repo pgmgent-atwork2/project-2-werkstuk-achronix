@@ -8,6 +8,43 @@
       placeholder="Zoeken op product"
       class="search-input"
     />
+    <div class="dropdown">
+      <button class="dropdown-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5ZM12 21v-1.5m-6.364-2.136A9.003 9.003 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9a9.003 9.003 0 0 1-2.636 6.364M6.75 18h10.5"
+          />
+        </svg>
+      </button>
+      <div class="dropdown-content">
+        <label for="searchInput-consumables">Zoeken op gebruiker</label>
+        <ul class="dropdown-list">
+          <% if (users && users.length > 0) { %> <% users.forEach(user => { %>
+          <li class="dropdown-item">
+            <a
+              href="#"
+              class="search-user"
+              data-id="<%= user.id %>"
+              data-name="<%= user.name %>"
+            >
+              <%= user.name %>
+            </a>
+          </li>
+          <% }); %> <% } else { %>
+          <li>Geen gebruikers gevonden</li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="filter-container">
     <svg
