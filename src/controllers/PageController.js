@@ -19,6 +19,12 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
+
+  if (!user || !user.id) {
+    console.error("User not found in request:", req.user);
+    return res.redirect("/login");
+  }
+
   const orders = await Order.query()
     .withGraphFetched("orderItems.consumable")
     .where("user_id", user.id);
@@ -30,11 +36,58 @@ export const dashboard = async (req, res) => {
     return acc + orderTotal;
   }, 0);
 
+  let backInStockNotifications = [];
+  try {
+    const Notification = (await import("../models/Notification.js")).default;
+
+    console.log(
+      `Fetching notifications for user ${user.id} (${user.firstname})...`
+    );
+
+    const notifications = await Notification.query()
+      .where("user_id", user.id)
+      .where("type", "back_in_stock")
+      .where("is_read", false)
+      .orderBy("created_at", "desc");
+
+    console.log(
+      `Found ${notifications.length} raw notifications for user ${user.id}`
+    );
+
+    const allNotifications = await Notification.query()
+      .where("type", "back_in_stock")
+      .where("is_read", false);
+    console.log("All notifications in database:");
+    allNotifications.forEach((notif) => {
+      console.log(
+        `- ID: ${notif.id}, User: ${notif.user_id}, Consumable: ${notif.consumable_id}, Message: ${notif.message}`
+      );
+    });
+
+    for (const notification of notifications) {
+      const consumable = await Consumable.query().findById(
+        notification.consumable_id
+      );
+      if (consumable) {
+        notification.consumable = consumable;
+        backInStockNotifications.push(notification);
+        console.log(`Added notification for ${consumable.name}`);
+      }
+    }
+
+    console.log(
+      `Found ${backInStockNotifications.length} complete notifications for user ${user.id}`
+    );
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+  }
+
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
     orders,
     totalPrice: totalPrice.toFixed(2),
+    backInStockNotifications,
   });
 };
 
