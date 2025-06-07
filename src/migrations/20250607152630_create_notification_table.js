@@ -4,7 +4,7 @@ export function up(knex) {
   return knex.schema.createTable(tableName, function (table) {
     table.increments("id").primary();
     table.integer("user_id").unsigned().notNullable();
-    table.integer("consumable_id").unsigned().notNullable();
+    table.integer("consumable_id").unsigned().nullable(); 
     table.string("title").notNullable();
     table.text("message").notNullable();
     table.string("type").defaultTo("back_in_stock");
