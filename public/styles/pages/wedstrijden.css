@@ -71,9 +71,9 @@
 }
 
 .wedstrijd-participants {
-  overflow-y: auto;
-  max-height: 22rem;
-  scrollbar-width: thin;
+  padding: 1.25rem;
+  background-color: #ffffff;
+  flex-grow: 1;
 }
 
 .wedstrijd-header {
@@ -139,6 +139,7 @@
   padding: 0.75rem;
   border-bottom: none;
   border-radius: var(--radius);
+  margin-bottom: 0.5rem;
 }
 
 .user-status-container {
@@ -187,9 +188,9 @@
 }
 
 .other-users {
-  margin-top: 0.75rem;
   border-radius: var(--radius);
   overflow: hidden;
+  padding: 0 0.5rem;
 }
 
 .other-users .user:last-child {
@@ -206,9 +207,22 @@
 /* Match user search styles */
 .match-user-search-container {
   position: relative;
-  margin: 0.75rem 1.25rem;
+  margin: 0.5rem;
   display: flex;
   align-items: center;
+  background-color: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Scrollable container voor zoekveld en gebruikerslijst */
+.scrollable-users-container {
+  overflow-y: auto;
+  height: 18rem;
+  scrollbar-width: thin;
+  margin-top: 0.5rem;
+  border-radius: var(--radius);
+  background-color: #f9fafb;
 }
 
 .match-user-search-container svg {
@@ -225,7 +239,7 @@
   border: 1px solid #e2e8f0;
   border-radius: var(--radius);
   font-size: 0.875rem;
-  background-color: #fff;
+  background-color: #f9fafb;
   transition: all 0.2s ease;
 }
 
@@ -233,6 +247,7 @@
   outline: none;
   border-color: #f94d1c;
   box-shadow: 0 0 0 3px rgba(249, 77, 28, 0.2);
+  background-color: #fff;
 }
 
 .no-results {
@@ -240,6 +255,9 @@
   text-align: center;
   color: #666;
   font-style: italic;
+  background-color: #f9f9f9;
+  border-radius: var(--radius);
+  margin: 0.5rem;
 }
 
 /* Existing styles */
