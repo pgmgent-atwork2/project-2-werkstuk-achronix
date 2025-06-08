@@ -135,7 +135,7 @@ export const findByName = async (req, res) => {
 
   if (name === "undefined") {
     try {
-      const users = await User.query();
+      const users = await User.query().withGraphFetched("role");
       return res.json(users);
     } catch (error) {
       return res.status(500).json({
@@ -147,6 +147,7 @@ export const findByName = async (req, res) => {
 
   try {
     const users = await User.query()
+      .withGraphFetched("role")
       .where("firstname", "like", `%${name}%`)
       .orWhere("lastname", "like", `%${name}%`);
 

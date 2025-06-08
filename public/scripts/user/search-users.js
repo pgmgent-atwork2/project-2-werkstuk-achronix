@@ -1,5 +1,6 @@
 import { deleteUser } from "./delete-user.js";
 import { editUser } from "./edit-user.js";
+import renderUserRow from "./user-table.js";
 
 if (document.getElementById("userTableBody")) {
   const $tableBody = document.getElementById("userTableBody");
@@ -23,24 +24,7 @@ if (document.getElementById("userTableBody")) {
       }
 
       users.forEach((user) => {
-        const $row = document.createElement("tr");
-        $row.innerHTML = `
-          <td>${user.id}</td>
-          <td>${user.firstname}</td>
-          <td>${user.lastname}</td>
-          <td>${user.email}</td>
-          <td>${user.is_admin ? "Ja" : "Nee"}</td>
-          <td>${user.receive_notifications ? "Ja" : "Nee"}</td>
-          <td>
-            <button class="btn btn--secondary edit-user" data-id="${user.id}">
-              Bewerken
-            </button>
-            <button class="btn btn--danger delete-user" data-id="${user.id}">
-              Verwijderen
-            </button>
-          </td>
-        `;
-        $tableBody.appendChild($row);
+        renderUserRow(user, $tableBody);
         deleteUser();
         editUser();
       });
