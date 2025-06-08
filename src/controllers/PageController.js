@@ -19,7 +19,7 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
-  console.log("User in dashboard:", user);
+
 
   if (!user || !user.id) {
     console.error("User not found in request:", req.user);
@@ -94,7 +94,8 @@ export const bestellen = async (req, res) => {
   const categories = await Category.query();
 
   const users = await User.query()
-    .where("is_admin", false)
+    .where("role_id", 2)
+    .orWhere("role_id", 3)
     .orderBy("firstname", "asc");
 
   res.render("pages/bestellen", {

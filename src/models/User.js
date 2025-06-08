@@ -45,7 +45,7 @@ class User extends Model {
           to: "attendance.user_id",
         },
       },
-      Role: {
+      role: {
         relation: Model.BelongsToOneRelation,
         modelClass: () => Role,
         join: {
