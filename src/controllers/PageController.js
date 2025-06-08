@@ -19,6 +19,7 @@ export const addCurrentPath = (req, res, next) => {
 
 export const dashboard = async (req, res) => {
   const user = req.user;
+  console.log("User in dashboard:", user);
 
   if (!user || !user.id) {
     console.error("User not found in request:", req.user);
