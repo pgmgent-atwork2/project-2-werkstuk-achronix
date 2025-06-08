@@ -4,7 +4,6 @@ import getAllConsumables from "./getAllConsumables.js";
 import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
 import renderConsumableCard from "./consumable/consumable-card.js";
 
-
 let orderIntialized = false;
 
 export function InitShoppingCart() {
@@ -306,6 +305,7 @@ export function InitShoppingCart() {
         "Je bestelling is succesvol geplaatst.",
         "success"
       );
+
       InitShoppingCart();
     });
   }
