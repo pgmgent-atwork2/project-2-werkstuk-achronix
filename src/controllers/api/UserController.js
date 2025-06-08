@@ -24,7 +24,7 @@ export const update = async (req, res) => {
     lastname,
     email,
     password,
-    is_admin,
+    role_id,
     receive_notifications,
   } = req.body;
 
@@ -38,7 +38,7 @@ export const update = async (req, res) => {
       firstname,
       lastname,
       email,
-      is_admin,
+      role_id,
       receive_notifications,
     };
 
@@ -92,7 +92,7 @@ export const store = async (req, res) => {
     lastname,
     email,
     password,
-    is_admin,
+    role_id,
     receive_notifications,
   } = req.body;
 
@@ -112,7 +112,7 @@ export const store = async (req, res) => {
       lastname,
       email,
       password: hashedPassword,
-      is_admin: is_admin || false,
+      role_id: role_id || 2,
       receive_notifications: receive_notifications !== false,
     });
 
