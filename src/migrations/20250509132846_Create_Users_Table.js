@@ -7,8 +7,10 @@ export function up(knex) {
     table.string("lastname").notNullable();
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
-    table.boolean("is_admin").defaultTo(false);
+    table.boolean("role_id").defaultTo(false);
     table.boolean("receive_notifications").defaultTo(true);
+
+      table.foreign("role_id").references("roles.id");
   });
 }
 
