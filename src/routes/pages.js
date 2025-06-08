@@ -66,6 +66,12 @@ router.get(
   checkAdmin,
   PageController.notificatiesBeheer
 );
+router.get(
+  "/beheerderspaneel/uitgavelimiet",
+  jwtAuth,
+  checkAdmin,
+  PageController.uitgavelimiet
+);
 
 router.get(
   "/forgot-password-confirmation",
