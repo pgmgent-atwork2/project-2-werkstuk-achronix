@@ -35,7 +35,7 @@ export default function renderConsumableCard(
           name="consumable_image"
           value="${consumable.image_url}"
         />
-        <input type="hidden" name="user_id" value="${userId}" />
+        <input class="user-id-order" type="hidden" name="user_id" value="${userId}" />
         <input
           type="hidden"
           name="consumable_price"

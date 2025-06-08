@@ -1,3 +1,7 @@
+import renderConsumableCard from "./consumable/consumable-card.js";
+import { InitShoppingCart } from "./shoppingCart.js";
+import getAllConsumables from "./getAllConsumables.js";
+
 export default function initDropdown() {
   if (!document.querySelector(".dropdown")) {
     return;
@@ -22,11 +26,21 @@ export default function initDropdown() {
 
   initializeUsers();
 
-  $list.addEventListener("click", function (e) {
+  $list.addEventListener("click", async function (e) {
     const $searchUser = e.target.closest(".search-user");
     if ($searchUser) {
       const userId = $searchUser.dataset.id;
       const userName = $searchUser.textContent.trim();
+      const $consumables = document.querySelector(".consumables");
+
+      $consumables.innerHTML = "";
+
+      const consumables = await getAllConsumables();
+      consumables.forEach((consumable) => {
+        renderConsumableCard(consumable, $consumables, userId);
+      });
+
+      InitShoppingCart();
 
       $loggedInUser.value = userId;
       $userIdOrder.forEach(($userId) => {

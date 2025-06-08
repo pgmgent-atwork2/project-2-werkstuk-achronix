@@ -305,6 +305,8 @@ export function InitShoppingCart() {
         "Je bestelling is succesvol geplaatst.",
         "success"
       );
+
+      InitShoppingCart();
     });
   }
 
