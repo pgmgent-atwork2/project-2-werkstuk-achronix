@@ -1,6 +1,7 @@
 import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import Attendance from "./Attendance.js";
+import Role from "./Role.js";
 
 Model.knex(knex);
 
@@ -44,7 +45,14 @@ class User extends Model {
           to: "attendance.user_id",
         },
       },
-      
+      Role: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: () => Role,
+        join: {
+          from: "users.role_id",
+          to: "roles.id",
+        },
+      }
     };
   }
 }
