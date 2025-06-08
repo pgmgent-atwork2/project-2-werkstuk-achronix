@@ -79,12 +79,16 @@ export function InitShoppingCart() {
         if (currentValue === 0) {
           $form.classList.remove("show");
         }
+
+        checkSpendingLimitOnQuantityChange();
       });
 
       $increaseBtn.addEventListener("click", () => {
         let currentValue = parseInt($quantityInput.value);
         currentValue++;
         $quantityInput.value = currentValue;
+
+        checkSpendingLimitOnQuantityChange();
       });
 
       $form.addEventListener("submit", async (e) => {
@@ -113,7 +117,11 @@ export function InitShoppingCart() {
     });
   }
 
-  async function checkSpendingLimit(cartTotal, userId) {
+  async function checkSpendingLimit(
+    cartTotal,
+    userId,
+    showNotification = true
+  ) {
     try {
       if (userId) {
         const userResponse = await fetch(`/api/users/${userId}`);
@@ -137,15 +145,17 @@ export function InitShoppingCart() {
 
       if (cartTotal > limit) {
         const over = cartTotal - limit;
-        getShowNotification()(
-          "Uitgavelimiet overschreden",
-          `Je bestelling van €${cartTotal.toFixed(2)} gaat €${over.toFixed(
-            2
-          )} over de limiet van €${limit.toFixed(
-            2
-          )}. Je kunt alleen nog direct betalen.`,
-          "warning"
-        );
+        if (showNotification) {
+          getShowNotification()(
+            "Uitgavelimiet overschreden",
+            `Je bestelling van €${cartTotal.toFixed(2)} gaat €${over.toFixed(
+              2
+            )} over de limiet van €${limit.toFixed(
+              2
+            )}. Je kunt alleen nog direct betalen.`,
+            "warning"
+          );
+        }
         return { canOrder: false, canPayDirect: true };
       }
 
@@ -157,7 +167,9 @@ export function InitShoppingCart() {
   }
 
   function updateOrderButtons(canOrder) {
-    const $orderBtn = document.getElementById("order-btn");
+    const $orderBtn =
+      document.getElementById("order-btn") ||
+      document.querySelector("[data-original-id='order-btn']");
     const $instantOrderBtn = document.getElementById("instant-order-btn");
 
     if ($orderBtn) {
@@ -165,8 +177,10 @@ export function InitShoppingCart() {
       if (!canOrder) {
         $orderBtn.classList.add("btn--disabled");
         $orderBtn.title = "Uitgavelimiet overschreden - gebruik direct betalen";
-        $orderBtn.removeAttribute("id");
-        $orderBtn.setAttribute("data-original-id", "order-btn");
+        if ($orderBtn.id === "order-btn") {
+          $orderBtn.removeAttribute("id");
+          $orderBtn.setAttribute("data-original-id", "order-btn");
+        }
       } else {
         $orderBtn.classList.remove("btn--disabled");
         $orderBtn.title = "";
@@ -177,7 +191,6 @@ export function InitShoppingCart() {
       }
     }
 
-    // Direct betalen knop blijft altijd beschikbaar
     if ($instantOrderBtn) {
       $instantOrderBtn.disabled = false;
       $instantOrderBtn.classList.remove("btn--disabled");
@@ -542,5 +555,39 @@ export function InitShoppingCart() {
         }
       });
     });
+  }
+
+  function checkSpendingLimitOnQuantityChange() {
+    const $quantityInputs = document.querySelectorAll(".consumable__quantity");
+    let currentCartTotal = 0;
+    let hasItems = false;
+    let userId = null;
+
+    $quantityInputs.forEach(($input) => {
+      const quantity = parseInt($input.value) || 0;
+      if (quantity > 0) {
+        const form = $input.closest("form");
+        const price = parseFloat(
+          form.querySelector("[name='consumable_price']").value
+        );
+        const itemUserId = parseInt(
+          form.querySelector("[name='user_id']").value
+        );
+
+        currentCartTotal += quantity * price;
+        hasItems = true;
+        if (!userId) userId = itemUserId;
+      }
+    });
+
+    if (hasItems && userId) {
+      checkSpendingLimit(currentCartTotal, userId, false).then(
+        ({ canOrder }) => {
+          updateOrderButtons(canOrder);
+        }
+      );
+    } else {
+      updateOrderButtons(true);
+    }
   }
 }
