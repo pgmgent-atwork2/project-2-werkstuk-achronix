@@ -77,7 +77,7 @@
             <td><%= user.firstname %></td>
             <td><%= user.lastname %></td>
             <td><%= user.email %></td>
-            <td><%= user.is_admin ? 'Ja' : 'Nee' %></td>
+            <td><%= user.role.name %></td>
             <td><%= user.receive_notifications ? 'Ja' : 'Nee' %></td>
             <td>
               <button

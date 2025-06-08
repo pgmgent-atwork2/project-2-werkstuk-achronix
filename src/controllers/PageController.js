@@ -230,7 +230,7 @@ export const beheerderspaneel = async (req, res) => {
 export const ledenBeheer = async (req, res) => {
   const user = req.user;
 
-  const users = await User.query();
+  const users = await User.query().withGraphFetched("role");
 
   res.render("pages/beheer/ledenBeheer", {
     pageTitle: "Leden beheren | Ping Pong Tool",
