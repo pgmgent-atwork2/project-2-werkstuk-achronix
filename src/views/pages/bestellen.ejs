@@ -8,7 +8,7 @@
       placeholder="Zoeken op product"
       class="search-input"
     />
-    <% if(user.is_admin) { %>
+    <% if(user.role.name === "admin") { %>
     <div class="dropdown">
       <button class="btn btn--secondary dropdown-btn">
         <svg
@@ -142,7 +142,12 @@
           name="consumable_image"
           value="<%= consumable.image_url %>"
         />
-        <input class="user-id-order" type="hidden" name="user_id" value="<%= user.id %>" />
+        <input
+          class="user-id-order"
+          type="hidden"
+          name="user_id"
+          value="<%= user.id %>"
+        />
         <input
           type="hidden"
           name="consumable_price"

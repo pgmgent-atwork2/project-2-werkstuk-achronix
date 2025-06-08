@@ -34,9 +34,13 @@ export function editUser() {
             <input type="email" id="email" name="email" required>
           </div>
 
-          <div>
-            <label for="is_admin">Admin rechten</label>
-            <input type="checkbox" id="is_admin" name="is_admin">
+         <div>
+            <label for="edit_type">Type</label>
+            <select id="edit_type" name="type">
+              <option value="2" id="new_is_admin">Gebruiker</option>
+              <option value="3">gast</option>
+              <option value="1">Beheerder</option>
+            </select>
           </div>
 
           <div>
@@ -64,7 +68,7 @@ export function editUser() {
   const firstnameInput = document.getElementById("firstname");
   const lastnameInput = document.getElementById("lastname");
   const emailInput = document.getElementById("email");
-  const isAdminInput = document.getElementById("is_admin");
+  const TypeInput = document.getElementById("edit_type");
   const receiveNotificationsInput = document.getElementById(
     "receive_notifications"
   );
@@ -87,7 +91,7 @@ export function editUser() {
         firstnameInput.value = userData.firstname;
         lastnameInput.value = userData.lastname;
         emailInput.value = userData.email;
-        isAdminInput.checked = userData.is_admin;
+        TypeInput.value = userData.role_id;
         receiveNotificationsInput.checked = userData.receive_notifications;
 
         modal.classList.remove("hidden");
@@ -120,7 +124,7 @@ export function editUser() {
       firstname: firstnameInput.value,
       lastname: lastnameInput.value,
       email: emailInput.value,
-      is_admin: isAdminInput.checked,
+      role_id: parseInt(TypeInput.value),
       receive_notifications: receiveNotificationsInput.checked,
     };
 

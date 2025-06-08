@@ -8,7 +8,7 @@ const seed = async function (knex) {
       firstname: "admin",
       lastname: "admin",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: true,
+      role_id: 1,
       receive_notifications: false,
     },
     {
@@ -16,7 +16,7 @@ const seed = async function (knex) {
       firstname: "user",
       lastname: "user",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 2,
       receive_notifications: true,
     },
     {
@@ -24,7 +24,7 @@ const seed = async function (knex) {
       lastname: "Pork",
       email: "john.pork@gmail.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 2,
       receive_notifications: false,
     },
     {
@@ -32,7 +32,7 @@ const seed = async function (knex) {
       lastname: "Cheese",
       email: "tim.cheese@gmail.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: true,
+      role_id: 2,
       receive_notifications: true,
     },
     {
@@ -40,7 +40,7 @@ const seed = async function (knex) {
       lastname: "SquarePants",
       email: "spongebob.squarepants@bikinibottom.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -48,7 +48,7 @@ const seed = async function (knex) {
       lastname: "Biden",
       email: "joe.biden@whitehouse.gov",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -56,7 +56,7 @@ const seed = async function (knex) {
       lastname: "Cappuccina",
       email: "ballerina.cappuccina@dance.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -64,7 +64,7 @@ const seed = async function (knex) {
       lastname: "Trump",
       email: "donald.trump@trump.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -72,7 +72,7 @@ const seed = async function (knex) {
       lastname: "Pinkman",
       email: "jesse.pinkman@breakingbad.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -80,7 +80,7 @@ const seed = async function (knex) {
       lastname: "Astley",
       email: "rick.astley@nevergonnagiveyouup.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -88,7 +88,7 @@ const seed = async function (knex) {
       lastname: "White",
       email: "walter.white@heisenberg.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 2,
       receive_notifications: true,
     },
     {
@@ -96,7 +96,7 @@ const seed = async function (knex) {
       lastname: "Sahur",
       email: "tung.sahur@example.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -104,7 +104,7 @@ const seed = async function (knex) {
       lastname: "Musk",
       email: "elon.musk@tesla.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -112,7 +112,7 @@ const seed = async function (knex) {
       lastname: "Morgan",
       email: "arthur.morgan@rdr2.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -120,7 +120,7 @@ const seed = async function (knex) {
       lastname: "Smith",
       email: "will.smith@freshprince.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -128,7 +128,7 @@ const seed = async function (knex) {
       lastname: "Graham",
       email: "drake.graham@ovo.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -136,7 +136,7 @@ const seed = async function (knex) {
       lastname: "Tate",
       email: "andrew.tate@cobratate.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -144,7 +144,7 @@ const seed = async function (knex) {
       lastname: "Evergreen",
       email: "shrek.evergreen@swamp.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -152,7 +152,7 @@ const seed = async function (knex) {
       lastname: "Gee",
       email: "macky.gee@dnb.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -160,7 +160,7 @@ const seed = async function (knex) {
       lastname: "Griffin",
       email: "peter.griffin@familyguy.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -168,7 +168,7 @@ const seed = async function (knex) {
       lastname: "Johnson",
       email: "dwayne.johnson@therock.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
     {
@@ -176,7 +176,7 @@ const seed = async function (knex) {
       lastname: "Rogers",
       email: "shaggy.rogers@scoobydoo.com",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: false,
     },
     {
@@ -184,7 +184,7 @@ const seed = async function (knex) {
       lastname: "Bonaparte",
       email: "napoleon.bonaparte@france.fr",
       password: "$2b$10$n16oFtT47azzzQKjsKQj9.qwDn5Tn9xLcK5bJKqZIVsAQjiNvPs4S",
-      is_admin: false,
+      role_id: 3,
       receive_notifications: true,
     },
   ]);

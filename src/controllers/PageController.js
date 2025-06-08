@@ -20,6 +20,7 @@ export const addCurrentPath = (req, res, next) => {
 export const dashboard = async (req, res) => {
   const user = req.user;
 
+
   if (!user || !user.id) {
     console.error("User not found in request:", req.user);
     return res.redirect("/login");
@@ -93,7 +94,8 @@ export const bestellen = async (req, res) => {
   const categories = await Category.query();
 
   const users = await User.query()
-    .where("is_admin", false)
+    .where("role_id", 2)
+    .orWhere("role_id", 3)
     .orderBy("firstname", "asc");
 
   res.render("pages/bestellen", {
@@ -228,7 +230,7 @@ export const beheerderspaneel = async (req, res) => {
 export const ledenBeheer = async (req, res) => {
   const user = req.user;
 
-  const users = await User.query();
+  const users = await User.query().withGraphFetched("role");
 
   res.render("pages/beheer/ledenBeheer", {
     pageTitle: "Leden beheren | Ping Pong Tool",

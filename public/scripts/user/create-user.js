@@ -40,8 +40,12 @@ export function createUser() {
           </div>
 
           <div>
-            <label for="new_is_admin">Admin rechten</label>
-            <input type="checkbox" id="new_is_admin" name="is_admin">
+            <label for="new_type">Type</label>
+            <select id="new_type" name="type">
+              <option value="2" id="new_is_admin">Gebruiker</option>
+              <option value="3">gast</option>
+              <option value="1">Beheerder</option>
+            </select>
           </div>
 
           <div>
@@ -89,11 +93,13 @@ export function createUser() {
         lastname: document.getElementById("new_lastname").value,
         email: document.getElementById("new_email").value,
         password: document.getElementById("new_password").value,
-        is_admin: document.getElementById("new_is_admin").checked,
+        role_id: parseInt(document.getElementById("new_type").value),
         receive_notifications: document.getElementById(
           "new_receive_notifications"
         ).checked,
       };
+
+      console.log(userData);
 
       try {
         const response = await fetch("/api/users", {

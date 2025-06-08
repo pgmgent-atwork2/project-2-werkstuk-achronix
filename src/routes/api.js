@@ -20,6 +20,7 @@ router.post("/users", API_UserController.store);
 router.put("/users/profile", jwtAuth, API_UserController.updateProfile);
 router.get("/users/:id", API_UserController.show);
 router.get("/users/name/:name", API_UserController.findByName);
+router.get("/users/role/:roleId", API_UserController.findByRole);
 router.put("/users/:id", API_UserController.update);
 router.delete("/users/:id", API_UserController.destroy);
 

@@ -48,10 +48,11 @@
           />
         </svg>
         <div class="filter">
-          <select id="filterSelect" class="filter-select">
+          <select id="filterSelect-user" class="filter-select">
             <option value="">Alle gebruikers</option>
-            <option value="admin">Beheerders</option>
-            <option value="user">Gebruikers</option>
+            <option value="1">Beheerders</option>
+            <option value="2">Gebruikers</option>
+            <option value="3">Gasten</option>
           </select>
         </div>
       </div>
@@ -65,7 +66,7 @@
             <th>Voornaam</th>
             <th>Achternaam</th>
             <th>Email</th>
-            <th>Admin</th>
+            <th>rol</th>
             <th>Notificaties</th>
             <th>Acties</th>
           </tr>
@@ -77,7 +78,7 @@
             <td><%= user.firstname %></td>
             <td><%= user.lastname %></td>
             <td><%= user.email %></td>
-            <td><%= user.is_admin ? 'Ja' : 'Nee' %></td>
+            <td><%= user.role.name %></td>
             <td><%= user.receive_notifications ? 'Ja' : 'Nee' %></td>
             <td>
               <button

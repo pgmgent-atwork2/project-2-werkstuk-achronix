@@ -13,7 +13,7 @@ export const show = async (req, res) => {
 };
 
 export const index = async (req, res) => {
-  const users = await User.query();
+  const users = await User.query().withGraphFetched("role");
   return res.json(users);
 };
 
@@ -24,7 +24,7 @@ export const update = async (req, res) => {
     lastname,
     email,
     password,
-    is_admin,
+    role_id,
     receive_notifications,
   } = req.body;
 
@@ -38,7 +38,7 @@ export const update = async (req, res) => {
       firstname,
       lastname,
       email,
-      is_admin,
+      role_id,
       receive_notifications,
     };
 
@@ -92,7 +92,7 @@ export const store = async (req, res) => {
     lastname,
     email,
     password,
-    is_admin,
+    role_id,
     receive_notifications,
   } = req.body;
 
@@ -112,7 +112,7 @@ export const store = async (req, res) => {
       lastname,
       email,
       password: hashedPassword,
-      is_admin: is_admin || false,
+      role_id: role_id || 2,
       receive_notifications: receive_notifications !== false,
     });
 
@@ -135,7 +135,7 @@ export const findByName = async (req, res) => {
 
   if (name === "undefined") {
     try {
-      const users = await User.query();
+      const users = await User.query().withGraphFetched("role");
       return res.json(users);
     } catch (error) {
       return res.status(500).json({
@@ -147,6 +147,7 @@ export const findByName = async (req, res) => {
 
   try {
     const users = await User.query()
+      .withGraphFetched("role")
       .where("firstname", "like", `%${name}%`)
       .orWhere("lastname", "like", `%${name}%`);
 
@@ -225,6 +226,36 @@ export const updateProfile = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Er is een fout opgetreden bij het bijwerken van je profiel",
+      error: error.message,
+    });
+  }
+};
+
+export const findByRole = async (req, res) => {
+  const { roleId } = req.params;
+
+  if (roleId === "undefined") {
+    try {
+      const users = await User.query().withGraphFetched("role");
+      return res.json(users);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Er is een fout opgetreden bij het ophalen van gebruikers.",
+        error: error.message,
+      });
+    }
+  }
+
+  try {
+    const users = await User.query()
+      .withGraphFetched("role")
+      .where("role_id", roleId);
+
+    return res.json(users);
+  } catch (error) {
+    console.log("Error fetching users by role:", error);
+    return res.status(500).json({
+      message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
       error: error.message,
     });
   }
