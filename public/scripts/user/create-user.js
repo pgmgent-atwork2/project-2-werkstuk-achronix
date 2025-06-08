@@ -93,11 +93,13 @@ export function createUser() {
         lastname: document.getElementById("new_lastname").value,
         email: document.getElementById("new_email").value,
         password: document.getElementById("new_password").value,
-        role_id: document.getElementById("new_type").value,
+        role_id: parseInt(document.getElementById("new_type").value),
         receive_notifications: document.getElementById(
           "new_receive_notifications"
         ).checked,
       };
+
+      console.log(userData);
 
       try {
         const response = await fetch("/api/users", {
