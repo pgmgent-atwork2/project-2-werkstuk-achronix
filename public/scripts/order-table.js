@@ -11,6 +11,7 @@ export default function renderOrderRow(order,item, $tableBody, formattedDate) {
             <td class="${order.status === "PAID" ? "success" : "error"}">${
     order.status
   }</td>
+            <td>${order.method}</td>
             <td>${formattedDate}</td>
           <td>
             <button class="btn btn--secondary edit-order" data-id="${order.id}">
