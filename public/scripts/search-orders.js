@@ -37,7 +37,7 @@ if (document.getElementById("ordersTableBody")) {
 
       if (!orders || orders.length === 0) {
         $tableBody.innerHTML =
-          "<tr><td colspan='10'>Geen bestelling(en) gevonden</td></tr>";
+          "<tr><td colspan='11'>Geen bestelling(en) gevonden</td></tr>";
         return;
       }
 
@@ -58,7 +58,7 @@ if (document.getElementById("ordersTableBody")) {
     } catch (error) {
       console.error("Fout bij het ophalen van bestelling(en):", error);
       $tableBody.innerHTML =
-        "<tr><td colspan='10'>Fout bij het ophalen van bestelling(en)</td></tr>";
+        "<tr><td colspan='11'>Fout bij het ophalen van bestelling(en)</td></tr>";
     }
   }
 
