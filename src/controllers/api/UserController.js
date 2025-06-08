@@ -230,3 +230,33 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
+export const findByRole = async (req, res) => {
+  const { roleId } = req.params;
+
+  if (roleId === "undefined") {
+    try {
+      const users = await User.query().withGraphFetched("role");
+      return res.json(users);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Er is een fout opgetreden bij het ophalen van gebruikers.",
+        error: error.message,
+      });
+    }
+  }
+
+  try {
+    const users = await User.query()
+      .withGraphFetched("role")
+      .where("role_id", roleId);
+
+    return res.json(users);
+  } catch (error) {
+    console.log("Error fetching users by role:", error);
+    return res.status(500).json({
+      message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
+      error: error.message,
+    });
+  }
+};

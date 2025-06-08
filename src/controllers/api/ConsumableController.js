@@ -220,9 +220,9 @@ async function createBackInStockNotifications(consumable) {
     );
   } catch (error) {
     console.error("Error creating back in stock notifications:", error);
-    }
-    
-    setTimeout(() => {
-    notificationLock.delete(lockKey);
-    }, 5000);
   }
+
+  setTimeout(() => {
+    notificationLock.delete(lockKey);
+  }, 5000);
+}
