@@ -28,7 +28,7 @@ class User extends Model {
         firstname: { type: "string", minLength: 1, maxLength: 255 },
         lastname: { type: "string", minLength: 1, maxLength: 255 },
         password: { type: "string", minLength: 6, maxLength: 255 },
-        is_admin: { type: "boolean", default: false },
+        role_id: { type: "integer" },
         receive_notifications: { type: "boolean", default: true },
       },
     };
@@ -44,6 +44,7 @@ class User extends Model {
           to: "attendance.user_id",
         },
       },
+      
     };
   }
 }
