@@ -39,7 +39,8 @@
                     <form class="payment-form" action="/create-payment" method="post">
                         <input type="hidden" name="userId" value="<%= user.id %>" />
                         <input type="hidden" name="orderId" value="<%= order.id %>" />
-                        <input type="hidden" name="amount" value="<%= totalPrice %>" />
+                        <input type="hidden" name="amount"
+                            value="<%= order.orderItems.reduce((total, item) => total + item.price, 0).toFixed(2) %>" />
                         <button class="payment-button" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor">

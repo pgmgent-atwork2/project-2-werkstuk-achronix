@@ -20,7 +20,6 @@ export const addCurrentPath = (req, res, next) => {
 export const dashboard = async (req, res) => {
   const user = req.user;
 
-
   if (!user || !user.id) {
     console.error("User not found in request:", req.user);
     return res.redirect("/login");
@@ -364,6 +363,15 @@ export const orderFailed = async (req, res) => {
 
   res.render("pages/orderFailed", {
     pageTitle: "betaling mislukt | Ping Pong Tool",
+    user,
+  });
+};
+
+export const uitgavelimiet = async (req, res) => {
+  const user = req.user;
+
+  res.render("pages/beheer/uitgavelimiet", {
+    pageTitle: "Uitgavelimiet beheren | Ping Pong Tool",
     user,
   });
 };

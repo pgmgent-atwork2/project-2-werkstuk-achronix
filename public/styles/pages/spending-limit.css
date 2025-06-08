@@ -1,0 +1,87 @@
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--primary);
+}
+
+.spending-limit-section,
+.spending-limit-form-section {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.spending-limit-section h2,
+.spending-limit-form-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: var(--primary);
+}
+
+.current-limit-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.limit-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.limit-description {
+  color: var(--color-gray-600);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.spending-limit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .spending-limit-form {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.spending-limit-form__field {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.spending-limit-form__input {
+  width: 200px;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  border: none;
+}
+
+.btn--primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 0.125rem 0.25rem var(--primary-light);
+}
+
+.btn--primary:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 0.25rem 0.5rem var(--shadow-medium);
+}
