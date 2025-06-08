@@ -13,7 +13,7 @@ export const show = async (req, res) => {
 };
 
 export const index = async (req, res) => {
-  const users = await User.query();
+  const users = await User.query().withGraphFetched("role");
   return res.json(users);
 };
 

@@ -5,7 +5,7 @@ export default function renderUserRow(user, $tableBody) {
               <td>${user.firstname}</td>
               <td>${user.lastname}</td>
               <td>${user.email}</td>
-              <td>${user.is_admin}</td>
+              <td>${user.role.name}</td>
               <td>${user.receive_notifications ? "Ja" : "Nee"}</td>
 
             
