@@ -32,7 +32,6 @@
 
 .dashboard-title--primary {
   color: var(--primary);
-
 }
 
 .dashboard-subtitle {
@@ -47,8 +46,12 @@
 }
 
 @keyframes pulse {
-  from { opacity: 0.1; }
-  to { opacity: 0.25; }
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 0.25;
+  }
 }
 
 .dashboard-grid {
@@ -106,6 +109,8 @@
 
 .order-items-container {
   margin: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
 }
 
 .order-item {
@@ -147,10 +152,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: var(--color-gray-900);
-  text-align: right;
-  margin: 1rem 0 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--border);
+  margin: 0.5rem 0 0.5rem;
 }
 
 .payment-form {
@@ -172,6 +174,8 @@
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 0.125rem 0.25rem var(--primary-light);
+  text-decoration: none;
+  float: right;
 }
 
 .payment-button:hover {
@@ -183,6 +187,11 @@
 .payment-button svg {
   width: 1rem;
   height: 1rem;
+}
+
+.rekening-section {
+  max-width: 40rem;
+  margin: 5rem auto 0 auto;
 }
 
 .dashboard-empty-state {

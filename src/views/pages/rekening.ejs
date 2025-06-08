@@ -1,5 +1,4 @@
-<h1>Rekening pagina</h1>
-<div class="dashboard-section">
+<div class="dashboard-section rekening-section">
     <h2 class="section-title">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor">
@@ -12,8 +11,7 @@
     <% if (orders && orders.some(order=> order.status === 'NOT_PAID')) { %> <% orders.forEach(order=> { %> <% if
                 (order.status==='NOT_PAID' ) { %>
                 <div class="order-card">
-                    <p class="order-id">Bestelling #<%= order.id %>
-                    </p>
+
 
                     <div class="order-items-container">
                         <% order.orderItems.forEach(item=> { %>
