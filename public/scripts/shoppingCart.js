@@ -123,25 +123,40 @@ export function InitShoppingCart() {
     showNotification = true
   ) {
     try {
-      if (userId) {
-        const userResponse = await fetch(`/api/users/${userId}`);
-        if (userResponse.ok) {
-          const user = await userResponse.json();
-          if (user.role_id === true) {
-            return { canOrder: true, canPayDirect: true };
-          }
+      let orderTotal = 0;
+
+      const userResponse = await fetch(`/api/users/${userId}`);
+      const orders = await fetch(`/api/orders/${userId}`);
+
+      if (orders.status === 404) {
+        orderTotal = 0;
+      }
+
+      if (userResponse.ok) {
+        const user = await userResponse.json();
+        if (user.role_id === true) {
+          return { canOrder: true, canPayDirect: true };
         }
       }
+
+      const ordersData = await orders.json();
+
+      orderTotal = ordersData.orderItems.reduce(
+        (acc, item) => acc + item.price,
+        0
+      );
 
       const response = await fetch("/api/settings/spending-limit");
       if (!response.ok) return { canOrder: true, canPayDirect: true };
 
       const data = await response.json();
-      const { limit } = data.data;
+      let { limit } = data.data;
 
       if (limit === 0) {
         return { canOrder: true, canPayDirect: true };
       }
+
+      limit = limit - orderTotal;
 
       if (cartTotal > limit) {
         const over = cartTotal - limit;

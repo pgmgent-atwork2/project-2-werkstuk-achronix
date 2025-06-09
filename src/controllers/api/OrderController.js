@@ -12,11 +12,11 @@ export const index = async (req, res) => {
 export const show = async (req, res) => {
   const { id } = req.params;
   try {
-    const Order = await Order.query().findById(id);
-    if (!Order) {
+    const order = await Order.query().findById(id).withGraphFetched("orderItems.consumable");
+    if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    res.json(Order);
+    res.json(order);
   } catch (error) {
     res.status(500).json({ message: "Error fetching Order", error });
   }
