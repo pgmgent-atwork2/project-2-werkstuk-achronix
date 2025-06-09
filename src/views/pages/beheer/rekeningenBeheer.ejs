@@ -1,11 +1,16 @@
-<h1>Rekeningen beheren</h1>
+<a class="back" href="/beheerderspaneel">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+    </svg>
+    Ga terug naar beheerderspaneel overzicht</a>
+<h1 class="title">Rekeningen beheren</h1>
 
 <table>
     <thead>
         <tr>
             <th>Naam</th>
-            <th>Email</th>
-            <th>Totaalbedrag</th>
+            <th>Te betalen bedrag</th>
         </tr>
     </thead>
     <tbody>
@@ -15,9 +20,7 @@
                         <%= user.firstname %>
                             <%= user.lastname %>
                     </a></td>
-                <td>
-                    <%= user.email %>
-                </td>
+
                 <td>€<%= (user.totalAmountDue || 0).toFixed(2) %>
                 </td>
             </tr>
