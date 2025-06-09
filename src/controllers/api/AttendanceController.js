@@ -100,7 +100,9 @@ export const update = async (req, res) => {
       const userIdToUse = userId || user_id;
       const statusToUse = status || "unknown";
 
-      const match = await Match.query().findById(matchIdToUse);
+      const match = await Match.query()
+        .findById(matchIdToUse)
+        .withGraphFetched("team");
       if (!match) {
         return res.status(404).json({
           success: false,
@@ -122,8 +124,10 @@ export const update = async (req, res) => {
         .first();
 
       let message;
+      let wasNewOrUpdatedToAvailable = false;
 
       if (attendanceRecord) {
+        const oldStatus = attendanceRecord.status;
         attendanceRecord = await Attendance.query().updateAndFetchById(
           attendanceRecord.id,
           {
@@ -133,6 +137,10 @@ export const update = async (req, res) => {
           }
         );
         message = "Attendance status updated";
+
+        // Check if status changed to 'available'
+        wasNewOrUpdatedToAvailable =
+          oldStatus !== "available" && statusToUse === "available";
       } else {
         attendanceRecord = await Attendance.query().insert({
           match_id: matchIdToUse,
@@ -140,6 +148,21 @@ export const update = async (req, res) => {
           status: statusToUse,
         });
         message = "Attendance status created";
+
+        // Check if new record with 'available' status
+        wasNewOrUpdatedToAvailable = statusToUse === "available";
+      }
+
+      // Send email when user marks themselves as available
+      if (
+        wasNewOrUpdatedToAvailable &&
+        user.email &&
+        user.receive_notifications
+      ) {
+        console.log(
+          `Sending attendance confirmation email to ${user.email} for match ${matchIdToUse}`
+        );
+        await sendAttendanceConfirmationEmail(user, match);
       }
 
       return res.status(200).json({
@@ -342,16 +365,22 @@ export const updateSelection = async (req, res) => {
 async function sendSelectionEmail(user, match) {
   try {
     if (!user || !user.email || !match) {
-      console.log("Missing required data for email sending");
       return;
     }
 
     const matchDate = new Date(match.date);
+
     const emailData = {
       user: user,
       match: match,
       matchDate: matchDate,
       teamName: match.team ? match.team.name : "het team",
+      data: {
+        user: user,
+        match: match,
+        matchDate: matchDate,
+        teamName: match.team ? match.team.name : "het team",
+      },
     };
 
     await sendMail(
@@ -362,6 +391,38 @@ async function sendSelectionEmail(user, match) {
     );
   } catch (error) {
     console.error("Error sending selection email:", error);
+  }
+}
+
+async function sendAttendanceConfirmationEmail(user, match) {
+  try {
+    if (!user || !user.email || !match) {
+      return;
+    }
+
+    const matchDate = new Date(match.date);
+
+    const emailData = {
+      user: user,
+      match: match,
+      matchDate: matchDate,
+      teamName: match.team ? match.team.name : "het team",
+      data: {
+        user: user,
+        match: match,
+        matchDate: matchDate,
+        teamName: match.team ? match.team.name : "het team",
+      },
+    };
+
+    await sendMail(
+      user.email,
+      "Aanmelding bevestigd | Ping Pong Tool",
+      "selectionMail.ejs",
+      emailData
+    );
+  } catch (error) {
+    console.error("Error sending attendance confirmation email:", error);
   }
 }
 
