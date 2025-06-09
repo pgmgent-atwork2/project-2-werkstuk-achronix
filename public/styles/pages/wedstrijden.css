@@ -19,40 +19,53 @@
   min-height: 2.5rem;
   border-radius: 50%;
   background-color: #f0f0f0;
-  border: none;
+  border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
+  position: relative;
 }
 
 .attendance-button i {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .attendance-button.status-unknown {
   background-color: #f0f0f0;
   color: #666;
+  border-color: #ddd;
 }
 
 .attendance-button.status-available {
   background-color: #4caf50;
   color: white;
+  border-color: #45a049;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
 }
 
 .attendance-button.status-reserve {
-  background-color: orange;
-  color: #333;
+  background-color: #ff9800;
+  color: white;
+  border-color: #f57c00;
+  box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
 }
 
 .attendance-button.status-unavailable {
-  background-color: red;
+  background-color: #f44336;
   color: white;
+  border-color: #d32f2f;
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
 }
 
 .attendance-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.attendance-button:active {
+  transform: scale(0.95);
 }
 
 .wedstrijden-grid {
@@ -162,7 +175,14 @@
 .selection-text {
   font-size: 0.85rem;
   color: #666;
+  transition: color 0.2s ease;
 }
+
+.selection-text.attendence--green {
+  color: #4caf50;
+  font-weight: 600;
+}
+
 
 .select-player-button {
   background-color: #f0f0f0;
@@ -204,7 +224,6 @@
   font-size: 0.8rem;
 }
 
-/* Match user search styles */
 .match-user-search-container {
   position: relative;
   margin: 0.5rem;
@@ -215,7 +234,6 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Scrollable container voor zoekveld en gebruikerslijst */
 .scrollable-users-container {
   overflow-y: auto;
   height: 18rem;
@@ -260,7 +278,6 @@
   margin: 0.5rem;
 }
 
-/* Existing styles */
 .attendence--green {
   color: green;
 }
@@ -271,7 +288,6 @@
   color: red;
 }
 
-/* Media Queries */
 @media (min-width: 640px) {
   .wedstrijden-container {
   }

@@ -100,7 +100,9 @@ export const update = async (req, res) => {
       const userIdToUse = userId || user_id;
       const statusToUse = status || "unknown";
 
-      const match = await Match.query().findById(matchIdToUse);
+      const match = await Match.query()
+        .findById(matchIdToUse)
+        .withGraphFetched("team");
       if (!match) {
         return res.status(404).json({
           success: false,
@@ -122,8 +124,10 @@ export const update = async (req, res) => {
         .first();
 
       let message;
+      let wasNewOrUpdatedToAvailable = false;
 
       if (attendanceRecord) {
+        const oldStatus = attendanceRecord.status;
         attendanceRecord = await Attendance.query().updateAndFetchById(
           attendanceRecord.id,
           {
@@ -133,6 +137,10 @@ export const update = async (req, res) => {
           }
         );
         message = "Attendance status updated";
+
+        // Check if status changed to 'available'
+        wasNewOrUpdatedToAvailable =
+          oldStatus !== "available" && statusToUse === "available";
       } else {
         attendanceRecord = await Attendance.query().insert({
           match_id: matchIdToUse,
@@ -140,6 +148,19 @@ export const update = async (req, res) => {
           status: statusToUse,
         });
         message = "Attendance status created";
+
+        wasNewOrUpdatedToAvailable = statusToUse === "available";
+      }
+
+      if (
+        wasNewOrUpdatedToAvailable &&
+        user.email &&
+        user.receive_notifications
+      ) {
+        console.log(
+          `Sending attendance confirmation email to ${user.email} for match ${matchIdToUse}`
+        );
+        await sendAttendanceConfirmationEmail(user, match);
       }
 
       return res.status(200).json({
@@ -254,6 +275,13 @@ export const updateSelection = async (req, res) => {
   try {
     const { match_id, user_id, is_selected } = req.body;
 
+    console.log("=== SELECTION UPDATE REQUEST ===");
+    console.log("Request body:", { match_id, user_id, is_selected });
+    console.log("Admin user:", {
+      id: req.user?.id,
+      role_id: req.user?.role_id,
+    });
+
     if (!match_id || !user_id) {
       return res.status(400).json({
         success: false,
@@ -261,7 +289,8 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    if (req.user && !req.user.is_admin) {
+    if (req.user && req.user.role_id !== 1) {
+      console.log("User is not admin, denying access");
       return res.status(403).json({
         success: false,
         message: "You don't have permission to select players",
@@ -294,27 +323,51 @@ export const updateSelection = async (req, res) => {
     let message;
 
     if (attendanceRecord) {
+      console.log("Updating existing attendance record:", attendanceRecord.id);
+
+      
+      const newStatus =
+        is_selected === "selected"
+          ? "available"
+          : attendanceRecord.status || "unknown";
+
       attendanceRecord = await Attendance.query().updateAndFetchById(
         attendanceRecord.id,
         {
           match_id,
           user_id,
           is_selected,
-          status: attendanceRecord.status || "unknown",
+          status: newStatus,
         }
       );
       message =
-        is_selected === "selected" ? "Player selected" : "Player deselected";
+        is_selected === "selected"
+          ? "Player selected and marked available"
+          : "Player deselected";
     } else {
+      console.log("Creating new attendance record");
+
+      const newStatus = is_selected === "selected" ? "available" : "unknown";
+
       attendanceRecord = await Attendance.query().insert({
         match_id,
         user_id,
-        status: "unknown",
+        status: newStatus,
         is_selected,
       });
       message =
-        is_selected === "selected" ? "Player selected" : "Player deselected";
+        is_selected === "selected"
+          ? "Player selected and marked available"
+          : "Player deselected";
     }
+
+    console.log("Selection update completed:", {
+      id: attendanceRecord.id,
+      match_id: attendanceRecord.match_id,
+      user_id: attendanceRecord.user_id,
+      is_selected: attendanceRecord.is_selected,
+      status: attendanceRecord.status,
+    });
 
     if (
       is_selected === "selected" &&
@@ -323,6 +376,8 @@ export const updateSelection = async (req, res) => {
     ) {
       await sendSelectionEmail(user, match);
     }
+
+    console.log("=== SELECTION UPDATE COMPLETE ===");
 
     return res.status(200).json({
       success: true,
@@ -342,16 +397,22 @@ export const updateSelection = async (req, res) => {
 async function sendSelectionEmail(user, match) {
   try {
     if (!user || !user.email || !match) {
-      console.log("Missing required data for email sending");
       return;
     }
 
     const matchDate = new Date(match.date);
+
     const emailData = {
       user: user,
       match: match,
       matchDate: matchDate,
       teamName: match.team ? match.team.name : "het team",
+      data: {
+        user: user,
+        match: match,
+        matchDate: matchDate,
+        teamName: match.team ? match.team.name : "het team",
+      },
     };
 
     await sendMail(
@@ -362,6 +423,38 @@ async function sendSelectionEmail(user, match) {
     );
   } catch (error) {
     console.error("Error sending selection email:", error);
+  }
+}
+
+async function sendAttendanceConfirmationEmail(user, match) {
+  try {
+    if (!user || !user.email || !match) {
+      return;
+    }
+
+    const matchDate = new Date(match.date);
+
+    const emailData = {
+      user: user,
+      match: match,
+      matchDate: matchDate,
+      teamName: match.team ? match.team.name : "het team",
+      data: {
+        user: user,
+        match: match,
+        matchDate: matchDate,
+        teamName: match.team ? match.team.name : "het team",
+      },
+    };
+
+    await sendMail(
+      user.email,
+      "Aanmelding bevestigd | Ping Pong Tool",
+      "selectionMail.ejs",
+      emailData
+    );
+  } catch (error) {
+    console.error("Error sending attendance confirmation email:", error);
   }
 }
 
@@ -387,8 +480,15 @@ export const searchUsersInMatch = async (req, res) => {
 
     if (searchTerm === "undefined" || !searchTerm.trim()) {
       const usersWithAttendance = await User.query()
-        .withGraphJoined("attendance")
-        .where("attendance.match_id", matchId);
+        .leftJoinRelated("attendance")
+        .where("attendance.match_id", matchId)
+        .orWhere("attendance.match_id", null)
+        .withGraphFetched("attendance(filterByMatch)")
+        .modifiers({
+          filterByMatch(builder) {
+            builder.where("match_id", matchId);
+          },
+        });
 
       return res.json({
         success: true,
@@ -397,18 +497,21 @@ export const searchUsersInMatch = async (req, res) => {
     }
 
     const users = await User.query()
+      .distinct("users.id")
+      .select("users.*")
       .leftJoinRelated("attendance")
       .where((builder) => {
         if (searchTerm && searchTerm !== "undefined") {
           builder
-            .where("firstname", "like", `%${searchTerm}%`)
-            .orWhere("lastname", "like", `%${searchTerm}%`)
-            .orWhereRaw("LOWER(firstname || lastname) LIKE ?", [
+            .where("users.firstname", "like", `%${searchTerm}%`)
+            .orWhere("users.lastname", "like", `%${searchTerm}%`)
+            .orWhereRaw("LOWER(users.firstname || users.lastname) LIKE ?", [
               `%${searchTerm.toLowerCase()}%`,
             ])
-            .orWhereRaw("LOWER(firstname || ' ' || lastname) LIKE ?", [
-              `%${searchTerm.toLowerCase()}%`,
-            ]);
+            .orWhereRaw(
+              "LOWER(users.firstname || ' ' || users.lastname) LIKE ?",
+              [`%${searchTerm.toLowerCase()}%`]
+            );
         }
       })
       .withGraphFetched("attendance(filterByMatch)")

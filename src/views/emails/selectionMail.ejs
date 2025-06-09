@@ -62,28 +62,42 @@
 
     <div class="content">
         <p>Beste <%= data.user.firstname %>
-                <%= data.user.lastname %>
-        </p>
+                <%= data.user.lastname %>,</p>
+
         <p>Je bent geselecteerd voor de volgende wedstrijd:</p>
+
         <div class="match-details">
             <p><strong>Datum:</strong>
                 <%= data.match.date %>
             </p>
-            <p><strong>Tijd:</strong>
-                <%= data.match.start_time %> - <%= data.match.end_time %>
-            </p>
-            <p><strong>Locatie:</strong>
-                <%= data.match.location %>
-            </p>
-            <p><strong>Thuis/Uit:</strong>
-                <%= data.match.home_away %>
-            </p>
-            <p><strong>Team:</strong>
-                <%= data.match.team ? data.match.team.name : 'Onbekend' %>
-            </p>
-            <p>
-                <a href="http://localhost:3000/wedstrijden/<%=data.match.team.name%>" class="button">Bekijk Planning</a>
-            </p>
+
+            <% if (data.match.start_time && data.match.end_time) { %>
+                <p><strong>Tijd:</strong>
+                    <%= data.match.start_time %> - <%= data.match.end_time %>
+                </p>
+                <% } else if (data.match.start_time) { %>
+                    <p><strong>Starttijd:</strong>
+                        <%= data.match.start_time %>
+                    </p>
+                    <% } %>
+
+                        <p><strong>Locatie:</strong>
+                            <%= data.match.location %>
+                        </p>
+                        <p><strong>Thuis/Uit:</strong>
+                            <%= data.match.home_away %>
+                        </p>
+
+                        <% if (data.match.team && data.match.team.name) { %>
+                            <p><strong>Team:</strong>
+                                <%= data.match.team.name %>
+                            </p>
+                            <% } %>
+
+                                <p>
+                                    <a href="http://localhost:3000/wedstrijden/<%= data.teamName %>"
+                                        class="button">Bekijk Planning</a>
+                                </p>
         </div>
 
         <p>Veel succes met de wedstrijd!</p>
@@ -95,4 +109,3 @@
 </body>
 
 </html>
-</div>
