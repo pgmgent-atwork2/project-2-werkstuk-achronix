@@ -154,6 +154,90 @@ const handleUserSearch = async (event, matchId, matchBlock) => {
           ? "Geselecteerd"
           : "Selecteer speler";
 
+        selectButton.addEventListener("click", async function () {
+          const currentSelection =
+            selectButton.getAttribute("data-is-selected");
+          const newSelection =
+            currentSelection === "selected" ? "not_selected" : "selected";
+
+          selectButton.setAttribute("data-is-selected", newSelection);
+          selectButton.textContent =
+            newSelection === "selected" ? "Geselecteerd" : "Selecteer speler";
+
+          if (newSelection === "selected") {
+            selectionP.classList.add("attendence--green");
+          } else {
+            selectionP.classList.remove("attendence--green");
+          }
+
+          try {
+            const response = await fetch("/api/attendance/selection", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                match_id: parseInt(matchId, 10),
+                user_id: parseInt(user.id, 10),
+                is_selected: newSelection,
+              }),
+            });
+
+            if (!response.ok) {
+              selectButton.setAttribute("data-is-selected", currentSelection);
+              selectButton.textContent =
+                currentSelection === "selected"
+                  ? "Geselecteerd"
+                  : "Selecteer speler";
+
+              if (currentSelection === "selected") {
+                selectionP.classList.add("attendence--green");
+              } else {
+                selectionP.classList.remove("attendence--green");
+              }
+            } else {
+              console.log(
+                "Selection update successful, refreshing attendance..."
+              );
+
+              const loggedInUserId = matchBlock
+                .querySelector(".ingelogd-user .attendance-button")
+                .getAttribute("data-user-id");
+
+              if (user.id.toString() === loggedInUserId) {
+                const userSelectionText = matchBlock.querySelector(
+                  `#user-selection-${matchId} .selection-text`
+                );
+                if (userSelectionText) {
+                  userSelectionText.textContent =
+                    newSelection === "selected"
+                      ? "Geselecteerd"
+                      : "Niet geselecteerd";
+
+                  if (newSelection === "selected") {
+                    userSelectionText.classList.add("attendence--green");
+                  } else {
+                    userSelectionText.classList.remove("attendence--green");
+                  }
+                }
+
+                setTimeout(() => {
+                  if (window.refreshAttendanceStatus) {
+                    window.refreshAttendanceStatus();
+                  }
+                }, 1000);
+              }
+            }
+          } catch (error) {
+            console.error("Error updating selection:", error);
+            selectButton.setAttribute("data-is-selected", currentSelection);
+            selectButton.textContent =
+              currentSelection === "selected"
+                ? "Geselecteerd"
+                : "Selecteer speler";
+          }
+        });
+
         selectionP.className = isSelected
           ? "selection-status attendence--green"
           : "selection-status";
