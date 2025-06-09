@@ -122,6 +122,7 @@ export function InitShoppingCart() {
     userId,
     showNotification = true
   ) {
+    const $orderInfo = document.getElementById("order-info");
     try {
       let orderTotal = 0;
 
@@ -157,6 +158,7 @@ export function InitShoppingCart() {
       }
 
       limit = limit - orderTotal;
+      $orderInfo.textContent = "";
 
       if (cartTotal > limit) {
         const over = cartTotal - limit;
@@ -171,6 +173,9 @@ export function InitShoppingCart() {
             "warning"
           );
         }
+        $orderInfo.textContent = `Bestellen is niet mogelijk boven €${limit.toFixed(
+          2
+        )}, Je kunt alleen nog direct betalen.`;
         return { canOrder: false, canPayDirect: true };
       }
 
