@@ -325,7 +325,6 @@ export const updateSelection = async (req, res) => {
     if (attendanceRecord) {
       console.log("Updating existing attendance record:", attendanceRecord.id);
 
-      
       const newStatus =
         is_selected === "selected"
           ? "available"

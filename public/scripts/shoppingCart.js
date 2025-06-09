@@ -122,26 +122,43 @@ export function InitShoppingCart() {
     userId,
     showNotification = true
   ) {
+    const $orderInfo = document.getElementById("order-info");
     try {
-      if (userId) {
-        const userResponse = await fetch(`/api/users/${userId}`);
-        if (userResponse.ok) {
-          const user = await userResponse.json();
-          if (user.role_id === true) {
-            return { canOrder: true, canPayDirect: true };
-          }
+      let orderTotal = 0;
+
+      const userResponse = await fetch(`/api/users/${userId}`);
+      const orders = await fetch(`/api/orders/${userId}`);
+
+      if (userResponse.ok) {
+        const user = await userResponse.json();
+        if (user.role_id === true) {
+          return { canOrder: true, canPayDirect: true };
         }
+      }
+
+      if (orders.status === 404 || !orders.ok) {
+        orderTotal = 0;
+      } else {
+        const ordersData = await orders.json();
+
+        orderTotal = ordersData.orderItems.reduce(
+          (acc, item) => acc + item.price,
+          0
+        );
       }
 
       const response = await fetch("/api/settings/spending-limit");
       if (!response.ok) return { canOrder: true, canPayDirect: true };
 
       const data = await response.json();
-      const { limit } = data.data;
+      let { limit } = data.data;
 
       if (limit === 0) {
         return { canOrder: true, canPayDirect: true };
       }
+
+      limit = limit - orderTotal;
+      $orderInfo.textContent = "";
 
       if (cartTotal > limit) {
         const over = cartTotal - limit;
@@ -156,6 +173,9 @@ export function InitShoppingCart() {
             "warning"
           );
         }
+        $orderInfo.textContent = `Bestellen is niet mogelijk boven €${limit.toFixed(
+          2
+        )}, Je kunt alleen nog direct betalen.`;
         return { canOrder: false, canPayDirect: true };
       }
 
