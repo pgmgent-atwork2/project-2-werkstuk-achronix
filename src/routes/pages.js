@@ -53,6 +53,18 @@ router.get(
   checkAdmin,
   PageController.bestellingenBeheer
 );
+router.get(
+  "/beheerderspaneel/rekeningen",
+  jwtAuth,
+  checkAdmin,
+  PageController.rekeningenBeheer
+);
+router.get(
+  "/beheerderspaneel/rekeningen/:id",
+  jwtAuth,
+  checkAdmin,
+  PageController.userRekeningDetails
+);
 
 router.get(
   "/beheerderspaneel/producten",
