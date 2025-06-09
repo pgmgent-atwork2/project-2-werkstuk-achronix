@@ -76,7 +76,8 @@ const updateAttendanceStatus = async (matchId, userId, status) => {
     });
 
     if (response.ok) {
-      return await response.json();
+      const result = await response.json();
+      return result;
     } else {
       console.error("Failed to update attendance status");
       return null;
