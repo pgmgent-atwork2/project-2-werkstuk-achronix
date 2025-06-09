@@ -189,11 +189,6 @@
   height: 1rem;
 }
 
-.rekening-section {
-  max-width: 40rem;
-  margin: 5rem auto 0 auto;
-}
-
 .dashboard-empty-state {
   text-align: center;
   padding: 1rem;
