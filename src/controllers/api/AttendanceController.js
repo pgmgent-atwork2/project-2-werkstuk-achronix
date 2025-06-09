@@ -448,8 +448,15 @@ export const searchUsersInMatch = async (req, res) => {
 
     if (searchTerm === "undefined" || !searchTerm.trim()) {
       const usersWithAttendance = await User.query()
-        .withGraphJoined("attendance")
-        .where("attendance.match_id", matchId);
+        .leftJoinRelated("attendance")
+        .where("attendance.match_id", matchId)
+        .orWhere("attendance.match_id", null)
+        .withGraphFetched("attendance(filterByMatch)")
+        .modifiers({
+          filterByMatch(builder) {
+            builder.where("match_id", matchId);
+          },
+        });
 
       return res.json({
         success: true,
@@ -458,18 +465,21 @@ export const searchUsersInMatch = async (req, res) => {
     }
 
     const users = await User.query()
+      .distinct("users.id")
+      .select("users.*")
       .leftJoinRelated("attendance")
       .where((builder) => {
         if (searchTerm && searchTerm !== "undefined") {
           builder
-            .where("firstname", "like", `%${searchTerm}%`)
-            .orWhere("lastname", "like", `%${searchTerm}%`)
-            .orWhereRaw("LOWER(firstname || lastname) LIKE ?", [
+            .where("users.firstname", "like", `%${searchTerm}%`)
+            .orWhere("users.lastname", "like", `%${searchTerm}%`)
+            .orWhereRaw("LOWER(users.firstname || users.lastname) LIKE ?", [
               `%${searchTerm.toLowerCase()}%`,
             ])
-            .orWhereRaw("LOWER(firstname || ' ' || lastname) LIKE ?", [
-              `%${searchTerm.toLowerCase()}%`,
-            ]);
+            .orWhereRaw(
+              "LOWER(users.firstname || ' ' || users.lastname) LIKE ?",
+              [`%${searchTerm.toLowerCase()}%`]
+            );
         }
       })
       .withGraphFetched("attendance(filterByMatch)")
