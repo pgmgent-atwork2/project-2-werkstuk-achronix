@@ -92,8 +92,6 @@ app.post(
   PasswordResetController.forgotPassword
 );
 
-
-
 // Password reset
 app.get(
   "/reset-password",

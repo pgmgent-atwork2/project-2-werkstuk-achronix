@@ -5,6 +5,7 @@ import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
 import Order from "../models/Order.js";
 import Attendance from "../models/Attendance.js";
+import Knex from "../lib/Knex.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -266,6 +267,65 @@ export const bestellingenBeheer = async (req, res) => {
     user,
     orders,
   });
+};
+export const rekeningenBeheer = async (req, res) => {
+  try {
+    const users = await User.query()
+      .select("users.id", "users.firstname", "users.lastname", "users.email")
+      .leftJoin("orders", "users.id", "orders.user_id")
+      .leftJoin("order_items", "orders.id", "order_items.order_id")
+      .groupBy("users.id")
+      .select(
+        Knex.raw("COALESCE(SUM(order_items.price), 0) as totalAmountDue")
+      );
+
+    res.render("pages/beheer/rekeningenBeheer", {
+      pageTitle: "Rekeningen beheren | Ping Pong Tool",
+      user: req.user,
+      users,
+    });
+  } catch (error) {
+    console.error("Error fetching users with total amounts:", error);
+    res
+      .status(500)
+      .send("Er is een fout opgetreden bij het ophalen van de rekeningen.");
+  }
+};
+
+export const userRekeningDetails = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.query().findById(userId);
+    if (!user) {
+      return res.status(404).send("Gebruiker niet gevonden");
+    }
+
+    const orders = await Order.query()
+      .withGraphFetched("orderItems.consumable")
+      .where("user_id", userId);
+
+    const totalAmount = orders.reduce((total, order) => {
+      return (
+        total + order.orderItems.reduce((sum, item) => sum + item.price, 0)
+      );
+    }, 0);
+
+    res.render("pages/beheer/userRekeningDetails", {
+      pageTitle: `Rekening van ${user.firstname} ${user.lastname} | Ping Pong Tool`,
+      user: req.user,
+      accountUser: user,
+      orders,
+      totalAmount,
+    });
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res
+      .status(500)
+      .send(
+        "Er is een fout opgetreden bij het ophalen van de rekening details."
+      );
+  }
 };
 
 export const consumablesBeheer = async (req, res) => {

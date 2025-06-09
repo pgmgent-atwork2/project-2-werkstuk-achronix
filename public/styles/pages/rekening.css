@@ -1,0 +1,192 @@
+/* Rekening (Invoice/Bill) Page Styles */
+.rekening-container {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.rekening-section {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.5rem var(--shadow-light);
+  margin: 2rem auto;
+}
+
+.rekening-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  padding: 0.75rem 1rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rekening-title svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Summary section at the top of invoice */
+.rekening-summary {
+  background-color: var(--color-gray-100);
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin: 1rem auto;
+  max-width: 40rem;
+  text-align: center;
+}
+
+.rekening-summary h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--color-gray-900);
+}
+
+/* Invoice cards */
+.rekening-card {
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: 0 0.125rem 0.375rem var(--shadow-light);
+  margin: 0.75rem;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Items in the invoice */
+.rekening-items-container {
+  margin: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.rekening-item {
+  display: grid;
+  grid-template-columns: 2fr 0.75fr 0.75fr;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.rekening-item:last-child {
+  border-bottom: none;
+}
+
+.rekening-item-name {
+  font-weight: 500;
+  color: var(--color-gray-800);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.rekening-item-quantity {
+  font-size: 0.8rem;
+  color: var(--color-gray-600);
+  text-align: center;
+  margin: 0;
+}
+
+.rekening-item-price {
+  font-weight: 600;
+  color: var(--primary);
+  text-align: right;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.rekening-total {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin: 0.5rem 0 0.5rem;
+}
+
+/* Payment section */
+.rekening-payment-form {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.rekening-payment-button {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem var(--primary-light);
+  text-decoration: none;
+  float: right;
+}
+
+.rekening-payment-button:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 0.25rem 0.5rem var(--shadow-medium);
+}
+
+.rekening-payment-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.rekening-empty-state {
+  text-align: center;
+  padding: 1rem;
+  color: var(--color-gray-500);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Admin payment actions */
+.rekening-payment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.rekening-cash-payment-button {
+  background-color: var(--color-success);
+}
+
+.rekening-cash-payment-button:hover {
+  background-color: var(--secondary);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .rekening-card {
+    margin: 1rem;
+  }
+
+  .rekening-item {
+    grid-template-columns: 2.5fr 0.75fr 0.75fr;
+  }
+
+  .rekening-payment-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rekening-title {
+    font-size: 1.25rem;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .rekening-summary h2 {
+    font-size: 1.3rem;
+  }
+}
