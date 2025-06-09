@@ -38,7 +38,7 @@ export const show = async (req, res) => {
 
 export const store = async (req, res) => {
   try {
-    const { title, message } = req.body;
+    const { title, message, recipient_type, selected_user } = req.body;
 
     if (!title || !message) {
       return res.status(400).json({
@@ -46,13 +46,39 @@ export const store = async (req, res) => {
       });
     }
 
-    const users = await User.query();
+    if (
+      !recipient_type ||
+      (recipient_type !== "all" && recipient_type !== "single")
+    ) {
+      return res.status(400).json({
+        message: "Ongeldig ontvanger type.",
+      });
+    }
+
+    if (recipient_type === "single" && !selected_user) {
+      return res.status(400).json({
+        message: "Selecteer een gebruiker voor persoonlijke notificatie.",
+      });
+    }
+
+    let users;
+    if (recipient_type === "single") {
+      const user = await User.query().findById(selected_user);
+      if (!user) {
+        return res.status(404).json({
+          message: "Geselecteerde gebruiker niet gevonden.",
+        });
+      }
+      users = [user];
+    } else {
+      users = await User.query();
+    }
 
     const notifications = [];
     for (const user of users) {
       const notificationData = {
         user_id: user.id,
-        consumable_id: null, 
+        consumable_id: null,
         title,
         message,
         type: "admin_message",
@@ -63,9 +89,14 @@ export const store = async (req, res) => {
       notifications.push(notification);
     }
 
+    const successMessage =
+      recipient_type === "single"
+        ? `Notificatie succesvol verstuurd naar ${users[0].firstname} ${users[0].lastname}`
+        : "Notificatie succesvol aangemaakt voor alle gebruikers";
+
     return res.status(201).json({
       success: true,
-      message: "Notificatie succesvol aangemaakt voor alle gebruikers",
+      message: successMessage,
       data: notifications[0],
     });
   } catch (error) {
