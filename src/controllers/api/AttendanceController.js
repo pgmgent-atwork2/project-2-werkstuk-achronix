@@ -149,11 +149,9 @@ export const update = async (req, res) => {
         });
         message = "Attendance status created";
 
-        // Check if new record with 'available' status
         wasNewOrUpdatedToAvailable = statusToUse === "available";
       }
 
-      // Send email when user marks themselves as available
       if (
         wasNewOrUpdatedToAvailable &&
         user.email &&
