@@ -73,7 +73,15 @@ const handleUserSearch = async (event, matchId, matchBlock) => {
       .querySelector(".ingelogd-user .attendance-button")
       .getAttribute("data-user-id");
 
-    const filteredUsers = result.data.filter(
+    // Dedupliceer gebruikers op basis van ID
+    const uniqueUsers = result.data.reduce((acc, user) => {
+      if (!acc.find((u) => u.id === user.id)) {
+        acc.push(user);
+      }
+      return acc;
+    }, []);
+
+    const filteredUsers = uniqueUsers.filter(
       (user) => user.id.toString() !== loggedInUserId
     );
 
