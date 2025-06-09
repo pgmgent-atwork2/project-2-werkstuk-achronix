@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="wedstrijd-participants">
-                        <div class="user ingelogd-user" data-is-admin="<%= user.is_admin ? 'true' : 'false' %>">
+                        <div class="user ingelogd-user" data-is-admin="<%= user.role_id === 1 ? 'true' : 'false' %>">
                             <div class="user-status-container">
                                 <p class="user-status-text">Jouw status</p>
                                 <button class="attendance-button status-unknown" data-status="unknown"
@@ -63,12 +63,10 @@
                                     <i class="fas fa-question"></i>
                                 </button>
                             </div>
-                            <div class="selection-status">
-                                <p
-                                    class="selection-text <%= user.attendance && user.attendance[match.id] && user.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
-                                    <%= user.attendance && user.attendance[match.id] &&
-                                        user.attendance[match.id].is_selected==='selected' ? 'Geselecteerd'
-                                        : 'Niet geselecteerd' %>
+                            <div class="selection-status" id="user-selection-<%= match.id %>"
+                                data-user-id="<%= user.id %>" data-match-id="<%= match.id %>">
+                                <p class="selection-text" id="selection-text-<%= match.id %>">
+                                    Laden...
                                 </p>
                             </div>
                         </div>
@@ -114,7 +112,7 @@
                                                                 <span>Onbekend</span>
                                                                 <% } %>
                                                     </p>
-                                                    <% if (user.is_admin) { %>
+                                                    <% if (user.role_id===1) { %>
                                                         <p
                                                             class="selection-status <%= otherUser.attendance && otherUser.attendance[match.id] && otherUser.attendance[match.id].is_selected === 'selected' ? 'attendence--green' : '' %>">
                                                             <button class="select-player-button"
@@ -155,4 +153,4 @@
                     <% } %>
                         <% } %>
 </div>
-<div id="admin-status" data-is-admin="<%= user.is_admin ? 'true' : 'false' %>" style="display: none;"></div>
+<div id="admin-status" data-is-admin="<%= user.role_id === 1 ? 'true' : 'false' %>" style="display: none;"></div>
