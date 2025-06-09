@@ -1,0 +1,26 @@
+<h1>Rekeningen beheren</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Naam</th>
+            <th>Email</th>
+            <th>Totaalbedrag</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach(user=> { %>
+            <tr>
+                <td><a href="/beheerderspaneel/rekeningen/<%= user.id %>">
+                        <%= user.firstname %>
+                            <%= user.lastname %>
+                    </a></td>
+                <td>
+                    <%= user.email %>
+                </td>
+                <td>€<%= (user.totalAmountDue || 0).toFixed(2) %>
+                </td>
+            </tr>
+            <% }); %>
+    </tbody>
+</table>
