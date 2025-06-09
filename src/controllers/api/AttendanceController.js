@@ -277,6 +277,13 @@ export const updateSelection = async (req, res) => {
   try {
     const { match_id, user_id, is_selected } = req.body;
 
+    console.log("=== SELECTION UPDATE REQUEST ===");
+    console.log("Request body:", { match_id, user_id, is_selected });
+    console.log("Admin user:", {
+      id: req.user?.id,
+      role_id: req.user?.role_id,
+    });
+
     if (!match_id || !user_id) {
       return res.status(400).json({
         success: false,
@@ -284,7 +291,8 @@ export const updateSelection = async (req, res) => {
       });
     }
 
-    if (req.user && !req.user.is_admin) {
+    if (req.user && req.user.role_id !== 1) {
+      console.log("User is not admin, denying access");
       return res.status(403).json({
         success: false,
         message: "You don't have permission to select players",
@@ -317,27 +325,51 @@ export const updateSelection = async (req, res) => {
     let message;
 
     if (attendanceRecord) {
+      console.log("Updating existing attendance record:", attendanceRecord.id);
+
+      
+      const newStatus =
+        is_selected === "selected"
+          ? "available"
+          : attendanceRecord.status || "unknown";
+
       attendanceRecord = await Attendance.query().updateAndFetchById(
         attendanceRecord.id,
         {
           match_id,
           user_id,
           is_selected,
-          status: attendanceRecord.status || "unknown",
+          status: newStatus,
         }
       );
       message =
-        is_selected === "selected" ? "Player selected" : "Player deselected";
+        is_selected === "selected"
+          ? "Player selected and marked available"
+          : "Player deselected";
     } else {
+      console.log("Creating new attendance record");
+
+      const newStatus = is_selected === "selected" ? "available" : "unknown";
+
       attendanceRecord = await Attendance.query().insert({
         match_id,
         user_id,
-        status: "unknown",
+        status: newStatus,
         is_selected,
       });
       message =
-        is_selected === "selected" ? "Player selected" : "Player deselected";
+        is_selected === "selected"
+          ? "Player selected and marked available"
+          : "Player deselected";
     }
+
+    console.log("Selection update completed:", {
+      id: attendanceRecord.id,
+      match_id: attendanceRecord.match_id,
+      user_id: attendanceRecord.user_id,
+      is_selected: attendanceRecord.is_selected,
+      status: attendanceRecord.status,
+    });
 
     if (
       is_selected === "selected" &&
@@ -346,6 +378,8 @@ export const updateSelection = async (req, res) => {
     ) {
       await sendSelectionEmail(user, match);
     }
+
+    console.log("=== SELECTION UPDATE COMPLETE ===");
 
     return res.status(200).json({
       success: true,
