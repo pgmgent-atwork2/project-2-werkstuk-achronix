@@ -7,7 +7,6 @@ const startPeriodicRefresh = () => {
     "Starting periodic refresh for attendance and selection status..."
   );
 
-  // Refresh every 30 seconds
   refreshInterval = setInterval(() => {
     console.log("Periodic refresh triggered");
     loadAttendanceStatuses();
@@ -25,7 +24,6 @@ const loadAttendanceStatuses = async () => {
   console.log("Loading attendance statuses...");
 
   try {
-    // Use for...of loop instead of forEach for async operations
     for (const button of attendanceButtons) {
       const matchId = button.getAttribute("data-match-id");
       const userId = button.getAttribute("data-user-id");
@@ -46,10 +44,8 @@ const loadAttendanceStatuses = async () => {
               const attendance = data.data[0];
               console.log("Attendance data received:", attendance);
 
-              // Update button appearance with correct status
               updateButtonAppearance(button, attendance.status || "unknown");
 
-              // Also update selection status if element exists
               const selectionTextElement = document.getElementById(
                 `selection-text-${matchId}`
               );
@@ -60,7 +56,6 @@ const loadAttendanceStatuses = async () => {
                   ? "Geselecteerd"
                   : "Niet geselecteerd";
 
-                // Only update if changed to avoid flickering
                 if (currentText !== newText && currentText !== "Laden...") {
                   console.log(
                     `Selection status changed from "${currentText}" to "${newText}"`
@@ -85,7 +80,6 @@ const loadAttendanceStatuses = async () => {
               console.log("No attendance data found, setting to unknown");
               updateButtonAppearance(button, "unknown");
 
-              // Set selection text to default
               const selectionTextElement = document.getElementById(
                 `selection-text-${matchId}`
               );
@@ -170,6 +164,25 @@ const updateAttendanceStatus = async (matchId, userId, status) => {
     if (response.ok) {
       const result = await response.json();
       console.log("Attendance update successful:", result);
+
+      const selectionTextElement = document.getElementById(
+        `selection-text-${matchId}`
+      );
+
+      if (selectionTextElement) {
+       
+        if (status === "available") {
+          selectionTextElement.textContent = "Geselecteerd";
+          selectionTextElement.classList.add("attendence--green");
+        } else if (status === "reserve") {
+          selectionTextElement.textContent = "Reserve";
+          selectionTextElement.classList.remove("attendence--green");
+        } else {
+          selectionTextElement.textContent = "Niet geselecteerd";
+          selectionTextElement.classList.remove("attendence--green");
+        }
+      }
+
       return result;
     } else {
       console.error("Failed to update attendance status", response.status);
@@ -234,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setTimeout(() => {
       startPeriodicRefresh();
-    }, 5000); 
+    }, 5000);
   }, 200);
 });
 
