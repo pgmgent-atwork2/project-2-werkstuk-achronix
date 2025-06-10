@@ -175,12 +175,14 @@ export const wedstrijden = async (req, res, teamLetter) => {
     teamLetter: teamLetter,
   });
 };
-export const wedstrijdenTeamsOverview = (req, res) => {
+export const wedstrijdenTeamsOverview = async (req, res) => {
   const user = req.user;
+  const teams = await Team.query().orderBy("name", "asc");
 
   res.render("pages/wedstrijdenTeamsOverview", {
     pageTitle: "Wedstrijden Overview | Ping Pong Tool",
     user,
+    teams,
   });
 };
 
