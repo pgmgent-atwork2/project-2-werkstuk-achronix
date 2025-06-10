@@ -50,9 +50,11 @@ export const postLogin = async (req, res, next) => {
       return next();
     }
 
-    const user = await User.query().findOne({
-      email: req.body.email,
-    });
+    const user = await User.query()
+      .findOne({
+        email: req.body.email,
+      })
+      .withGraphFetched("role");
 
     if (!user) {
       req.formErrorFields = { email: "Deze gebruiker bestaat niet." };
@@ -71,7 +73,14 @@ export const postLogin = async (req, res, next) => {
 
     if (passwordMatches) {
       const token = jwt.sign(
-        { userId: user.id, email: user.email },
+        {
+          userId: user.id,
+          email: user.email,
+          role: {
+            id: user.role.id,
+            name: user.role.name,
+          },
+        },
         process.env.TOKEN_SALT,
         { expiresIn: "24h" }
       );

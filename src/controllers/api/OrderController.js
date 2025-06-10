@@ -1,4 +1,5 @@
 import Order from "../../models/Order.js";
+import jwt from "jsonwebtoken";
 
 export const index = async (req, res) => {
   try {
@@ -12,7 +13,9 @@ export const index = async (req, res) => {
 export const show = async (req, res) => {
   const { id } = req.params;
   try {
-    const order = await Order.query().findById(id).withGraphFetched("orderItems.consumable");
+    const order = await Order.query()
+      .findById(id)
+      .withGraphFetched("orderItems.consumable");
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
@@ -24,6 +27,15 @@ export const show = async (req, res) => {
 
 export const store = async (req, res) => {
   try {
+    const { user_id } = req.body;
+    const userToken = req.cookies.token;
+
+    const userData = jwt.verify(userToken, process.env.TOKEN_SALT);
+
+    if (userData.role.name !== "admin" && userData.userId !== user_id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
     const newOrder = await Order.query().insert(req.body);
     res.json(newOrder);
   } catch (error) {
