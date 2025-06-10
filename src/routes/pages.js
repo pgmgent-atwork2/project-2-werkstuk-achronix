@@ -86,6 +86,13 @@ router.get(
 );
 
 router.get(
+  "/beheerderspaneel/team",
+  jwtAuth,
+  checkAdmin,
+  PageController.teamBeheer
+);
+
+router.get(
   "/forgot-password-confirmation",
   PageController.forgotPasswordConfirmation
 );

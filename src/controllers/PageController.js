@@ -378,6 +378,27 @@ export const notificatiesBeheer = async (req, res) => {
   }
 };
 
+export const teamBeheer = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const teams = await Team.query().orderBy("name", "asc");
+
+    res.render("pages/beheer/teamBeheer", {
+      pageTitle: "Teams beheren | Ping Pong Tool",
+      user,
+      teams,
+    });
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+    res.render("pages/beheer/teamBeheer", {
+      pageTitle: "Teams beheren | Ping Pong Tool",
+      user,
+      teams: [],
+    });
+  }
+};
+
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",

@@ -1,0 +1,59 @@
+<a class="back" href="/beheerderspaneel">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
+
+<div>
+  <h1 class="title">Teams beheren</h1>
+  <section>
+    <div>
+      <button id="addNewTeam" class="btn btn--primary">Nieuw Team</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Naam</th>
+            <th>Acties</th>
+          </tr>
+        </thead>
+        <tbody id="teamsTableBody">
+          <% if(teams && teams.length> 0) { %> <% teams.forEach(team=> { %>
+          <tr>
+            <td><%= team.id %></td>
+            <td><%= team.name %></td>
+
+            <td>
+              <button
+                class="btn btn--danger delete-consumable"
+                data-id="<%= team.id %>"
+              >
+                Verwijderen
+              </button>
+            </td>
+          </tr>
+          <% }); %> <% } else { %>
+          <tr>
+            <td colspan="7">Geen Producten gevonden</td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
