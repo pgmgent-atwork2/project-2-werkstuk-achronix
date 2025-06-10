@@ -85,8 +85,6 @@ export const dashboard = async (req, res) => {
     .orderBy("date", "asc")
     .limit(5);
 
-    console.log(upcomingMatches);
-
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
