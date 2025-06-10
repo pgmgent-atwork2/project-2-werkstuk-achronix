@@ -1,0 +1,15 @@
+.match-card {
+  .match-content {
+    .match-location,
+    .match-date-range {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}

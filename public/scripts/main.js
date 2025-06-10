@@ -14,6 +14,8 @@ import "./search-orders.js";
 
 import "./consumable/search-consumables.js";
 
+  import "./team/create-team.js";
+
 import { InitShoppingCart } from "./shoppingCart.js";
 import initDropdown from "./dropdown.js";
 

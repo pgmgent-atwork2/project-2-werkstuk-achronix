@@ -78,10 +78,18 @@ export const dashboard = async (req, res) => {
     console.error("Error fetching notifications:", error);
   }
 
+  const today = new Date().toISOString();
+  const upcomingMatches = await Match.query()
+    .withGraphFetched("team")
+    .where("date", ">", today)
+    .orderBy("date", "asc")
+    .limit(5);
+
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
     orders,
+    upcomingMatches,
     totalPrice: totalPrice.toFixed(2),
     backInStockNotifications,
     adminNotifications,
@@ -175,12 +183,14 @@ export const wedstrijden = async (req, res, teamLetter) => {
     teamLetter: teamLetter,
   });
 };
-export const wedstrijdenTeamsOverview = (req, res) => {
+export const wedstrijdenTeamsOverview = async (req, res) => {
   const user = req.user;
+  const teams = await Team.query().orderBy("name", "asc");
 
   res.render("pages/wedstrijdenTeamsOverview", {
     pageTitle: "Wedstrijden Overview | Ping Pong Tool",
     user,
+    teams,
   });
 };
 
@@ -375,6 +385,22 @@ export const notificatiesBeheer = async (req, res) => {
       user,
       notifications: [],
     });
+  }
+};
+
+export const teamBeheer = async (req, res) => {
+  const user = req.user;
+
+  try {
+    const teams = await Team.query().orderBy("name", "asc");
+
+    res.render("pages/beheer/teamBeheer", {
+      pageTitle: "Teams beheren | Ping Pong Tool",
+      user,
+      teams,
+    });
+  } catch (error) {
+    console.error("Error fetching teams:", error);
   }
 };
 

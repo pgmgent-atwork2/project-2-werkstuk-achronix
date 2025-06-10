@@ -1,21 +1,20 @@
 <div>
-    <h1 class="title">Wedstrijden per team</h1>
-    <p>Selecteer een team om de wedstrijden te bekijken:</p>
-    <ul class="cards">
-        <li class="card">
-            <a class="card__full-link" href="/wedstrijden/a"></a>
-            <p class="card__title">Team A</p>
-            <p class="card__description">Bekijk alle wedstrijden van Team A</p>
-        </li>
-        <li class="card">
-            <a class="card__full-link" href="/wedstrijden/b"></a>
-            <p class="card__title">Team B</p>
-            <p class="card__description">Bekijk alle wedstrijden van Team B</p>
-        </li>
-        <li class="card">
-            <a class="card__full-link" href="/wedstrijden/c"></a>
-            <p class="card__title">Team C</p>
-            <p class="card__description">Bekijk alle wedstrijden van Team C</p>
-        </li>
-    </ul>
+  <h1 class="title">Wedstrijden per team</h1>
+  <p>Selecteer een team om de wedstrijden te bekijken:</p>
+  <ul class="cards">
+    <% if (teams.length === 0) { %>
+    <li class="card">
+      <p class="card__title">Geen teams gevonden</p>
+      <p class="card__description">Er zijn momenteel geen teams beschikbaar.</p>
+    </li>
+    <% } %> <% teams.forEach(team => { %>
+    <li class="card">
+      <a class="card__full-link" href="/wedstrijden/<%= team.name.toLowerCase() %>"></a>
+      <p class="card__title"><%= team.name %></p>
+      <p class="card__description">
+        Bekijk alle wedstrijden van <%= team.name %>
+      </p>
+    </li>
+    <% }); %>
+  </ul>
 </div>

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import Team from "../models/Team.js";
 
 import * as PageController from "../controllers/PageController.js";
 import jwtAuth from "../middleware/jwtAuth.js";
@@ -14,15 +15,16 @@ router.get("/", (req, res) => {
 
 router.get("/dashboard", jwtAuth, PageController.dashboard);
 router.get("/bestellen", jwtAuth, PageController.bestellen);
-router.get("/wedstrijden/a", jwtAuth, (req, res) =>
-  PageController.wedstrijden(req, res, "a")
-);
-router.get("/wedstrijden/b", jwtAuth, (req, res) =>
-  PageController.wedstrijden(req, res, "b")
-);
-router.get("/wedstrijden/c", jwtAuth, (req, res) =>
-  PageController.wedstrijden(req, res, "c")
-);
+
+const teams = await Team.query().orderBy("name", "asc");
+
+teams.forEach((team) => {
+  router.get(`/wedstrijden/${team.name.toLowerCase()}`, jwtAuth, (req, res) =>
+    PageController.wedstrijden(req, res, team.name.toLowerCase())
+  );
+});
+
+
 router.get("/wedstrijden", jwtAuth, PageController.wedstrijdenTeamsOverview);
 router.get("/rekening", jwtAuth, PageController.rekening);
 router.get("/profiel", jwtAuth, PageController.profiel);
@@ -83,6 +85,13 @@ router.get(
   jwtAuth,
   checkAdmin,
   PageController.uitgavelimiet
+);
+
+router.get(
+  "/beheerderspaneel/team",
+  jwtAuth,
+  checkAdmin,
+  PageController.teamBeheer
 );
 
 router.get(
