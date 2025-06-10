@@ -13,14 +13,17 @@ export async function addOrderToDb(cart) {
       }),
     });
 
+    if (response.status === 403) {
+      return (window.location.href = "/login");
+    }
+
     if (!response.ok) {
-      throw new Error("Failed to place order");
+      throw new Error("Failed to place orde");
     }
 
     const orderData = await response.json();
+
     const orderId = orderData.id;
-    console.log("Order placed successfully with ID:", orderId);
-    console.log(cart);
 
     cart.forEach(async (item) => {
       await fetch("/api/order-items", {

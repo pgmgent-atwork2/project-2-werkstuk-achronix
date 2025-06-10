@@ -15,7 +15,9 @@ export default async (req, res, next) => {
       return res.redirect("/login");
     }
 
-    const user = await User.query().findById(userData.userId).withGraphFetched("role");
+    const user = await User.query()
+      .findById(userData.userId)
+      .withGraphFetched("role");
     req.user = user;
 
     return next();
