@@ -32,6 +32,7 @@ export async function addOrderToDb(cart) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          user_id: cart[0].user_id,
           order_id: orderId,
           consumable_id: item.consumable_id,
           quantity: item.quantity,
@@ -88,29 +89,37 @@ export async function addToExistingOrder(cart) {
         const newQuantity = existingItem.quantity + item.quantity;
         const newPrice = existingItem.price + item.price;
 
-        await fetch(`/api/order-items/${existingItem.id}`, {
+        const response = await fetch(`/api/order-items/${existingItem.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            user_id: cart[0].user_id,
             quantity: newQuantity,
             price: newPrice,
           }),
         });
+        if (response.status === 403) {
+          return (window.location.href = "/login");
+        }
       } else {
-        await fetch("/api/order-items", {
+        const response = await fetch("/api/order-items", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            user_id: cart[0].user_id,
             order_id: orderId,
             consumable_id: item.consumable_id,
             quantity: item.quantity,
             price: item.price,
           }),
         });
+        if (response.status === 403) {
+          return (window.location.href = "/login");
+        }
       }
     }
 
