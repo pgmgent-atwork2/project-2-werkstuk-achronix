@@ -391,11 +391,6 @@ export const teamBeheer = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching teams:", error);
-    res.render("pages/beheer/teamBeheer", {
-      pageTitle: "Teams beheren | Ping Pong Tool",
-      user,
-      teams: [],
-    });
   }
 };
 
