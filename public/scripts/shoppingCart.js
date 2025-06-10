@@ -12,11 +12,16 @@ export function InitShoppingCart() {
   const $showCart = document.getElementById("show-cart");
   const $closeCart = document.getElementById("close-cart");
 
+  const $dropdownBtn = document?.querySelector(".dropdown-btn");
+
   const key = "cart";
   const cart = JSON.parse(localStorage.getItem(key)) || [];
 
   handleAboveStockAmount();
 
+  if ($dropdownBtn) {
+    $dropdownBtn.disabled = false;
+  }
   if (!orderIntialized) {
     orderIntialized = true;
     handleOrder(key);
@@ -27,6 +32,7 @@ export function InitShoppingCart() {
     if ($showCart) {
       $showCart.parentElement.classList.remove("hidden");
     }
+
     showCountOnInput(cart);
     handleShoppingCart(cart);
 
@@ -127,7 +133,7 @@ export function InitShoppingCart() {
       let orderTotal = 0;
 
       const userResponse = await fetch(`/api/users/${userId}`);
-      const orders = await fetch(`/api/orders/${userId}`);
+      const orders = await fetch(`/api/orders/${userId}/status/NOT_PAID`);
 
       if (userResponse.ok) {
         const user = await userResponse.json();
@@ -136,12 +142,12 @@ export function InitShoppingCart() {
         }
       }
 
-      if (orders.status === 404 || !orders.ok) {
+      if (orders.status === 404 || orders.status === 204 || !orders.ok) {
         orderTotal = 0;
       } else {
         const ordersData = await orders.json();
 
-        orderTotal = ordersData.orderItems.reduce(
+        orderTotal = ordersData[0].orderItems.reduce(
           (acc, item) => acc + item.price,
           0
         );
@@ -255,8 +261,14 @@ export function InitShoppingCart() {
 
     if (cart.length > 0) {
       $showCart.parentElement.classList.remove("hidden");
+      if ($dropdownBtn) {
+        $dropdownBtn.disabled = true;
+      }
     } else {
       $showCart.parentElement.classList.add("hidden");
+      if ($dropdownBtn) {
+        $dropdownBtn.disabled = false;
+      }
     }
 
     showCart(cart);
