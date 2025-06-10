@@ -24,15 +24,7 @@ teams.forEach((team) => {
   );
 });
 
-// router.get("/wedstrijden/a", jwtAuth, (req, res) =>
-//   PageController.wedstrijden(req, res, "a")
-// );
-// router.get("/wedstrijden/b", jwtAuth, (req, res) =>
-//   PageController.wedstrijden(req, res, "b")
-// );
-// router.get("/wedstrijden/c", jwtAuth, (req, res) =>
-//   PageController.wedstrijden(req, res, "c")
-// );
+
 router.get("/wedstrijden", jwtAuth, PageController.wedstrijdenTeamsOverview);
 router.get("/rekening", jwtAuth, PageController.rekening);
 router.get("/profiel", jwtAuth, PageController.profiel);
