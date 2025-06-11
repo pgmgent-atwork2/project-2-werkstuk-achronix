@@ -10,9 +10,27 @@ export default async function ExportController(req, res) {
 
   switch (type) {
     case "orders":
-      data = await Order.query()
+      const orders = await Order.query()
         .withGraphFetched("user")
         .withGraphFetched("orderItems.consumable");
+
+        data = [];
+      orders.forEach((item) => {
+        item.orderItems.forEach((oi) => {
+          data.push({
+            id: item.id,
+            gebruiker: item.user
+              ? `${item.user.firstname} ${item.user.lastname}`
+              : "Onbekend",
+            status: item.status,
+            methode: item.method,
+            besteld: item.order_on,
+            product: oi.consumable.name,
+            aantal: oi.quantity,
+            prijs: oi.price,
+          });
+        });
+      });
       break;
     case "users":
       data = await User.query().select(
