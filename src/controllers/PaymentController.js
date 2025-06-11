@@ -113,7 +113,6 @@ export const processCashPayment = async (req, res) => {
       });
     }
 
-    // Parse cash details - handle both string and object
     let paymentDetails;
     try {
       paymentDetails =
@@ -128,7 +127,6 @@ export const processCashPayment = async (req, res) => {
 
     console.log("Parsed payment details:", paymentDetails);
 
-    // Validate required payment details
     if (!paymentDetails.cashGiven || !paymentDetails.orderAmount) {
       return res.status(400).json({
         success: false,
@@ -136,7 +134,6 @@ export const processCashPayment = async (req, res) => {
       });
     }
 
-    // Update order status to PAID - only use existing columns
     const updatedOrder = await Order.query().patchAndFetchById(orderId, {
       status: "PAID",
       method: "CASH",
@@ -144,20 +141,16 @@ export const processCashPayment = async (req, res) => {
 
     console.log("Order updated successfully:", updatedOrder);
 
-    // Send confirmation email if user wants notifications
     if (user.email) {
       try {
         await sendConfirmationEmail(user.email, order);
         console.log("Confirmation email sent to:", user.email);
       } catch (emailError) {
         console.error("Failed to send confirmation email:", emailError);
-        // Don't fail the payment if email fails
       }
     }
 
-    console.log("=== CASH PAYMENT SUCCESS ===");
 
-    // Return success response for AJAX request
     return res.status(200).json({
       success: true,
       message: "Cash payment processed successfully",
@@ -166,14 +159,10 @@ export const processCashPayment = async (req, res) => {
         amount: paymentDetails.orderAmount,
         change: paymentDetails.change || 0,
         method: "CASH",
-        cashDetails: paymentDetails, // Include cash details in response for logging
+        cashDetails: paymentDetails, 
       },
     });
   } catch (error) {
-    console.error("=== CASH PAYMENT ERROR ===");
-    console.error("Error processing cash payment:", error);
-    console.error("Stack trace:", error.stack);
-
     return res.status(500).json({
       success: false,
       error: "Failed to process cash payment",
