@@ -4,10 +4,13 @@
   z-index: 1000;
   display: none;
   background-color: var(--background);
+  
 }
 
 .cart.show {
   display: block;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .cart-btn-container {
@@ -65,7 +68,7 @@
       display: inline;
       text-align: right;
     }
-    
+
     .cart__total {
       font-size: 1.25rem;
       font-weight: bold;

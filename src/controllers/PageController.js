@@ -129,7 +129,10 @@ export const wedstrijden = async (req, res, teamLetter) => {
   }
 
   const teams = await Team.query().orderBy("name", "asc");
-  const users = await User.query().orderBy("firstname", "asc");
+  const users = await User.query()
+    .where("role_id", 1)
+    .orWhere("role_id", 2)
+    .orderBy("firstname", "asc");
 
   // Get attendance data for the current user across all matches
   const attendanceData = await Attendance.query()
