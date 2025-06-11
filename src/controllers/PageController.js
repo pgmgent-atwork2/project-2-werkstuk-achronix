@@ -406,7 +406,7 @@ export const exportData = async (req, res) => {
   const user = req.user;
 
   try {
-    res.render("pages/beheer/teamBeheer", {
+    res.render("pages/beheer/exporteren", {
       pageTitle: "Data exporteren | Ping Pong Tool",
       user,
     });

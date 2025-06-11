@@ -114,7 +114,7 @@ app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
 app.delete("/upload/consumable-image", deleteConsumable);
 
-app.get("/export-data", jwtAuth, checkAdmin, ExportController);
+app.get("/export-data", ExportController);
 
 app.use("/api", apiRouter);
 app.use(PageRouter);
