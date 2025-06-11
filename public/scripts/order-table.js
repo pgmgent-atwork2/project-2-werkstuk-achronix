@@ -13,11 +13,6 @@ export default function renderOrderRow(order,item, $tableBody, formattedDate) {
   }</td>
             <td>${order.method}</td>
             <td>${formattedDate}</td>
-          <td>
-            <button class="btn btn--secondary edit-order" data-id="${order.id}">
-              Bewerken
-            </button>
-          </td>
         `;
   $tableBody.appendChild($row);
 }
