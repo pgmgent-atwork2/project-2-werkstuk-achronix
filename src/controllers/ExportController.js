@@ -7,14 +7,15 @@ export default async function ExportController(req, res) {
   const { type } = req.query;
 
   let data = [];
+  let orders = [];
 
   switch (type) {
     case "orders":
-      const orders = await Order.query()
+      orders = await Order.query()
         .withGraphFetched("user")
         .withGraphFetched("orderItems.consumable");
 
-        data = [];
+      data = [];
       orders.forEach((item) => {
         item.orderItems.forEach((oi) => {
           data.push({
