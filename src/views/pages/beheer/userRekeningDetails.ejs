@@ -62,17 +62,15 @@
                                 </button>
                             </form>
 
-                            <form class="rekening-payment-form" action="/process-cash-payment" method="post"
-                                onsubmit="return confirm('Bevestig dat de cash betaling is ontvangen?');">
-                                <input type="hidden" name="userId" value="<%= accountUser.id %>" />
-                                <input type="hidden" name="orderId" value="<%= order.id %>" />
+                            <form class="rekening-payment-form" action="javascript:void(0);"
+                                onsubmit="openCashPaymentModal('<%= order.orderItems.reduce((total, item) => total + item.price, 0).toFixed(2) %>', '<%= accountUser.id %>', '<%= order.id %>')">
                                 <button class="rekening-payment-button rekening-cash-payment-button" type="submit">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
                                     </svg>
-                                    Betalen met cash
+                                    💵 Betalen met cash
                                 </button>
                             </form>
                         </div>
@@ -87,3 +85,31 @@
                                 <% } %>
                 </div>
 </div>
+
+<script type="module" src="/scripts/cash-payment-calculator.js"></script>
+
+<script>
+    // Fallback debug functie om te testen of de modal werkt
+    window.testCashModal = function () {
+        console.log('Testing cash modal...');
+        if (typeof openCashPaymentModal === 'function') {
+            openCashPaymentModal('10.00', '1', '1');
+        } else {
+            console.error('openCashPaymentModal function not found!');
+        }
+    };
+
+    // Debug: log wanneer de pagina klaar is
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('userRekeningDetails page loaded');
+
+        // Test of de cash payment calculator geladen is
+        setTimeout(() => {
+            if (typeof openCashPaymentModal === 'function') {
+                console.log('✅ Cash payment calculator loaded successfully');
+            } else {
+                console.error('❌ Cash payment calculator not loaded');
+            }
+        }, 2000);
+    });
+</script>
