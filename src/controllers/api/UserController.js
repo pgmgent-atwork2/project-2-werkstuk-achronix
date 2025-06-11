@@ -260,3 +260,32 @@ export const findByRole = async (req, res) => {
     });
   }
 };
+
+export const searchUsersForRekeningen = async (req, res) => {
+  try {
+    const { searchTerm } = req.params;
+    let search = User.query().withGraphFetched("orders.orderItems").orderBy("firstname", "asc");
+    
+    if (searchTerm && searchTerm !== "all" && searchTerm !== "undefined") {
+      search = search
+      .where(function() {
+        this.where("firstname", "like", `%${searchTerm}%`)
+          .orWhere("lastname", "like", `%${searchTerm}%`);
+      });
+    }
+    
+    const users = await search;
+    const usersWithTotals = users.map(user => {
+      return user;
+    });
+      
+    res.json(usersWithTotals);
+  } catch (error) {
+    console.error("Error searching users for rekeningen:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error searching users for rekeningen",
+      error: error.message,
+    });
+  }
+};

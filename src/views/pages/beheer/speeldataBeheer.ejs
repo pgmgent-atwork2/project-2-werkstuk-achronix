@@ -1,116 +1,121 @@
 <a class="back" href="/beheerderspaneel">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="size-6"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M15.75 19.5 8.25 12l7.5-7.5"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+    class="size-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
   </svg>
-  Ga terug naar beheerderspaneel overzicht</a
->
+  Ga terug naar beheerderspaneel overzicht</a>
 <div>
   <h1 class="title">Wedstrijden beheren</h1>
 
-  <% if (locals.flash) { %> <% ['success', 'error' , 'warning' ].forEach(type=>
-  { %> <% if (flash[type]) { %>
-  <div
-    class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>"
-  >
-    <%= flash[type] %>
-  </div>
-  <% } %> <% }) %> <% } %>
-
-  <div>
-    <div>
-      <h3>Importeer Wedstrijden</h3>
-    </div>
-    <div>
-      <form
-        action="/beheerderspaneel/wedstrijden/import"
-        method="POST"
-        enctype="multipart/form-data"
-      >
-        <div>
-          <label for="icsFile">ICS Bestand</label>
-          <input
-            type="file"
-            name="icsFile"
-            id="icsFile"
-            accept=".ics"
-            required
-          />
-          <small
-            >Upload een .ics bestand met wedstrijdinformatie. Het team wordt
-            automatisch herkend uit het bestand.</small
-          >
+  <% if (locals.flash) { %>
+    <% ['success', 'error' , 'warning' ].forEach(type=>
+      { %> <% if (flash[type]) { %>
+        <div class="error-message <%= type === 'success' ? 'error-message--successful' : '' %>">
+          <%= flash[type] %>
         </div>
+        <% } %>
+          <% }) %>
+            <% } %>
 
-        <button type="submit" class="btn">Importeren</button>
-      </form>
-    </div>
-  </div>
+              <div>
+                <div>
+                  <h3>Importeer Wedstrijden</h3>
+                </div>
+                <div class="import-section">
+                  <form action="/beheerderspaneel/wedstrijden/import" method="POST" enctype="multipart/form-data"
+                    class="import-form">
+                    <div class="form-group">
+                      <label for="icsFile" class="form-label">ICS Bestand</label>
+                      <div class="file-input-container">
+                        <input type="file" name="icsFile" id="icsFile" accept=".ics" required class="file-input" />
+                        <div class="file-input-overlay">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="upload-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                          </svg>
+                          <span class="file-input-text">Klik om bestand te selecteren</span>
+                        </div>
+                      </div>
+                      <small class="form-help-text">
+                        Upload een .ics bestand met wedstrijdinformatie. Het team wordt
+                        automatisch herkend uit het bestand.
+                      </small>
+                    </div>
 
-  <div>
-    <h3>Geplande Wedstrijden</h3>
+                    <button type="submit" class="btn btn--primary import-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="btn-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                      </svg>
+                      Importeren
+                    </button>
+                  </form>
+                </div>
+              </div>
 
-    <div>
-      <button id="addNewMatch" class="btn">Nieuwe wedstrijd</button>
-    </div>
+              <div>
+                <h3>Geplande Wedstrijden</h3>
 
-    <% if (locals.matches && matches.length> 0) { %>
-    <table>
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Tijden</th>
-          <th>Locatie</th>
-          <th>Thuis/Uit</th>
-          <th>Team</th>
-          <th>Acties</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% matches.forEach(match=> { %>
-        <tr>
-          <td><%= new Date(match.date).toLocaleDateString('nl-BE') %></td>
-          <td>
-            <% if (match.start_time) { %> <%= match.start_time %> <% if
-            (match.end_time) { %> - <%= match.end_time %> <% } %> <% } else { %>
-            - <% } %>
-          </td>
-          <td><%= match.location %></td>
-          <td><%= match.home_away %></td>
-          <td><%= match.team ? match.team.name : '?' %></td>
-          <td>
-            <button
-              class="btn btn--secondary edit-match"
-              data-id="<%= match.id %>"
-            >
-              Bewerken
-            </button>
-            <button
-              class="btn btn--danger delete-match"
-              data-id="<%= match.id %>"
-            >
-              Verwijderen
-            </button>
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
-    <% } else { %>
-    <p>
-      Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
-      hierboven.
-    </p>
-    <% } %>
-  </div>
-</div>
+                <div>
+                  <button id="addNewMatch" class="btn">Nieuwe wedstrijd</button>
+                </div>
+
+                <% if (locals.matches && matches.length> 0) { %>
+                  <div class="table-container">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Datum</th>
+                          <th>Tijden</th>
+                          <th>Locatie</th>
+                          <th>Thuis/Uit</th>
+                          <th>Team</th>
+                          <th>Acties</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% matches.forEach(match=> { %>
+                          <tr>
+                            <td>
+                              <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                            </td>
+                            <td>
+                              <% if (match.start_time) { %>
+                                <%= match.start_time %>
+                                  <% if (match.end_time) { %> - <%= match.end_time %>
+                                      <% } %>
+                                        <% } else { %>
+                                          - <% } %>
+                            </td>
+                            <td>
+                              <%= match.location %>
+                            </td>
+                            <td>
+                              <%= match.home_away %>
+                            </td>
+                            <td>
+                              <%= match.team ? match.team.name : '?' %>
+                            </td>
+                            <td>
+                              <button class="btn btn--secondary edit-match" data-id="<%= match.id %>">
+                                Bewerken
+                              </button>
+                              <button class="btn btn--danger delete-match" data-id="<%= match.id %>">
+                                Verwijderen
+                              </button>
+                            </td>
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <p>
+                        Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
+                        hierboven.
+                      </p>
+                      <% } %>
+                  </div>
+              </div>
+            </div>

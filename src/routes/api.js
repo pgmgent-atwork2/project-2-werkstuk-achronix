@@ -25,6 +25,11 @@ router.get("/users/role/:roleId", API_UserController.findByRole);
 router.put("/users/:id", API_UserController.update);
 router.delete("/users/:id", API_UserController.destroy);
 
+router.get(
+  "/users/rekeningen/search/:searchTerm",
+  API_UserController.searchUsersForRekeningen
+);
+
 // Consumables
 router.get("/consumables", API_ConsumableController.index);
 router.get("/consumables/:id", API_ConsumableController.show);
