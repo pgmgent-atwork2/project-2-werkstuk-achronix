@@ -2,6 +2,7 @@ import knex from "../lib/Knex.js";
 import { Model } from "objection";
 import Attendance from "./Attendance.js";
 import Role from "./Role.js";
+import Order from "./Order.js";
 
 Model.knex(knex);
 
@@ -37,22 +38,30 @@ class User extends Model {
 
   static get relationMappings() {
     return {
+      role: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Role,
+        join: {
+          from: "users.role_id",
+          to: "roles.id",
+        },
+      },
+      orders: {
+        relation: Model.HasManyRelation,
+        modelClass: Order,
+        join: {
+          from: "users.id",
+          to: "orders.user_id",
+        },
+      },
       attendance: {
         relation: Model.HasManyRelation,
-        modelClass: () => Attendance,
+        modelClass: Attendance,
         join: {
           from: "users.id",
           to: "attendance.user_id",
         },
       },
-      role: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: () => Role,
-        join: {
-          from: "users.role_id",
-          to: "roles.id",
-        },
-      }
     };
   }
 }
