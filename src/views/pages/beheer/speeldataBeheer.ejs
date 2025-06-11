@@ -63,57 +63,59 @@
                 </div>
 
                 <% if (locals.matches && matches.length> 0) { %>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Datum</th>
-                        <th>Tijden</th>
-                        <th>Locatie</th>
-                        <th>Thuis/Uit</th>
-                        <th>Team</th>
-                        <th>Acties</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% matches.forEach(match=> { %>
+                  <div class="table-container">
+                    <table>
+                      <thead>
                         <tr>
-                          <td>
-                            <%= new Date(match.date).toLocaleDateString('nl-BE') %>
-                          </td>
-                          <td>
-                            <% if (match.start_time) { %>
-                              <%= match.start_time %>
-                                <% if (match.end_time) { %> - <%= match.end_time %>
-                                    <% } %>
-                                      <% } else { %>
-                                        - <% } %>
-                          </td>
-                          <td>
-                            <%= match.location %>
-                          </td>
-                          <td>
-                            <%= match.home_away %>
-                          </td>
-                          <td>
-                            <%= match.team ? match.team.name : '?' %>
-                          </td>
-                          <td>
-                            <button class="btn btn--secondary edit-match" data-id="<%= match.id %>">
-                              Bewerken
-                            </button>
-                            <button class="btn btn--danger delete-match" data-id="<%= match.id %>">
-                              Verwijderen
-                            </button>
-                          </td>
+                          <th>Datum</th>
+                          <th>Tijden</th>
+                          <th>Locatie</th>
+                          <th>Thuis/Uit</th>
+                          <th>Team</th>
+                          <th>Acties</th>
                         </tr>
-                        <% }) %>
-                    </tbody>
-                  </table>
-                  <% } else { %>
-                    <p>
-                      Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
-                      hierboven.
-                    </p>
-                    <% } %>
+                      </thead>
+                      <tbody>
+                        <% matches.forEach(match=> { %>
+                          <tr>
+                            <td>
+                              <%= new Date(match.date).toLocaleDateString('nl-BE') %>
+                            </td>
+                            <td>
+                              <% if (match.start_time) { %>
+                                <%= match.start_time %>
+                                  <% if (match.end_time) { %> - <%= match.end_time %>
+                                      <% } %>
+                                        <% } else { %>
+                                          - <% } %>
+                            </td>
+                            <td>
+                              <%= match.location %>
+                            </td>
+                            <td>
+                              <%= match.home_away %>
+                            </td>
+                            <td>
+                              <%= match.team ? match.team.name : '?' %>
+                            </td>
+                            <td>
+                              <button class="btn btn--secondary edit-match" data-id="<%= match.id %>">
+                                Bewerken
+                              </button>
+                              <button class="btn btn--danger delete-match" data-id="<%= match.id %>">
+                                Verwijderen
+                              </button>
+                            </td>
+                          </tr>
+                          <% }) %>
+                      </tbody>
+                    </table>
+                    <% } else { %>
+                      <p>
+                        Geen wedstrijden gevonden. Importeer wedstrijden via een ICS bestand
+                        hierboven.
+                      </p>
+                      <% } %>
+                  </div>
               </div>
-</div>
+            </div>
