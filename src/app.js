@@ -107,6 +107,7 @@ app.post(
 
 app.post("/create-payment", PaymentController.createPayment);
 app.get("/betaling/result", PaymentController.paymentResult);
+app.post("/process-cash-payment", PaymentController.processCashPayment);
 
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);

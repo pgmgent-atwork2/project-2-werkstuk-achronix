@@ -62,10 +62,8 @@
                                 </button>
                             </form>
 
-                            <form class="rekening-payment-form" action="/process-cash-payment" method="post"
-                                onsubmit="return confirm('Bevestig dat de cash betaling is ontvangen?');">
-                                <input type="hidden" name="userId" value="<%= accountUser.id %>" />
-                                <input type="hidden" name="orderId" value="<%= order.id %>" />
+                            <form class="rekening-payment-form" action="javascript:void(0);"
+                                onsubmit="openCashPaymentModal('<%= order.orderItems.reduce((total, item) => total + item.price, 0).toFixed(2) %>', '<%= accountUser.id %>', '<%= order.id %>')">
                                 <button class="rekening-payment-button rekening-cash-payment-button" type="submit">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor">
@@ -87,3 +85,5 @@
                                 <% } %>
                 </div>
 </div>
+
+<script type="module" src="/scripts/cash-payment-calculator.js"></script>
