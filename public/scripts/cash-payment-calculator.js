@@ -116,7 +116,6 @@ export function initializeCashPaymentCalculator() {
   let currentUserId = null;
   let currentOrderId = null;
 
-  // Calculate total cash and update status
   function calculateTotal() {
     let totalCash = 0;
     const cashBreakdown = [];
@@ -143,14 +142,12 @@ export function initializeCashPaymentCalculator() {
   function updatePaymentStatus(cashTotal) {
     const difference = cashTotal - orderAmount;
 
-    // Reset classes
     paymentStatus.className = "payment-status";
 
     if (cashTotal === 0) {
       statusMessage.innerHTML = "Voer bovenstaande cash denominaties in";
       confirmButton.disabled = true;
     } else if (Math.abs(difference) < 0.01) {
-      // Account for floating point precision
       statusMessage.innerHTML = "<strong>Correct Bedrag</strong>";
       paymentStatus.classList.add("status-correct");
       confirmButton.disabled = false;
@@ -169,7 +166,6 @@ export function initializeCashPaymentCalculator() {
     }
   }
 
-  // Event listeners
   denominationInputs.forEach((input) => {
     input.addEventListener("input", calculateTotal);
   });
@@ -195,7 +191,6 @@ export function initializeCashPaymentCalculator() {
     console.log("Cash breakdown:", cashBreakdown);
 
     if (totalCash >= orderAmount) {
-      // Disable button to prevent double clicks
       confirmButton.disabled = true;
       confirmButton.innerHTML = "⏳ Bezig met verwerken...";
 
@@ -228,9 +223,8 @@ export function initializeCashPaymentCalculator() {
           const result = await response.json();
           console.log("Payment successful:", result);
 
-          // Show success notification
           showNotification(
-            "💰 Betaling Geslaagd",
+            "Betaling Geslaagd",
             `Cash betaling van €${totalCash.toFixed(
               2
             )} is succesvol verwerkt. ${
@@ -241,10 +235,8 @@ export function initializeCashPaymentCalculator() {
             "success"
           );
 
-          // Close modal
           modal.classList.add("hidden");
 
-          // Reload the current page to show updated payment status
           setTimeout(() => {
             console.log("Reloading page to show updated payment status...");
             window.location.reload();
@@ -254,26 +246,25 @@ export function initializeCashPaymentCalculator() {
           console.error("Payment failed:", errorData);
 
           showNotification(
-            "❌ Betaling Mislukt",
+            "Betaling Mislukt",
             "Er is een fout opgetreden bij het verwerken van de cash betaling.",
             "error"
           );
 
-          // Re-enable button
           confirmButton.disabled = false;
-          confirmButton.innerHTML = "✅ Betaling Bevestigen";
+          confirmButton.innerHTML = "Betaling Bevestigen";
         }
       } catch (error) {
         console.error("Error processing payment:", error);
 
         showNotification(
-          "🚫 Netwerkfout",
+          "Netwerkfout",
           "Er is een netwerkfout opgetreden bij het verwerken van de betaling.",
           "error"
         );
 
         confirmButton.disabled = false;
-        confirmButton.innerHTML = "✅ Betaling Bevestigen";
+        confirmButton.innerHTML = "Betaling Bevestigen";
       }
     }
   });
