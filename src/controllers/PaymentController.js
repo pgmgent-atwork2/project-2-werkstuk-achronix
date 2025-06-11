@@ -61,13 +61,10 @@ export const paymentResult = async (req, res) => {
     switch (payment.status) {
       case "paid":
         await sendConfirmationEmail(user.email, order);
-        await Order.query().patchAndFetchById(
-          orderId,
-          { 
-            status: "PAID", 
-            method: "ONLINE" 
-          }
-        );
+        await Order.query().patchAndFetchById(orderId, {
+          status: "PAID",
+          method: "ONLINE",
+        });
 
         res.redirect(
           `${process.env.APP_URL}/betaling/bedankt?paymentId=${paymentId}&userId=${userId}`
@@ -85,6 +82,103 @@ export const paymentResult = async (req, res) => {
   } catch (error) {
     console.error("Error processing payment result:", error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const processCashPayment = async (req, res) => {
+  console.log("=== CASH PAYMENT REQUEST ===");
+  console.log("Request body:", req.body);
+
+  const { userId, orderId, cashDetails } = req.body;
+
+  try {
+    if (!userId || !orderId || !cashDetails) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: userId, orderId, cashDetails",
+      });
+    }
+
+    const order = await Order.query()
+      .findById(orderId)
+      .withGraphFetched("orderItems.consumable");
+
+    const user = await User.query().findById(userId);
+
+    if (!order || !user) {
+      console.error("Order or user not found:", { orderId, userId });
+      return res.status(404).json({
+        success: false,
+        error: "Order or user not found",
+      });
+    }
+
+    // Parse cash details - handle both string and object
+    let paymentDetails;
+    try {
+      paymentDetails =
+        typeof cashDetails === "string" ? JSON.parse(cashDetails) : cashDetails;
+    } catch (parseError) {
+      console.error("Failed to parse cashDetails:", parseError);
+      return res.status(400).json({
+        success: false,
+        error: "Invalid cashDetails format",
+      });
+    }
+
+    console.log("Parsed payment details:", paymentDetails);
+
+    // Validate required payment details
+    if (!paymentDetails.cashGiven || !paymentDetails.orderAmount) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid payment details: missing cashGiven or orderAmount",
+      });
+    }
+
+    // Update order status to PAID - only use existing columns
+    const updatedOrder = await Order.query().patchAndFetchById(orderId, {
+      status: "PAID",
+      method: "CASH",
+    });
+
+    console.log("Order updated successfully:", updatedOrder);
+
+    // Send confirmation email if user wants notifications
+    if (user.email) {
+      try {
+        await sendConfirmationEmail(user.email, order);
+        console.log("Confirmation email sent to:", user.email);
+      } catch (emailError) {
+        console.error("Failed to send confirmation email:", emailError);
+        // Don't fail the payment if email fails
+      }
+    }
+
+    console.log("=== CASH PAYMENT SUCCESS ===");
+
+    // Return success response for AJAX request
+    return res.status(200).json({
+      success: true,
+      message: "Cash payment processed successfully",
+      data: {
+        orderId: orderId,
+        amount: paymentDetails.orderAmount,
+        change: paymentDetails.change || 0,
+        method: "CASH",
+        cashDetails: paymentDetails, // Include cash details in response for logging
+      },
+    });
+  } catch (error) {
+    console.error("=== CASH PAYMENT ERROR ===");
+    console.error("Error processing cash payment:", error);
+    console.error("Stack trace:", error.stack);
+
+    return res.status(500).json({
+      success: false,
+      error: "Failed to process cash payment",
+      details: error.message,
+    });
   }
 };
 
