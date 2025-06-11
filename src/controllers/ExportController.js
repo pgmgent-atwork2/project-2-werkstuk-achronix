@@ -20,9 +20,7 @@ export default async function ExportController(req, res) {
         item.orderItems.forEach((oi) => {
           data.push({
             id: item.id,
-            gebruiker: item.user
-              ? `${item.user.firstname} ${item.user.lastname}`
-              : "Onbekend",
+            gebruiker: `${item.user.firstname} ${item.user.lastname}`,
             status: item.status,
             methode: item.method,
             besteld: item.order_on,
