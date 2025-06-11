@@ -87,12 +87,14 @@
               >
                 Bewerken
               </button>
-              <button
+                <% if (user.role.name !== 'admin') { %>
+                <button
                 class="btn btn--danger delete-user"
                 data-id="<%= user.id %>"
-              >
+                >
                 Verwijderen
-              </button>
+                </button>
+                <% } %>
             </td>
           </tr>
           <% }); %> <% } else { %>
