@@ -192,7 +192,7 @@ export function initializeCashPaymentCalculator() {
 
     if (totalCash >= orderAmount) {
       confirmButton.disabled = true;
-      confirmButton.innerHTML = "⏳ Bezig met verwerken...";
+      confirmButton.innerHTML = "Bezig met verwerken...";
 
       try {
         const cashDetails = {
