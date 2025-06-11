@@ -1,0 +1,34 @@
+<a class="back" href="/beheerderspaneel">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
+<div>
+  <h1 class="title">Data exporteren in excel</h1>
+  <div class="table-controls">
+    <div class="filter-container">
+      <form action="/export-data" method="get">
+        <div class="filter">
+          <select id="filterSelect-export" name="type" class="filter-select">
+            <option value="users">Gebruikers</option>
+            <option value="orders">Bestellingen</option>
+            <option value="consumables">Producten</option>
+          </select>
+        </div>
+        <button class="btn btn--primary">Exporteren</button>
+      </form>
+    </div>
+  </div>
+</div>

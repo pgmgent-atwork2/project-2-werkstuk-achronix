@@ -24,7 +24,6 @@ teams.forEach((team) => {
   );
 });
 
-
 router.get("/wedstrijden", jwtAuth, PageController.wedstrijdenTeamsOverview);
 router.get("/rekening", jwtAuth, PageController.rekening);
 router.get("/profiel", jwtAuth, PageController.profiel);
@@ -92,6 +91,13 @@ router.get(
   jwtAuth,
   checkAdmin,
   PageController.teamBeheer
+);
+
+router.get(
+  "/beheerderspaneel/exporteren",
+  jwtAuth,
+  checkAdmin,
+  PageController.exportData
 );
 
 router.get(

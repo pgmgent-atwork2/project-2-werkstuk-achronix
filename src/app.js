@@ -18,6 +18,7 @@ import AuthResetPasswordValidation from "./middleware/validation/AuthResetPasswo
 import * as AuthController from "./controllers/AuthController.js";
 import * as ImportMatchesController from "./controllers/importMatchesController.js";
 import * as PaymentController from "./controllers/PaymentController.js";
+import ExportController from "./controllers/ExportController.js";
 
 import * as PageController from "./controllers/PageController.js";
 
@@ -112,6 +113,8 @@ app.post("/process-cash-payment", PaymentController.processCashPayment);
 app.post("/upload/consumable-image", uploadConsumableImage);
 app.put("/upload/consumable-image", updateConsumableImage);
 app.delete("/upload/consumable-image", deleteConsumable);
+
+app.get("/export-data", ExportController);
 
 app.use("/api", apiRouter);
 app.use(PageRouter);
