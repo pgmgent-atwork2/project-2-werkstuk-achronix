@@ -5,7 +5,6 @@ import Consumable from "../models/Consumable.js";
 import Category from "../models/Category.js";
 import Order from "../models/Order.js";
 import Attendance from "../models/Attendance.js";
-import Knex from "../lib/Knex.js";
 
 /**
  * Middleware om de huidige URL toe te voegen aan alle views
@@ -280,19 +279,18 @@ export const bestellingenBeheer = async (req, res) => {
 };
 export const rekeningenBeheer = async (req, res) => {
   try {
-    const users = await User.query()
-      .select("users.id", "users.firstname", "users.lastname", "users.email")
-      .leftJoin("orders", "users.id", "orders.user_id")
-      .leftJoin("order_items", "orders.id", "order_items.order_id")
-      .groupBy("users.id")
-      .select(
-        Knex.raw("COALESCE(SUM(order_items.price), 0) as totalAmountDue")
-      );
+    const users = await User.query();
+    const orders = await Order.query()
+      .withGraphFetched("orderItems.consumable")
+      .withGraphFetched("user")
+      .where("status", "NOT_PAID")
+      .orderBy("order_on", "desc");
 
     res.render("pages/beheer/rekeningenBeheer", {
       pageTitle: "Rekeningen beheren | Ping Pong Tool",
       user: req.user,
       users,
+      orders,
     });
   } catch (error) {
     console.error("Error fetching users with total amounts:", error);
