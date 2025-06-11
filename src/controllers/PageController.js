@@ -402,6 +402,19 @@ export const teamBeheer = async (req, res) => {
   }
 };
 
+export const exportData = async (req, res) => {
+  const user = req.user;
+
+  try {
+    res.render("pages/beheer/teamBeheer", {
+      pageTitle: "Data exporteren | Ping Pong Tool",
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching teams:", error);
+  }
+};
+
 export const forgotPasswordConfirmation = async (req, res) => {
   res.render("pages/forgotPasswordConfirmation", {
     pageTitle: "Email verstuurt | Ping Pong Tool",
