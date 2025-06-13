@@ -6,7 +6,7 @@ import { deleteUser } from "./delete-user.js";
 import { editUser } from "./edit-user.js";
 
 export function createUser() {
-  let newUserModalContainer = document.createElement("div");
+  let $newUserModalContainer = document.createElement("div");
   newUserModalContainer.id = "new-user-modal-container";
   document.body.appendChild(newUserModalContainer);
 

@@ -7,9 +7,9 @@ import { deleteUser } from "./delete-user.js";
 import { editUser } from "./edit-user.js";
 
 export function createGuestUser() {
-  let newGuestUserModalContainer = document.createElement("div");
-  newGuestUserModalContainer.id = "new-user-modal-container";
-  document.body.appendChild(newGuestUserModalContainer);
+  let $newGuestUserModalContainer = document.createElement("div");
+  $newGuestUserModalContainer.id = "new-guest-user-modal-container";
+  document.body.appendChild($newGuestUserModalContainer);
 
   const newGuestUserModalHTML = `
     <div id="newGuestUserModal" class="modal hidden">
@@ -36,22 +36,22 @@ export function createGuestUser() {
     </div>
   `;
 
-  newGuestUserModalContainer.innerHTML = newGuestUserModalHTML;
+  $newGuestUserModalContainer.innerHTML = newGuestUserModalHTML;
 
-  const newGuestUserModal = document.getElementById("newGuestUserModal");
-  const addNewGuestUserBtn = document.getElementById("addNewGuestUser");
-  const closeNewModalBtn = document.getElementById("closeNewModal");
-  const newGuestUserForm = document.getElementById("newGuestUserForm");
+  const $newGuestUserModal = document.getElementById("newGuestUserModal");
+  const $addNewGuestUserBtn = document.getElementById("addNewGuestUser");
+  const $closeNewModalBtn = document.getElementById("closeNewModal");
+  const $newGuestUserForm = document.getElementById("newGuestUserForm");
 
-  if (addNewGuestUserBtn) {
-    addNewGuestUserBtn.addEventListener("click", function () {
-      newGuestUserModal.classList.remove("hidden");
+  if ($addNewGuestUserBtn) {
+    $addNewGuestUserBtn.addEventListener("click", function () {
+      $newGuestUserModal.classList.remove("hidden");
     });
   }
 
-  if (closeNewModalBtn) {
-    closeNewModalBtn.addEventListener("click", function () {
-      newGuestUserModal.classList.add("hidden");
+  if ($closeNewModalBtn) {
+    $closeNewModalBtn.addEventListener("click", function () {
+      $newGuestUserModal.classList.add("hidden");
     });
   }
 
@@ -61,8 +61,8 @@ export function createGuestUser() {
     }
   });
 
-  if (newGuestUserForm) {
-    newGuestUserForm.addEventListener("submit", async function (e) {
+  if ($newGuestUserForm) {
+    $newGuestUserForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const userData = {
@@ -84,7 +84,7 @@ export function createGuestUser() {
         });
 
         if (response.ok) {
-          newGuestUserModal.classList.add("hidden");
+          $newGuestUserModal.classList.add("hidden");
           getShowNotification()(
             "Gastgebruiker toegevoegd",
             "De nieuwe gastgebruiker is succesvol toegevoegd.",
