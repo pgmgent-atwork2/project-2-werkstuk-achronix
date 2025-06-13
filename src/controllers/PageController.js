@@ -289,10 +289,32 @@ export const rekeningenBeheer = async (req, res) => {
       .where("status", "NOT_PAID")
       .orderBy("order_on", "desc");
 
+    const usersWithTotalAmount = users.map((user) => {
+      const userOrders = orders.filter((order) => user.id === order.user_id);
+      const totalAmount = userOrders.reduce(
+        (total, order) =>
+          total +
+          order.orderItems.reduce(
+            (itemTotal, item) => itemTotal + item.price,
+            0
+          ),
+        0
+      );
+
+      return {
+        ...user,
+        totalAmount,
+      };
+    });
+
+    const sortedUsers = usersWithTotalAmount.sort(
+      (a, b) => b.totalAmount - a.totalAmount
+    );
+
     res.render("pages/beheer/rekeningenBeheer", {
       pageTitle: "Rekeningen beheren | Ping Pong Tool",
       user: req.user,
-      users,
+      users: sortedUsers,
       orders,
     });
   } catch (error) {
