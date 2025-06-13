@@ -2,6 +2,7 @@ import User from "../../models/User.js";
 import bcrypt from "bcrypt";
 import generateGuestEmail from "../../utils/generateGuestEmail.js";
 import generateToken from "../../utils/generateToken.js";
+import Order from "../../models/Order.js";
 
 export const show = async (req, res) => {
   const id = req.params.id;
@@ -284,9 +285,7 @@ export const findByRole = async (req, res) => {
 export const searchUsersForRekeningen = async (req, res) => {
   try {
     const { searchTerm } = req.params;
-    let search = User.query()
-      .withGraphFetched("orders.orderItems")
-      .orderBy("firstname", "asc");
+    let search = User.query().orderBy("firstname", "asc");
 
     if (searchTerm && searchTerm !== "all" && searchTerm !== "undefined") {
       search = search.where(function () {
@@ -299,9 +298,28 @@ export const searchUsersForRekeningen = async (req, res) => {
     }
 
     const users = await search;
-    const usersWithTotals = users.map((user) => {
-      return user;
-    });
+
+    const usersWithTotals = await Promise.all(
+      users.map(async (user) => {
+        const orders = await Order.query()
+          .where("user_id", user.id)
+          .where("status", "NOT_PAID")
+          .withGraphFetched("orderItems.consumable")
+          .orderBy("order_on", "desc");
+
+        const totalAmount = orders.reduce((userTotal, order) => {
+          const orderTotal = order.orderItems.reduce((itemTotal, item) => {
+            return itemTotal + item.price;
+          }, 0);
+          return userTotal + orderTotal;
+        }, 0);
+
+        return {
+          ...user,
+          totalAmount,
+        };
+      })
+    );
 
     res.json(usersWithTotals);
   } catch (error) {
@@ -328,7 +346,29 @@ export const getUsersByRoleForRekeningen = async (req, res) => {
 
     const users = await search;
 
-    res.json(users);
+    const usersWithTotals = await Promise.all(
+      users.map(async (user) => {
+        const orders = await Order.query()
+          .where("user_id", user.id)
+          .where("status", "NOT_PAID")
+          .withGraphFetched("orderItems.consumable")
+          .orderBy("order_on", "desc");
+
+        const totalAmount = orders.reduce((userTotal, order) => {
+          const orderTotal = order.orderItems.reduce((itemTotal, item) => {
+            return itemTotal + item.price;
+          }, 0);
+          return userTotal + orderTotal;
+        }, 0);
+
+        return {
+          ...user,
+          totalAmount,
+        };
+      })
+    );
+
+    res.json(usersWithTotals);
   } catch (error) {
     console.error("Error filtering users by role for rekeningen:", error);
     res.status(500).json({

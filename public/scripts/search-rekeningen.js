@@ -12,8 +12,6 @@ if (
 
   async function performRekeningenSearch(searchTerm) {
     try {
-
-
       let users;
 
       if (currentRoleFilter) {
@@ -59,7 +57,6 @@ if (
       users.forEach((user) => {
         renderRekeningRow(user, $tableBody);
       });
-
     } catch (error) {
       console.error("Fout bij het ophalen van gebruikers:", error);
       $tableBody.innerHTML =
@@ -88,7 +85,6 @@ if (
       const searchTerm = event.target.value.toLowerCase().trim();
       await performRekeningenSearch(searchTerm);
     });
-
 
     if ($filterSelect) {
       $filterSelect.addEventListener("change", async (event) => {
