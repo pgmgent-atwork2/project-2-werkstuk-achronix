@@ -1,0 +1,11 @@
+/* Table link styling */
+table td a {
+  color: var(--secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+}
+
+table td a:hover {
+  color: var(--primary);
+}
