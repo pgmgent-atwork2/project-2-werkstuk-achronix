@@ -1,12 +1,3 @@
-/**
- * Utility to parse ICS files and extract match data
- */
-
-/**
- * Parse an ICS file content and extract match information
- * @param {string} icsContent - The content of the ICS file
- * @returns {Array} Array of match objects ready to be inserted into the database
- */
 export function parseIcsToMatches(icsContent) {
   try {
     const events = extractEvents(icsContent);
@@ -17,7 +8,6 @@ export function parseIcsToMatches(icsContent) {
           const description = event.description || "";
           const summary = event.summary || "";
 
-          // Determine match details from description or summary
           let matchDetails;
           if (description && description.includes("/")) {
             matchDetails = description;
@@ -27,15 +17,8 @@ export function parseIcsToMatches(icsContent) {
             matchDetails = description || summary;
           }
 
-          // Get the teams from the match details
-          const teams = matchDetails.includes("/")
-            ? matchDetails.split("/").map((t) => t.trim())
-            : [];
-
-          // Determine if home or away
           const isHome = event.location && event.location.includes("Assenede");
 
-          // Determine team ID from match details
           const teamId = determineTeamId(matchDetails);
 
           const dateInfo = parseIcsDate(event.dtstart);
@@ -63,13 +46,7 @@ export function parseIcsToMatches(icsContent) {
   }
 }
 
-/**
- * Determine team ID based on match details
- * @param {string} matchDetails - String containing match details
- * @returns {number|null} Team ID or null if no match
- */
 function determineTeamId(matchDetails) {
-  // Look for team identifier in the match details
   if (
     matchDetails.includes("Assenede A") ||
     matchDetails.includes("HNO Assenede A")
@@ -90,17 +67,11 @@ function determineTeamId(matchDetails) {
   return null;
 }
 
-/**
- * Extract individual events from ICS content
- * @param {string} icsContent - The content of the ICS file
- * @returns {Array} Array of event objects
- */
 function extractEvents(icsContent) {
   try {
     const events = [];
     const eventBlocks = icsContent.split("BEGIN:VEVENT");
 
-    // Skip first element as it's the header
     for (let i = 1; i < eventBlocks.length; i++) {
       const eventBlock = eventBlocks[i].split("END:VEVENT")[0];
       const event = {};
@@ -112,23 +83,19 @@ function extractEvents(icsContent) {
       for (let j = 0; j < lines.length; j++) {
         const line = lines[j].trim();
 
-        // Skip empty lines
         if (!line) continue;
 
-        // If line starts with a space, it's a continuation
         if (line.startsWith(" ") && currentField) {
           currentValue += line;
           continue;
         }
 
-        // Save the previous field if we have one
         if (currentField && currentValue) {
           event[currentField] = currentValue;
           currentField = null;
           currentValue = "";
         }
 
-        // Parse fields
         if (line.startsWith("DTSTART")) {
           currentField = "dtstart";
           if (line.includes(":")) {
@@ -157,7 +124,6 @@ function extractEvents(icsContent) {
         }
       }
 
-      // Don't forget to add the last field
       if (currentField && currentValue) {
         event[currentField] = currentValue;
       }
@@ -172,21 +138,14 @@ function extractEvents(icsContent) {
   }
 }
 
-/**
- * Parse ICS date format to JavaScript Date object
- * @param {string} icsDate - Date string from ICS file
- * @returns {Object} Object containing date and time information
- */
 function parseIcsDate(icsDate) {
   try {
     if (!icsDate) return { date: new Date().toISOString().split("T")[0] };
 
-    // Handle dates with timezone identifiers
     if (icsDate.includes(";")) {
       icsDate = icsDate.split(":").pop();
     }
 
-    // Basic format: YYYYMMDDTHHMMSS or YYYYMMDDTHHMMSSZ
     const year = parseInt(icsDate.substring(0, 4));
     const month = parseInt(icsDate.substring(4, 6)) - 1; // JS months are 0-indexed
     const day = parseInt(icsDate.substring(6, 8));
@@ -206,11 +165,6 @@ function parseIcsDate(icsDate) {
   }
 }
 
-/**
- * Parse ICS date format to get time in HH:MM format
- * @param {string} icsDate - Date string from ICS file
- * @returns {string} Time in HH:MM format
- */
 function parseIcsTime(icsDate) {
   try {
     if (!icsDate) return null;
@@ -234,11 +188,6 @@ function parseIcsTime(icsDate) {
   }
 }
 
-/**
- * Parse location string to a clean format
- * @param {string} location - Location string from ICS file
- * @returns {string} Cleaned location string
- */
 function parseLocation(location = "") {
   try {
     // Clean up escaped characters
