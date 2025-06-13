@@ -174,7 +174,7 @@ async function createBackInStockNotifications(consumable) {
   const lockKey = `notification_${consumable.id}`;
   if (notificationLock.has(lockKey)) {
     console.log(
-      `Notification creation already in progress for consumable ${consumable.id}, skipping...`
+      `Notification creation already in progress for consumable ${consumable.id}`
     );
     return;
   }
@@ -185,10 +185,6 @@ async function createBackInStockNotifications(consumable) {
     const User = (await import("../../models/User.js")).default;
     const Notification = (await import("../../models/Notification.js")).default;
 
-    console.log(
-      `Starting notification creation for consumable ${consumable.id}: ${consumable.name}`
-    );
-
     const deletedCount = await Notification.query()
       .delete()
       .where("type", "back_in_stock");
@@ -198,8 +194,6 @@ async function createBackInStockNotifications(consumable) {
     );
 
     const users = await User.query();
-    console.log(`Found ${users.length} total users`);
-
     for (const user of users) {
       const newNotification = await Notification.query().insert({
         user_id: user.id,
