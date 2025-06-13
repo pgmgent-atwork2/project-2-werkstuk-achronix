@@ -93,7 +93,6 @@ export default function initDropdown() {
     }
   });
 
-  // Reset to own account functionality
   if ($resetToOwnAccountBtn && $originalUserId && $originalUserName) {
     $resetToOwnAccountBtn.addEventListener("click", async function (e) {
       e.preventDefault();
