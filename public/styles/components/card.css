@@ -57,3 +57,12 @@
     z-index: 1;
   }
 }
+.card--team {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__title--team {
+  text-align: center;
+}
