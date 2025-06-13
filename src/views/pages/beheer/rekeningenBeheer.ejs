@@ -1,16 +1,34 @@
 <a class="back" href="/beheerderspaneel">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-    class="size-6">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
   </svg>
-  Ga terug naar beheerderspaneel overzicht</a>
+  Ga terug naar beheerderspaneel overzicht</a
+>
 <h1 class="title">Rekeningen beheren</h1>
 
-<div class="search-container">
-  <input type="text" id="searchInput-user" placeholder="Zoeken op naam" class="search-input" />
-</div>
-
 <table>
+  <div class="table-controls">
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput-user"
+        placeholder="Zoeken op naam"
+        class="search-input"
+      />
+    </div>
+  </div>
+
   <thead>
     <tr>
       <th>Naam</th>
@@ -19,20 +37,19 @@
   </thead>
   <tbody>
     <% users.forEach(user=> { %>
-      <tr>
-        <td>
-          <a href="/beheerderspaneel/rekeningen/<%= user.id %>">
-            <%= user.firstname %>
-              <%= user.lastname %>
-          </a>
-        </td>
-        <td>
-          €<%= orders.filter(order=> user.id === order.user_id) .reduce((total,
-            order) => total + order.orderItems.reduce((itemTotal, item) => itemTotal
-            + item.price, 0), 0) .toFixed(2) %>
-        </td>
-      </tr>
-      <% }); %>
+    <tr>
+      <td>
+        <a href="/beheerderspaneel/rekeningen/<%= user.id %>">
+          <%= user.firstname %> <%= user.lastname %>
+        </a>
+      </td>
+      <td>
+        €<%= orders.filter(order=> user.id === order.user_id) .reduce((total,
+        order) => total + order.orderItems.reduce((itemTotal, item) => itemTotal
+        + item.price, 0), 0) .toFixed(2) %>
+      </td>
+    </tr>
+    <% }); %>
   </tbody>
 </table>
 
