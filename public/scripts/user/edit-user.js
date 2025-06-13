@@ -38,7 +38,6 @@ export function editUser() {
             <label for="edit_type">Type</label>
             <select id="edit_type" name="type">
               <option value="2" id="new_is_admin">Gebruiker</option>
-              <option value="3">gast</option>
               <option value="1">Beheerder</option>
             </select>
           </div>
