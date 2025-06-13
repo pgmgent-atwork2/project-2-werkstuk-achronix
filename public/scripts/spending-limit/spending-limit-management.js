@@ -8,13 +8,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function loadCurrentLimit() {
   try {
-    console.log("Loading current limit...");
     const response = await fetch("/api/settings/spending-limit");
     console.log("Response status:", response.status);
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Current limit data:", data);
 
       const currentLimitDisplay = document.getElementById(
         "currentLimitDisplay"
@@ -32,7 +30,6 @@ async function loadCurrentLimit() {
         setTimeout(() => limitContainer.classList.remove("updated"), 2000);
       }
     } else {
-      console.error("Failed to load current limit:", response.status);
       const errorText = await response.text();
       console.error("Error response:", errorText);
     }
@@ -57,7 +54,6 @@ function setupSpendingLimitForm() {
       }
     });
 
-    console.log("Setting up form listener");
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -65,8 +61,6 @@ function setupSpendingLimitForm() {
       const originalText = submitButton.textContent;
 
       const limit = parseFloat(limitInput.value);
-
-      console.log("Submitting limit:", limit);
 
       if (isNaN(limit) || limit < 0) {
         getShowNotification()(
@@ -81,7 +75,6 @@ function setupSpendingLimitForm() {
       submitButton.textContent = "Bezig met bijwerken...";
 
       try {
-        console.log("Sending PUT request to /api/settings/spending-limit");
         const response = await fetch("/api/settings/spending-limit", {
           method: "PUT",
           headers: {
@@ -89,8 +82,6 @@ function setupSpendingLimitForm() {
           },
           body: JSON.stringify({ limit }),
         });
-
-        console.log("Update response status:", response.status);
 
         if (response.ok) {
           const result = await response.json();
@@ -103,7 +94,6 @@ function setupSpendingLimitForm() {
           );
         } else {
           const errorData = await response.json();
-          console.error("Update failed:", errorData);
           getShowNotification()(
         "Fout bij bijwerken",
         errorData.message || "Er is een fout opgetreden.",

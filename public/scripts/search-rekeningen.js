@@ -12,8 +12,7 @@ if (
 
   async function performRekeningenSearch(searchTerm) {
     try {
-      console.log("Performing rekeningen search with term:", searchTerm);
-      console.log("Current role filter:", currentRoleFilter);
+
 
       let users;
 
@@ -61,7 +60,6 @@ if (
         renderRekeningRow(user, $tableBody);
       });
 
-      console.log(`Rendered ${users.length} users`);
     } catch (error) {
       console.error("Fout bij het ophalen van gebruikers:", error);
       $tableBody.innerHTML =
@@ -91,6 +89,7 @@ if (
       await performRekeningenSearch(searchTerm);
     });
 
+
     if ($filterSelect) {
       $filterSelect.addEventListener("change", async (event) => {
         currentRoleFilter = event.target.value;
@@ -98,7 +97,5 @@ if (
         await performRekeningenSearch(searchTerm);
       });
     }
-
-    console.log("Rekeningen search and filter functionality initialized");
   }
 }

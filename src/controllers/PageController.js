@@ -42,10 +42,6 @@ export const dashboard = async (req, res) => {
   try {
     const Notification = (await import("../models/Notification.js")).default;
 
-    console.log(
-      `Fetching notifications for user ${user.id} (${user.firstname})...`
-    );
-
     // Haal back in stock notificaties op
     const stockNotifications = await Notification.query()
       .where("user_id", user.id)
@@ -69,26 +65,25 @@ export const dashboard = async (req, res) => {
       .where("type", "admin_message")
       .where("is_read", false)
       .orderBy("created_at", "desc");
-
-    console.log(
-      `Found ${backInStockNotifications.length} stock notifications and ${adminNotifications.length} admin notifications for user ${user.id}`
-    );
   } catch (error) {
     console.error("Error fetching notifications:", error);
   }
 
   const today = new Date().toISOString();
-  const upcomingMatches = await Match.query()
-    .withGraphFetched("team")
-    .where("date", ">", today)
-    .orderBy("date", "asc")
-    .limit(5);
+  const attendances = await Attendance.query()
+    .joinRelated("match")
+    .where("user_id", user.id)
+    .where("is_selected", "selected")
+    .where("match.date", ">", today)
+    .orderBy("match.date", "asc")
+    .limit(5)
+    .withGraphFetched("match");
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
     orders,
-    upcomingMatches,
+    attendances,
     totalPrice: totalPrice.toFixed(2),
     backInStockNotifications,
     adminNotifications,
