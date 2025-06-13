@@ -7,8 +7,8 @@ import { editUser } from "./edit-user.js";
 
 export function createUser() {
   let $newUserModalContainer = document.createElement("div");
-  newUserModalContainer.id = "new-user-modal-container";
-  document.body.appendChild(newUserModalContainer);
+  $newUserModalContainer.id = "new-user-modal-container";
+  document.body.appendChild($newUserModalContainer);
 
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
@@ -58,33 +58,33 @@ export function createUser() {
     </div>
   `;
 
-  newUserModalContainer.innerHTML = newUserModalHTML;
+  $newUserModalContainer.innerHTML = newUserModalHTML;
 
-  const newUserModal = document.getElementById("newUserModal");
-  const addNewUserBtn = document.getElementById("addNewUser");
-  const closeNewModalBtn = document.getElementById("closeNewModal");
-  const newUserForm = document.getElementById("newUserForm");
+  const $newUserModal = document.getElementById("newUserModal");
+  const $addNewUserBtn = document.getElementById("addNewUser");
+  const $closeNewModalBtn = document.getElementById("closeNewModal");
+  const $newUserForm = document.getElementById("newUserForm");
 
-  if (addNewUserBtn) {
-    addNewUserBtn.addEventListener("click", function () {
-      newUserModal.classList.remove("hidden");
+  if ($addNewUserBtn) {
+    $addNewUserBtn.addEventListener("click", function () {
+      $newUserModal.classList.remove("hidden");
     });
   }
 
-  if (closeNewModalBtn) {
-    closeNewModalBtn.addEventListener("click", function () {
-      newUserModal.classList.add("hidden");
+  if ($closeNewModalBtn) {
+    $closeNewModalBtn.addEventListener("click", function () {
+      $newUserModal.classList.add("hidden");
     });
   }
 
   window.addEventListener("click", function (event) {
-    if (event.target === newUserModal) {
-      newUserModal.classList.add("hidden");
+    if (event.target === $newUserModal) {
+      $newUserModal.classList.add("hidden");
     }
   });
 
-  if (newUserForm) {
-    newUserForm.addEventListener("submit", async function (e) {
+  if ($newUserForm) {
+    $newUserForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const userData = {
@@ -110,7 +110,7 @@ export function createUser() {
         });
 
         if (response.ok) {
-          newUserModal.classList.add("hidden");
+          $newUserModal.classList.add("hidden");
           getShowNotification()(
             "Gebruiker toegevoegd",
             "De nieuwe gebruiker is succesvol toegevoegd.",
