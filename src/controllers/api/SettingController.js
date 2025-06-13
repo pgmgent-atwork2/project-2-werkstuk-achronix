@@ -22,7 +22,6 @@ export const getSpendingLimit = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error fetching spending limit:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch spending limit",
@@ -65,7 +64,6 @@ export const updateSpendingLimit = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error updating spending limit:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to update spending limit",
