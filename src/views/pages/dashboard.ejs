@@ -166,19 +166,15 @@
       { %>
 
       <div class="match-card">
-        <div class="match-header">
-          <span class="match-date"
+        <div class="match-card__header">
+          <span class="match-card__date"
             ><%= new Date(attendence.match.date).toLocaleDateString('nl-BE',
             {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})
             %></span
           >
-          <span class="match-time"
-            ><%= new Date(attendence.match.date).toLocaleTimeString('nl-BE',
-            {hour: '2-digit', minute:'2-digit'}) %></span
-          >
         </div>
-        <div class="match-content">
-          <p class="match-location">
+        <div class="match-card__content">
+          <p class="match-card__location">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -199,13 +195,13 @@
               />
             </svg>
             <%= attendence.match.location %>
-          </p>
-          <div class="match-teams">
+
             <span class="team home-team"
               ><%= attendence.match.home_away %></span
             >
-          </div>
-          <div class="match-date-range">
+          </p>
+
+          <div class="match-card__date-range">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
