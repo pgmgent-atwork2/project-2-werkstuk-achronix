@@ -185,10 +185,6 @@ async function createBackInStockNotifications(consumable) {
     const User = (await import("../../models/User.js")).default;
     const Notification = (await import("../../models/Notification.js")).default;
 
-    console.log(
-      `Starting notification creation for consumable ${consumable.id}: ${consumable.name}`
-    );
-
     const deletedCount = await Notification.query()
       .delete()
       .where("type", "back_in_stock");
@@ -215,9 +211,6 @@ async function createBackInStockNotifications(consumable) {
       );
     }
 
-    console.log(
-      `Finished creating notifications for consumable ${consumable.name}`
-    );
   } catch (error) {
     console.error("Error creating back in stock notifications:", error);
   }

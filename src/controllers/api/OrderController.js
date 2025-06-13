@@ -99,7 +99,6 @@ export const findByName = async (req, res) => {
 
     res.json(orders);
   } catch (error) {
-    console.error("Error fetching orders by name:", error);
     res.status(500).json({ message: "Error fetching orders by name", error });
   }
 };
@@ -120,7 +119,6 @@ export const findByStatus = async (req, res) => {
 
       return res.json(orders);
     } catch (error) {
-      console.error("Error fetching all orders:", error);
       return res
         .status(500)
         .json({ message: "Error fetching all orders", error });
@@ -136,7 +134,6 @@ export const findByStatus = async (req, res) => {
 
     res.json(orders);
   } catch (error) {
-    console.error("Error fetching orders by status:", error);
     res.status(500).json({ message: "Error fetching orders by status", error });
   }
 };
@@ -158,7 +155,6 @@ export const findStatusByUser = async (req, res) => {
 
     res.json(orders);
   } catch (error) {
-    console.error("Error fetching orders by user and status:", error);
     res.status(500).json({
       message: "Error fetching orders by user and status",
       error,
