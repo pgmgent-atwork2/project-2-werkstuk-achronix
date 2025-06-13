@@ -346,7 +346,6 @@ export const updateSelection = async (req, res) => {
           ? "Player selected and marked available"
           : "Player deselected";
     } else {
-      console.log("Creating new attendance record");
 
       attendanceRecord = await Attendance.query().insert({
         match_id,
