@@ -93,10 +93,6 @@ export const updateConsumableImage = async (req, res) => {
     }
 
     if (wasOutOfStock && isNowInStock) {
-      console.log(
-        `Product ${updatedConsumable.name} is weer op voorraad via upload! Creating notifications...`
-      );
-
       setTimeout(async () => {
         await createBackInStockNotifications(updatedConsumable);
       }, 100);
@@ -137,9 +133,6 @@ let notificationLock = new Set();
 async function createBackInStockNotifications(consumable) {
   const lockKey = `notification_${consumable.id}`;
   if (notificationLock.has(lockKey)) {
-    console.log(
-      `Notification creation already in progress for consumable ${consumable.id}, skipping...`
-    );
     return;
   }
 
@@ -149,29 +142,14 @@ async function createBackInStockNotifications(consumable) {
     const User = (await import("../models/User.js")).default;
     const Notification = (await import("../models/Notification.js")).default;
 
-    console.log(
-      `Starting notification creation for consumable ${consumable.id}: ${consumable.name}`
-    );
-
-    const deletedCount = await Notification.query()
+    await Notification.query()
       .delete()
       .where("type", "back_in_stock");
 
-    console.log(
-      `Deleted ${deletedCount} old back_in_stock notifications from all users`
-    );
-
     const users = await User.query();
-    console.log(`Found ${users.length} total users`);
-
-    users.forEach((user) => {
-      console.log(
-        `User ${user.id} (${user.firstname}): receive_notifications = ${user.receive_notifications}`
-      );
-    });
 
     for (const user of users) {
-      const newNotification = await Notification.query().insert({
+      await Notification.query().insert({
         user_id: user.id,
         consumable_id: consumable.id,
         title: "Product terug beschikbaar",
@@ -179,15 +157,9 @@ async function createBackInStockNotifications(consumable) {
         type: "back_in_stock",
         is_read: false,
       });
-
-      console.log(
-        `Created notification ${newNotification.id} for user ${user.id} (${user.firstname}): ${consumable.name} is back in stock!`
-      );
+      
     }
 
-    console.log(
-      `Finished creating notifications for consumable ${consumable.name}`
-    );
   } catch (error) {
     console.error("Error creating back in stock notifications:", error);
   }
