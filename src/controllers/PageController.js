@@ -69,11 +69,15 @@ export const dashboard = async (req, res) => {
     console.error("Error fetching notifications:", error);
   }
 
+  const today = new Date().toISOString();
   const attendances = await Attendance.query()
-    .withGraphFetched("match")
+    .joinRelated("match")
     .where("user_id", user.id)
     .where("is_selected", "selected")
-    .limit(5);
+    .where("match.date", ">", today)
+    .orderBy("match.date", "asc")
+    .limit(5)
+    .withGraphFetched("match");
 
   res.render("pages/dashboard", {
     pageTitle: "Dashboard | Ping Pong Tool",
