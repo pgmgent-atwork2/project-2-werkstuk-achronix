@@ -69,7 +69,7 @@ export const dashboard = async (req, res) => {
     console.error("Error fetching notifications:", error);
   }
 
-  const upcomingMatches = await Attendance.query()
+  const attendances = await Attendance.query()
     .withGraphFetched("match")
     .where("user_id", user.id)
     .where("is_selected", "selected")
@@ -79,7 +79,7 @@ export const dashboard = async (req, res) => {
     pageTitle: "Dashboard | Ping Pong Tool",
     user,
     orders,
-    upcomingMatches,
+    attendances,
     totalPrice: totalPrice.toFixed(2),
     backInStockNotifications,
     adminNotifications,
