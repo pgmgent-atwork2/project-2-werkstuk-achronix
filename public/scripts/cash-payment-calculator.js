@@ -1,4 +1,3 @@
-console.log("Cash payment calculator script loading...");
 
 let showNotification = (title, message, type) => {
   console.log(`${type.toUpperCase()}: ${title} - ${message}`);
@@ -178,17 +177,11 @@ export function initializeCashPaymentCalculator() {
   });
 
   closeBtn.addEventListener("click", () => {
-    console.log("Closing modal");
     modal.classList.add("hidden");
   });
 
   confirmButton.addEventListener("click", async () => {
     const { totalCash, cashBreakdown } = calculateTotal();
-
-    console.log("=== PAYMENT CONFIRMATION ===");
-    console.log("Order amount:", orderAmount);
-    console.log("Total cash:", totalCash);
-    console.log("Cash breakdown:", cashBreakdown);
 
     if (totalCash >= orderAmount) {
       confirmButton.disabled = true;
@@ -203,7 +196,6 @@ export function initializeCashPaymentCalculator() {
           processedAt: new Date().toISOString(),
         };
 
-        console.log("Sending payment request with details:", cashDetails);
 
         const response = await fetch("/process-cash-payment", {
           method: "POST",
@@ -216,8 +208,6 @@ export function initializeCashPaymentCalculator() {
             cashDetails: cashDetails,
           }),
         });
-
-        console.log("Response status:", response.status);
 
         if (response.ok) {
           const result = await response.json();
@@ -238,7 +228,6 @@ export function initializeCashPaymentCalculator() {
           modal.classList.add("hidden");
 
           setTimeout(() => {
-            console.log("Reloading page to show updated payment status...");
             window.location.reload();
           }, 1500);
         } else {
@@ -290,10 +279,8 @@ export function initializeCashPaymentCalculator() {
     calculateTotal();
 
     modal.classList.remove("hidden");
-    console.log("Modal should now be visible");
   };
 
-  console.log("Cash payment calculator initialized successfully");
   console.log(
     "openCashPaymentModal function available:",
     typeof window.openCashPaymentModal
@@ -301,8 +288,5 @@ export function initializeCashPaymentCalculator() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM loaded, initializing cash payment calculator...");
   initializeCashPaymentCalculator();
 });
-
-console.log("Cash payment calculator script loaded");
