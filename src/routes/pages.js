@@ -16,14 +16,24 @@ router.get("/", (req, res) => {
 router.get("/dashboard", jwtAuth, PageController.dashboard);
 router.get("/bestellen", jwtAuth, PageController.bestellen);
 
-const teams = await Team.query().orderBy("name", "asc");
+router.get("/wedstrijden/:teamName", jwtAuth, async (req, res) => {
+  try {
+    const { teamName } = req.params;
 
-teams.forEach((team) => {
-  router.get(`/wedstrijden/${team.name.toLowerCase()}`, jwtAuth, (req, res) =>
-    PageController.wedstrijden(req, res, team.name.toLowerCase())
-  );
+    const team = await Team.query()
+      .where("name", teamName.toUpperCase())
+      .first();
+
+    if (!team) {
+      return PageController.pageNotFound(req, res);
+    }
+
+    return PageController.wedstrijden(req, res, teamName.toLowerCase());
+  } catch (error) {
+    console.error("Error checking team:", error);
+    return PageController.pageNotFound(req, res);
+  }
 });
-
 router.get("/wedstrijden", jwtAuth, PageController.wedstrijdenTeamsOverview);
 router.get("/rekening", jwtAuth, PageController.rekening);
 router.get("/profiel", jwtAuth, PageController.profiel);
