@@ -153,6 +153,7 @@ export const findByName = async (req, res) => {
 
     return res.json(users);
   } catch (error) {
+    console.log("Error fetching users:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
       error: error.message,
@@ -221,6 +222,7 @@ export const updateProfile = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Error updating profile:", error);
     return res.status(500).json({
       success: false,
       message: "Er is een fout opgetreden bij het bijwerken van je profiel",
@@ -251,6 +253,7 @@ export const findByRole = async (req, res) => {
 
     return res.json(users);
   } catch (error) {
+    console.log("Error fetching users by role:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het zoeken naar gebruikers.",
       error: error.message,
@@ -278,6 +281,7 @@ export const searchUsersForRekeningen = async (req, res) => {
       
     res.json(usersWithTotals);
   } catch (error) {
+    console.error("Error searching users for rekeningen:", error);
     res.status(500).json({
       success: false,
       message: "Error searching users for rekeningen",
