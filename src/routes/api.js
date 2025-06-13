@@ -29,6 +29,10 @@ router.get(
   "/users/rekeningen/search/:searchTerm",
   API_UserController.searchUsersForRekeningen
 );
+router.get(
+  "/users/rekeningen/role/:roleId",
+  API_UserController.getUsersByRoleForRekeningen
+);
 
 // Consumables
 router.get("/consumables", API_ConsumableController.index);

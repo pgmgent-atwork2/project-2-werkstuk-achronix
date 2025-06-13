@@ -4,22 +4,50 @@ if (
 ) {
   const $tableBody = document.querySelector("tbody");
   const $searchInput = document.getElementById("searchInput-user");
+  const $filterSelect = document.getElementById("filterSelect-user");
 
   const isRekeningenPage = window.location.pathname.includes("/rekeningen");
+
+  let currentRoleFilter = "";
 
   async function performRekeningenSearch(searchTerm) {
     try {
       console.log("Performing rekeningen search with term:", searchTerm);
+      console.log("Current role filter:", currentRoleFilter);
 
-      const response = await fetch(
-        `/api/users/rekeningen/search/${searchTerm || "all"}`
-      );
+      let users;
 
-      if (!response.ok) {
-        throw new Error(`Search failed: ${response.status}`);
+      if (currentRoleFilter) {
+        const response = await fetch(
+          `/api/users/rekeningen/role/${currentRoleFilter}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Role filter search failed: ${response.status}`);
+        }
+
+        const roleUsers = await response.json();
+
+        if (searchTerm) {
+          users = roleUsers.filter((user) =>
+            `${user.firstname} ${user.lastname}`
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          );
+        } else {
+          users = roleUsers;
+        }
+      } else {
+        const response = await fetch(
+          `/api/users/rekeningen/search/${searchTerm || "all"}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Search failed: ${response.status}`);
+        }
+
+        users = await response.json();
       }
-
-      const users = await response.json();
 
       $tableBody.innerHTML = "";
 
@@ -63,6 +91,14 @@ if (
       await performRekeningenSearch(searchTerm);
     });
 
-    console.log("Rekeningen search functionality initialized");
+    if ($filterSelect) {
+      $filterSelect.addEventListener("change", async (event) => {
+        currentRoleFilter = event.target.value;
+        const searchTerm = $searchInput.value.toLowerCase().trim();
+        await performRekeningenSearch(searchTerm);
+      });
+    }
+
+    console.log("Rekeningen search and filter functionality initialized");
   }
 }

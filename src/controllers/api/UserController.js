@@ -313,3 +313,28 @@ export const searchUsersForRekeningen = async (req, res) => {
     });
   }
 };
+
+export const getUsersByRoleForRekeningen = async (req, res) => {
+  try {
+    const { roleId } = req.params;
+
+    let search = User.query()
+      .withGraphFetched("orders.orderItems")
+      .orderBy("firstname", "asc");
+
+    if (roleId && roleId !== "undefined" && roleId !== "") {
+      search = search.where("role_id", roleId);
+    }
+
+    const users = await search;
+
+    res.json(users);
+  } catch (error) {
+    console.error("Error filtering users by role for rekeningen:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error filtering users by role for rekeningen",
+      error: error.message,
+    });
+  }
+};
