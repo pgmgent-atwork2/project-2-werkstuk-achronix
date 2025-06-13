@@ -42,8 +42,7 @@ export function createUser() {
           <div>
             <label for="new_type">Type</label>
             <select id="new_type" name="type">
-              <option value="2" id="new_is_admin">Gebruiker</option>
-              <option value="3">gast</option>
+              <option value="2" >Gebruiker</option>
               <option value="1">Beheerder</option>
             </select>
           </div>
