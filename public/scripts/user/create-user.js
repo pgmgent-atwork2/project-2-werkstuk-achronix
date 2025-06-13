@@ -31,12 +31,12 @@ export function createUser() {
 
           <div>
             <label for="new_email">Email</label>
-            <input type="email" id="new_email" name="email" required>
+            <input type="email" id="new_email" name="email">
           </div>
 
           <div>
             <label for="new_password">Wachtwoord (kan altijd opnieuw worden aangemaakt via "wachtwoord vergeten")</label>
-            <input type="password" id="new_password" name="password" required>
+            <input type="password" id="new_password" name="password">
           </div>
 
           <div>

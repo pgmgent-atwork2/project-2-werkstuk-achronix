@@ -1,5 +1,7 @@
 import User from "../../models/User.js";
 import bcrypt from "bcrypt";
+import generateGuestEmail from "../../utils/generateGuestEmail.js";
+import generateToken from "../../utils/generateToken.js";
 
 export const show = async (req, res) => {
   const id = req.params.id;
@@ -97,6 +99,18 @@ export const store = async (req, res) => {
   } = req.body;
 
   try {
+    if (role_id === 3) {
+      const guestEmail = generateGuestEmail(firstname, lastname);
+
+      await User.query().insert({
+        firstname,
+        lastname,
+        email: guestEmail,
+        password: generateToken(),
+        role_id: 3,
+        receive_notifications: receive_notifications !== false,
+      });
+    }
     const existingUser = await User.query().where("email", email).first();
     if (existingUser) {
       return res
@@ -264,21 +278,25 @@ export const findByRole = async (req, res) => {
 export const searchUsersForRekeningen = async (req, res) => {
   try {
     const { searchTerm } = req.params;
-    let search = User.query().withGraphFetched("orders.orderItems").orderBy("firstname", "asc");
-    
+    let search = User.query()
+      .withGraphFetched("orders.orderItems")
+      .orderBy("firstname", "asc");
+
     if (searchTerm && searchTerm !== "all" && searchTerm !== "undefined") {
-      search = search
-      .where(function() {
-        this.where("firstname", "like", `%${searchTerm}%`)
-          .orWhere("lastname", "like", `%${searchTerm}%`);
+      search = search.where(function () {
+        this.where("firstname", "like", `%${searchTerm}%`).orWhere(
+          "lastname",
+          "like",
+          `%${searchTerm}%`
+        );
       });
     }
-    
+
     const users = await search;
-    const usersWithTotals = users.map(user => {
+    const usersWithTotals = users.map((user) => {
       return user;
     });
-      
+
     res.json(usersWithTotals);
   } catch (error) {
     console.error("Error searching users for rekeningen:", error);
