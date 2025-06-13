@@ -1,4 +1,5 @@
 import renderConsumableCard from "./consumable/consumable-card.js";
+import renderConsumableCardDisabled from "./consumable/consumable-card-disabled.js";
 import { InitShoppingCart } from "./shoppingCart.js";
 import getAllConsumables from "./getAllConsumables.js";
 
@@ -13,6 +14,10 @@ export default function initDropdown() {
   const $userIdOrder = document.querySelectorAll(".user-id-order");
   const $dropdownMenu = document.querySelector(".dropdown-content");
   const $list = document.querySelector(".dropdown-list");
+  const $selectedUserName = document.getElementById("selected-user-name");
+  const $resetToOwnAccountBtn = document.getElementById("reset-to-own-account");
+  const $originalUserId = document.getElementById("original-user-id");
+  const $originalUserName = document.getElementById("original-user-name");
 
   let allUsers = [];
 
@@ -37,7 +42,11 @@ export default function initDropdown() {
 
       const consumables = await getAllConsumables();
       consumables.forEach((consumable) => {
-        renderConsumableCard(consumable, $consumables, userId);
+        if (consumable.stock <= 0) {
+          renderConsumableCardDisabled(consumable, $consumables, userId);
+        } else {
+          renderConsumableCard(consumable, $consumables, userId);
+        }
       });
 
       InitShoppingCart();
@@ -46,7 +55,10 @@ export default function initDropdown() {
       $userIdOrder.forEach(($userId) => {
         $userId.value = userId;
       });
-      $button.textContent = userName;
+
+      if ($selectedUserName) {
+        $selectedUserName.textContent = userName;
+      }
       $dropdownMenu.classList.add("hidden");
     }
   });
@@ -75,5 +87,57 @@ export default function initDropdown() {
       `
       )
       .join("");
+
+    if (filteredUsers.length === 0) {
+      $list.innerHTML = "<li>Geen gebruikers gevonden</li>";
+    }
+  });
+
+  // Reset to own account functionality
+  if ($resetToOwnAccountBtn && $originalUserId && $originalUserName) {
+    $resetToOwnAccountBtn.addEventListener("click", async function (e) {
+      e.preventDefault();
+      const originalUserId = $originalUserId.value;
+      const originalUserName = $originalUserName.value;
+      const $consumables = document.querySelector(".consumables");
+
+      $consumables.innerHTML = "";
+
+      const consumables = await getAllConsumables();
+      consumables.forEach((consumable) => {
+        if (consumable.stock <= 0) {
+          renderConsumableCardDisabled(
+            consumable,
+            $consumables,
+            originalUserId
+          );
+        } else {
+          renderConsumableCard(consumable, $consumables, originalUserId);
+        }
+      });
+
+      InitShoppingCart();
+
+      $loggedInUser.value = originalUserId;
+      $userIdOrder.forEach(($userId) => {
+        $userId.value = originalUserId;
+      });
+
+      if ($selectedUserName) {
+        $selectedUserName.textContent = originalUserName;
+      }
+
+      $dropdownMenu.classList.add("hidden");
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (
+      $dropdownMenu &&
+      !$dropdownMenu.contains(e.target) &&
+      !$button.contains(e.target)
+    ) {
+      $dropdownMenu.classList.add("hidden");
+    }
   });
 }
