@@ -54,7 +54,6 @@ const updatePlayerSelection = async (matchId, userId, isSelected) => {
 
 // Add real-time refresh capability
 const refreshUserSelectionStatus = async () => {
-  console.log("Refreshing user selection status...");
   await loadUserSelectionStatus();
 };
 
@@ -126,7 +125,6 @@ const attachSelectionListeners = () => {
 };
 
 const loadUserSelectionStatus = async () => {
-  console.log("Loading user selection statuses...");
 
   const selectionElements = document.querySelectorAll(
     '[id^="user-selection-"]'
@@ -139,10 +137,6 @@ const loadUserSelectionStatus = async () => {
 
     if (userId && matchId && textElement) {
       try {
-        console.log(
-          `Loading selection status for user ${userId}, match ${matchId}`
-        );
-
         const response = await fetch(
           `/api/attendance/match/${matchId}/user/${userId}`
         );
@@ -187,7 +181,6 @@ const loadUserSelectionStatus = async () => {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM loaded, initializing player selection...");
 
   setTimeout(() => {
     initializeButtonAppearance();
