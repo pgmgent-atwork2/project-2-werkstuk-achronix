@@ -1,38 +1,62 @@
 <a class="back" href="/beheerderspaneel">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-    </svg>
-    Ga terug naar beheerderspaneel overzicht</a>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 19.5 8.25 12l7.5-7.5"
+    />
+  </svg>
+  Ga terug naar beheerderspaneel overzicht</a
+>
 
 <div>
-    <h1 class="title">Uitgavelimiet per bestelling beheren</h1>
+  <h1 class="title">Uitgavelimiet per bestelling beheren</h1>
 
-    <section>
-        <div class="spending-limit-section">
-            <h2>Huidige uitgavelimiet per bestelling</h2>
-            <div class="current-limit-display">
-                <span class="limit-amount" id="currentLimitDisplay">€0.00</span>
-                <p class="limit-description">
-                    Dit is het maximale bedrag dat gebruikers per bestelling kunnen uitgeven.
-                    Na betaling kunnen ze opnieuw bestellen tot de limiet.
-                </p>
-            </div>
-        </div>
+  <section>
+    <div class="spending-limit-section">
+      <h2>Huidige uitgavelimiet per bestelling</h2>
+      <div class="current-limit-display">
+        <span class="limit-amount" id="currentLimitDisplay">€0.00</span>
+        <p class="limit-description">
+          Dit is het maximale bedrag dat gebruikers per bestelling kunnen
+          uitgeven. Na betaling kunnen ze opnieuw bestellen tot de limiet.
+        </p>
+      </div>
+    </div>
 
-        <div class="spending-limit-form-section">
-            <h2>Uitgavelimiet per bestelling aanpassen</h2>
-            <form id="updateSpendingLimitForm" class="spending-limit-form">
-                <div class="spending-limit-form__field">
-                    <input type="number" id="spending_limit" name="limit" step="0.01" min="0"
-                        class="spending-limit-form__input" required />
-                    <button type="submit" class="btn btn--primary spending-limit-form__button">
-                        Limiet bijwerken
-                    </button>
-                </div>
-            </form>
+    <div class="spending-limit-form-section">
+      <h2>Uitgavelimiet per bestelling aanpassen</h2>
+      <form id="updateSpendingLimitForm" class="spending-limit-form">
+        <div class="spending-limit-form__field">
+          <input
+            type="number"
+            id="spending_limit"
+            name="limit"
+            step="0.01"
+            min="0"
+            class="spending-limit-form__input"
+            required
+          />
+          <button
+            type="submit"
+            class="btn btn--primary spending-limit-form__button"
+          >
+            Limiet bijwerken
+          </button>
         </div>
-    </section>
+      </form>
+    </div>
+  </section>
 </div>
 
-<script type="module" src="/scripts/spending-limit/spending-limit-management.js"></script>
+<script
+  type="module"
+  src="/scripts/spending-limit/spending-limit-management.js"
+></script>
