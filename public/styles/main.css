@@ -10,6 +10,7 @@
 @import url("components/modal.css");
 @import url("components/sidebar.css");
 @import url("components/table.css");
+@import url("components/table-links.css");
 @import url("components/back.css");
 @import url("components/card.css");
 @import url("components/title.css");
@@ -32,6 +33,7 @@
 @import url("pages/profile.css");
 @import url("pages/spending-limit.css");
 @import url("pages/rekening.css");
+@import url("pages/wedstrijdenTeamsOverview.css");
 
 /*alle imports van de common styles */
 

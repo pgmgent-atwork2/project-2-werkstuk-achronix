@@ -4,21 +4,49 @@ if (
 ) {
   const $tableBody = document.querySelector("tbody");
   const $searchInput = document.getElementById("searchInput-user");
+  const $filterSelect = document.getElementById("filterSelect-user");
 
   const isRekeningenPage = window.location.pathname.includes("/rekeningen");
+
+  let currentRoleFilter = "";
 
   async function performRekeningenSearch(searchTerm) {
     try {
 
-      const response = await fetch(
-        `/api/users/rekeningen/search/${searchTerm || "all"}`
-      );
 
-      if (!response.ok) {
-        throw new Error(`Search failed: ${response.status}`);
+      let users;
+
+      if (currentRoleFilter) {
+        const response = await fetch(
+          `/api/users/rekeningen/role/${currentRoleFilter}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Role filter search failed: ${response.status}`);
+        }
+
+        const roleUsers = await response.json();
+
+        if (searchTerm) {
+          users = roleUsers.filter((user) =>
+            `${user.firstname} ${user.lastname}`
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+          );
+        } else {
+          users = roleUsers;
+        }
+      } else {
+        const response = await fetch(
+          `/api/users/rekeningen/search/${searchTerm || "all"}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Search failed: ${response.status}`);
+        }
+
+        users = await response.json();
       }
-
-      const users = await response.json();
 
       $tableBody.innerHTML = "";
 
@@ -60,5 +88,14 @@ if (
       const searchTerm = event.target.value.toLowerCase().trim();
       await performRekeningenSearch(searchTerm);
     });
+
+
+    if ($filterSelect) {
+      $filterSelect.addEventListener("change", async (event) => {
+        currentRoleFilter = event.target.value;
+        const searchTerm = $searchInput.value.toLowerCase().trim();
+        await performRekeningenSearch(searchTerm);
+      });
+    }
   }
 }
