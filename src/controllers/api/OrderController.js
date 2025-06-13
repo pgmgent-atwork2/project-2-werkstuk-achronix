@@ -138,6 +138,26 @@ export const findByStatus = async (req, res) => {
   }
 };
 
+export const findByPaymentMethod = async (req, res) => {
+  const { paymentMethod } = req.params;
+
+  try {
+    const orders = await Order.query()
+      .where("method", paymentMethod)
+      .withGraphFetched("user")
+      .withGraphFetched("orderItems.consumable")
+      .orderBy("order_on", "desc");
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders by payment method:", error);
+    res.status(500).json({
+      message: "Error fetching orders by payment method",
+      error,
+    });
+  }
+};
+
 export const findStatusByUser = async (req, res) => {
   const { user_id, status } = req.params;
 

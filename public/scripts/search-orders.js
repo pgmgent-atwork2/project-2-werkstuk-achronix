@@ -12,19 +12,32 @@ if (document.getElementById("ordersTableBody")) {
       let orders;
 
       if (currentStatusFilter) {
-        const response = await fetch(
-          `/api/orders/status/${currentStatusFilter}`
-        );
-        const statusOrders = await response.json();
+        let filteredOrders = [];
+        if (
+          currentStatusFilter === "CASH" ||
+          currentStatusFilter === "ONLINE"
+        ) {
+          const response = await fetch(
+            `/api/orders/payment-mehod/${currentStatusFilter}`
+          );
+
+          filteredOrders = await response.json();
+        } else {
+          const response = await fetch(
+            `/api/orders/status/${currentStatusFilter}`
+          );
+
+          filteredOrders = await response.json();
+        }
 
         if (searchTerm) {
-          orders = statusOrders.filter((order) =>
+          orders = filteredOrders.filter((order) =>
             `${order.user.firstname} ${order.user.lastname}`
               .toLowerCase()
               .includes(searchTerm.toLowerCase())
           );
         } else {
-          orders = statusOrders;
+          orders = filteredOrders;
         }
       } else {
         const response = await fetch(
