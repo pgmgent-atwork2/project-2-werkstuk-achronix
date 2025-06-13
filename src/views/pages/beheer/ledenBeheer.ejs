@@ -21,6 +21,9 @@
   <section>
     <div>
       <button id="addNewUser" class="btn btn--primary">Nieuwe gebruiker</button>
+      <button id="addNewGuestUser" class="btn btn--primary">
+        Nieuwe gastgebruiker
+      </button>
     </div>
 
     <div class="table-controls">
@@ -87,14 +90,14 @@
               >
                 Bewerken
               </button>
-                <% if (user.role.name !== 'admin') { %>
-                <button
+              <% if (user.role.name !== 'admin') { %>
+              <button
                 class="btn btn--danger delete-user"
                 data-id="<%= user.id %>"
-                >
+              >
                 Verwijderen
-                </button>
-                <% } %>
+              </button>
+              <% } %>
             </td>
           </tr>
           <% }); %> <% } else { %>
