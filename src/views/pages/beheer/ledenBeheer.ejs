@@ -84,13 +84,14 @@
             <td><%= user.role.name %></td>
             <td><%= user.receive_notifications ? 'Ja' : 'Nee' %></td>
             <td>
+              <% if (user.role.name !== "guest") { %>
               <button
                 class="btn btn--secondary edit-user"
                 data-id="<%= user.id %>"
               >
                 Bewerken
               </button>
-              <% if (user.role.name !== 'admin') { %>
+              <% } %> <% if (user.role.name !== 'admin') { %>
               <button
                 class="btn btn--danger delete-user"
                 data-id="<%= user.id %>"
