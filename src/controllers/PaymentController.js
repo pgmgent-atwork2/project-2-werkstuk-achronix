@@ -137,7 +137,6 @@ export const processCashPayment = async (req, res) => {
     if (user.email) {
       try {
         await sendConfirmationEmail(user.email, order);
-        console.log("Confirmation email sent to:", user.email);
       } catch (emailError) {
         console.error("Failed to send confirmation email:", emailError);
       }
