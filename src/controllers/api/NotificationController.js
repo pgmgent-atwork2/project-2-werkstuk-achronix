@@ -9,6 +9,7 @@ export const index = async (req, res) => {
 
     return res.json(notifications);
   } catch (error) {
+    console.error("Error fetching notifications:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het ophalen van notificaties.",
       error: error.message,
@@ -27,6 +28,7 @@ export const show = async (req, res) => {
 
     return res.json(notification);
   } catch (error) {
+    console.error("Error fetching notification:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het ophalen van de notificatie.",
       error: error.message,
@@ -98,6 +100,7 @@ export const store = async (req, res) => {
       data: notifications[0],
     });
   } catch (error) {
+    console.error("Error creating notification:", error);
     return res.status(500).json({
       success: false,
       message: "Er is een fout opgetreden bij het aanmaken van de notificatie.",
@@ -138,6 +141,7 @@ export const update = async (req, res) => {
       message: "Notificatie succesvol bijgewerkt voor alle gebruikers",
     });
   } catch (error) {
+    console.error("Error updating notification:", error);
     return res.status(500).json({
       success: false,
       message:
@@ -168,6 +172,7 @@ export const destroy = async (req, res) => {
       message: "Notificatie succesvol verwijderd voor alle gebruikers",
     });
   } catch (error) {
+    console.error("Error deleting notification:", error);
     return res.status(500).json({
       success: false,
       message:
@@ -202,6 +207,7 @@ export const findByTitle = async (req, res) => {
 
     return res.json(notifications);
   } catch (error) {
+    console.log("Error fetching notifications:", error);
     return res.status(500).json({
       message: "Er is een fout opgetreden bij het zoeken naar notificaties.",
       error: error.message,
@@ -225,6 +231,7 @@ export const dismissBackInStock = async (req, res) => {
       message: "Notificatie weggeveegd",
     });
   } catch (error) {
+    console.error("Error dismissing notification:", error);
     return res.status(500).json({
       success: false,
       message: "Er is een fout opgetreden bij het wegvegen van de notificatie.",
@@ -247,6 +254,7 @@ export const dismissAllBackInStock = async (req, res) => {
       message: "Alle notificaties weggeveegd",
     });
   } catch (error) {
+    console.error("Error dismissing all notifications:", error);
     return res.status(500).json({
       success: false,
       message:
@@ -272,6 +280,7 @@ export const dismissAdminNotification = async (req, res) => {
       message: "Admin notificatie weggeveegd",
     });
   } catch (error) {
+    console.error("Error dismissing admin notification:", error);
     return res.status(500).json({
       success: false,
       message: "Er is een fout opgetreden bij het wegvegen van de notificatie.",
@@ -294,6 +303,7 @@ export const dismissAllAdminNotifications = async (req, res) => {
       message: "Alle admin notificaties weggeveegd",
     });
   } catch (error) {
+    console.error("Error dismissing all admin notifications:", error);
     return res.status(500).json({
       success: false,
       message:
