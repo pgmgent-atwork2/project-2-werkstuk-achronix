@@ -5,9 +5,9 @@ import renderUserRow from "./user-table.js";
 import { editUser } from "./edit-user.js";
 
 export function deleteUser() {
-  let deleteUserModalContainer = document.createElement("div");
-  deleteUserModalContainer.id = "delete-user-modal-container";
-  document.body.appendChild(deleteUserModalContainer);
+  let $deleteUserModalContainer = document.createElement("div");
+  $deleteUserModalContainer.id = "delete-user-modal-container";
+  document.body.appendChild($deleteUserModalContainer);
 
   const deleteUserModalHTML = `
     <div id="deleteUserModal" class="modal hidden">
@@ -29,48 +29,48 @@ export function deleteUser() {
     </div>
   `;
 
-  deleteUserModalContainer.innerHTML = deleteUserModalHTML;
+  $deleteUserModalContainer.innerHTML = deleteUserModalHTML;
 
-  const deleteModal = document.getElementById("deleteUserModal");
-  const deleteButtons = document.querySelectorAll(".delete-user");
-  const closeDeleteBtn = document.querySelector("#deleteUserModal .close");
-  const cancelDeleteBtn = document.getElementById("cancelDeleteUser");
-  const deleteUserForm = document.getElementById("deleteUserForm");
-  const deleteUserIdInput = document.getElementById("deleteUserId");
+  const $deleteModal = document.getElementById("deleteUserModal");
+  const $deleteButtons = document.querySelectorAll(".delete-user");
+  const $closeDeleteBtn = document.querySelector("#deleteUserModal .close");
+  const $cancelDeleteBtn = document.getElementById("cancelDeleteUser");
+  const $deleteUserForm = document.getElementById("deleteUserForm");
+  const $deleteUserIdInput = document.getElementById("deleteUserId");
 
-  if (deleteButtons) {
-    deleteButtons.forEach((button) => {
+  if ($deleteButtons) {
+    $deleteButtons.forEach((button) => {
       button.addEventListener("click", function () {
         const userId = this.getAttribute("data-id");
-        deleteUserIdInput.value = userId;
-        deleteModal.classList.remove("hidden");
+        $deleteUserIdInput.value = userId;
+        $deleteModal.classList.remove("hidden");
       });
     });
   }
 
-  if (closeDeleteBtn) {
-    closeDeleteBtn.addEventListener("click", function () {
-      deleteModal.classList.add("hidden");
+  if ($closeDeleteBtn) {
+    $closeDeleteBtn.addEventListener("click", function () {
+      $deleteModal.classList.add("hidden");
     });
   }
 
-  if (cancelDeleteBtn) {
-    cancelDeleteBtn.addEventListener("click", function () {
-      deleteModal.classList.add("hidden");
+  if ($cancelDeleteBtn) {
+    $cancelDeleteBtn.addEventListener("click", function () {
+      $deleteModal.classList.add("hidden");
     });
   }
 
   window.addEventListener("click", function (event) {
-    if (event.target === deleteModal) {
-      deleteModal.classList.add("hidden");
+    if (event.target === $deleteModal) {
+      $deleteModal.classList.add("hidden");
     }
   });
 
-  if (deleteUserForm) {
-    deleteUserForm.addEventListener("submit", async function (e) {
+  if ($deleteUserForm) {
+    $deleteUserForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const userId = deleteUserIdInput.value;
+      const userId = $deleteUserIdInput.value;
 
       try {
         const response = await fetch(`/api/users/${userId}`, {
@@ -78,7 +78,7 @@ export function deleteUser() {
         });
 
         if (response.ok) {
-          deleteModal.classList.add("hidden");
+          $deleteModal.classList.add("hidden");
           getShowNotification(
             "Gebruiker verwijderd",
             "De gebruiker is succesvol verwijderd.",
@@ -94,7 +94,11 @@ export function deleteUser() {
           editUser();
         } else {
           const errorData = await response.json();
-          getShowNotification("Fout bij verwijderen", errorData.message, "error");
+          getShowNotification(
+            "Fout bij verwijderen",
+            errorData.message,
+            "error"
+          );
         }
       } catch (error) {
         console.error("Error updating user:", error);

@@ -4,9 +4,9 @@ import renderUserRow from "./user-table.js";
 import { deleteUser } from "./delete-user.js";
 
 export function editUser() {
-  let editModalContainer = document.createElement("div");
-  editModalContainer.id = "edit-modal-container";
-  document.body.appendChild(editModalContainer);
+  let $editModalContainer = document.createElement("div");
+  $editModalContainer.id = "edit-modal-container";
+  document.body.appendChild($editModalContainer);
 
   const editUserModalHTML = `
     <div id="editUserModal" class="modal hidden">
@@ -59,22 +59,22 @@ export function editUser() {
     </div>
   `;
 
-  editModalContainer.innerHTML = editUserModalHTML;
+  $editModalContainer.innerHTML = editUserModalHTML;
 
-  const modal = document.getElementById("editUserModal");
-  const editButtons = document.querySelectorAll(".edit-user");
-  const closeBtn = document.querySelector("#editUserModal .close");
-  const userIdInput = document.getElementById("userId");
-  const firstnameInput = document.getElementById("firstname");
-  const lastnameInput = document.getElementById("lastname");
-  const emailInput = document.getElementById("email");
-  const TypeInput = document.getElementById("edit_type");
-  const receiveNotificationsInput = document.getElementById(
+  const $modal = document.getElementById("editUserModal");
+  const $editButtons = document.querySelectorAll(".edit-user");
+  const $closeBtn = document.querySelector("#editUserModal .close");
+  const $userIdInput = document.getElementById("userId");
+  const $firstnameInput = document.getElementById("firstname");
+  const $lastnameInput = document.getElementById("lastname");
+  const $emailInput = document.getElementById("email");
+  const $TypeInput = document.getElementById("edit_type");
+  const $receiveNotificationsInput = document.getElementById(
     "receive_notifications"
   );
-  const editUserForm = document.getElementById("editUserForm");
+  const $editUserForm = document.getElementById("editUserForm");
 
-  editButtons.forEach((button) => {
+  $editButtons.forEach((button) => {
     button.addEventListener("click", async function () {
       const userId = this.getAttribute("data-id");
 
@@ -87,14 +87,14 @@ export function editUser() {
 
         const userData = await response.json();
 
-        userIdInput.value = userData.id;
-        firstnameInput.value = userData.firstname;
-        lastnameInput.value = userData.lastname;
-        emailInput.value = userData.email;
-        TypeInput.value = userData.role_id;
-        receiveNotificationsInput.checked = userData.receive_notifications;
+        $userIdInput.value = userData.id;
+        $firstnameInput.value = userData.firstname;
+        $lastnameInput.value = userData.lastname;
+        $emailInput.value = userData.email;
+        $TypeInput.value = userData.role_id;
+        $receiveNotificationsInput.checked = userData.receive_notifications;
 
-        modal.classList.remove("hidden");
+        $modal.classList.remove("hidden");
       } catch (error) {
         console.error("Error fetching user data:", error);
         getShowNotification()(
@@ -106,26 +106,26 @@ export function editUser() {
     });
   });
 
-  closeBtn.addEventListener("click", function () {
-    modal.classList.add("hidden");
+  $closeBtn.addEventListener("click", function () {
+    $modal.classList.add("hidden");
   });
 
   window.addEventListener("click", function (event) {
-    if (event.target === modal) {
-      modal.classList.add("hidden");
+    if (event.target === $modal) {
+      $modal.classList.add("hidden");
     }
   });
 
-  editUserForm.addEventListener("submit", async function (e) {
+  $editUserForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const userId = userIdInput.value;
+    const userId = $userIdInput.value;
     const userData = {
-      firstname: firstnameInput.value,
-      lastname: lastnameInput.value,
-      email: emailInput.value,
-      role_id: parseInt(TypeInput.value),
-      receive_notifications: receiveNotificationsInput.checked,
+      firstname: $firstnameInput.value,
+      lastname: $lastnameInput.value,
+      email: $emailInput.value,
+      role_id: parseInt($TypeInput.value),
+      receive_notifications: $receiveNotificationsInput.checked,
     };
 
     if (document.getElementById("password").value) {
@@ -142,7 +142,7 @@ export function editUser() {
       });
 
       if (response.ok) {
-        modal.classList.add("hidden");
+        $modal.classList.add("hidden");
         getShowNotification()(
           "Gebruiker bijgewerkt",
           "De gebruiker is succesvol bijgewerkt.",

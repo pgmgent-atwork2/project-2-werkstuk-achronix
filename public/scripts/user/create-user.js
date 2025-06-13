@@ -6,9 +6,9 @@ import { deleteUser } from "./delete-user.js";
 import { editUser } from "./edit-user.js";
 
 export function createUser() {
-  let newUserModalContainer = document.createElement("div");
-  newUserModalContainer.id = "new-user-modal-container";
-  document.body.appendChild(newUserModalContainer);
+  let $newUserModalContainer = document.createElement("div");
+  $newUserModalContainer.id = "new-user-modal-container";
+  document.body.appendChild($newUserModalContainer);
 
   const newUserModalHTML = `
     <div id="newUserModal" class="modal hidden">
@@ -31,19 +31,18 @@ export function createUser() {
 
           <div>
             <label for="new_email">Email</label>
-            <input type="email" id="new_email" name="email" required>
+            <input type="email" id="new_email" name="email">
           </div>
 
           <div>
             <label for="new_password">Wachtwoord (kan altijd opnieuw worden aangemaakt via "wachtwoord vergeten")</label>
-            <input type="password" id="new_password" name="password" required>
+            <input type="password" id="new_password" name="password">
           </div>
 
           <div>
             <label for="new_type">Type</label>
             <select id="new_type" name="type">
-              <option value="2" id="new_is_admin">Gebruiker</option>
-              <option value="3">gast</option>
+              <option value="2" >Gebruiker</option>
               <option value="1">Beheerder</option>
             </select>
           </div>
@@ -59,33 +58,33 @@ export function createUser() {
     </div>
   `;
 
-  newUserModalContainer.innerHTML = newUserModalHTML;
+  $newUserModalContainer.innerHTML = newUserModalHTML;
 
-  const newUserModal = document.getElementById("newUserModal");
-  const addNewUserBtn = document.getElementById("addNewUser");
-  const closeNewModalBtn = document.getElementById("closeNewModal");
-  const newUserForm = document.getElementById("newUserForm");
+  const $newUserModal = document.getElementById("newUserModal");
+  const $addNewUserBtn = document.getElementById("addNewUser");
+  const $closeNewModalBtn = document.getElementById("closeNewModal");
+  const $newUserForm = document.getElementById("newUserForm");
 
-  if (addNewUserBtn) {
-    addNewUserBtn.addEventListener("click", function () {
-      newUserModal.classList.remove("hidden");
+  if ($addNewUserBtn) {
+    $addNewUserBtn.addEventListener("click", function () {
+      $newUserModal.classList.remove("hidden");
     });
   }
 
-  if (closeNewModalBtn) {
-    closeNewModalBtn.addEventListener("click", function () {
-      newUserModal.classList.add("hidden");
+  if ($closeNewModalBtn) {
+    $closeNewModalBtn.addEventListener("click", function () {
+      $newUserModal.classList.add("hidden");
     });
   }
 
   window.addEventListener("click", function (event) {
-    if (event.target === newUserModal) {
-      newUserModal.classList.add("hidden");
+    if (event.target === $newUserModal) {
+      $newUserModal.classList.add("hidden");
     }
   });
 
-  if (newUserForm) {
-    newUserForm.addEventListener("submit", async function (e) {
+  if ($newUserForm) {
+    $newUserForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const userData = {
@@ -111,7 +110,7 @@ export function createUser() {
         });
 
         if (response.ok) {
-          newUserModal.classList.add("hidden");
+          $newUserModal.classList.add("hidden");
           getShowNotification()(
             "Gebruiker toegevoegd",
             "De nieuwe gebruiker is succesvol toegevoegd.",
