@@ -142,18 +142,14 @@ export const findByStatus = async (req, res) => {
 };
 
 export const findByPaymentMethod = async (req, res) => {
-  const { method } = req.params;
+  const { paymentMethod } = req.params;
 
   try {
     const orders = await Order.query()
-      .where("method", method)
+      .where("method", paymentMethod)
       .withGraphFetched("user")
       .withGraphFetched("orderItems.consumable")
       .orderBy("order_on", "desc");
-
-    if (!orders || orders.length === 0) {
-      return res.status(204).json({ message: "No orders found" });
-    }
 
     res.json(orders);
   } catch (error) {

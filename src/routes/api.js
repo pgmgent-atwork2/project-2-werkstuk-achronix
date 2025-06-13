@@ -99,6 +99,10 @@ router.get(
   API_OrderController.findStatusByUser
 );
 router.get("/orders/status/:status", API_OrderController.findByStatus);
+router.get(
+  "/orders/payment-mehod/:paymentMethod",
+  API_OrderController.findByPaymentMethod
+);
 router.post("/orders", API_OrderController.store);
 router.put("/orders/:id", API_OrderController.update);
 router.delete("/orders/:id", API_OrderController.destroy);
