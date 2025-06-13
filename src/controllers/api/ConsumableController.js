@@ -174,7 +174,7 @@ async function createBackInStockNotifications(consumable) {
   const lockKey = `notification_${consumable.id}`;
   if (notificationLock.has(lockKey)) {
     console.log(
-      `Notification creation already in progress for consumable ${consumable.id}`
+      `Notification creation already in progress for consumable ${consumable.id}, skipping...`
     );
     return;
   }
@@ -194,6 +194,8 @@ async function createBackInStockNotifications(consumable) {
     );
 
     const users = await User.query();
+    console.log(`Found ${users.length} total users`);
+
     for (const user of users) {
       const newNotification = await Notification.query().insert({
         user_id: user.id,
@@ -209,9 +211,6 @@ async function createBackInStockNotifications(consumable) {
       );
     }
 
-    console.log(
-      `Finished creating notifications for consumable ${consumable.name}`
-    );
   } catch (error) {
     console.error("Error creating back in stock notifications:", error);
   }
