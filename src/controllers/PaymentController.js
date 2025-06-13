@@ -86,8 +86,6 @@ export const paymentResult = async (req, res) => {
 };
 
 export const processCashPayment = async (req, res) => {
-  console.log("=== CASH PAYMENT REQUEST ===");
-  console.log("Request body:", req.body);
 
   const { userId, orderId, cashDetails } = req.body;
 
@@ -125,21 +123,16 @@ export const processCashPayment = async (req, res) => {
       });
     }
 
-    console.log("Parsed payment details:", paymentDetails);
-
     if (!paymentDetails.cashGiven || !paymentDetails.orderAmount) {
       return res.status(400).json({
         success: false,
         error: "Invalid payment details: missing cashGiven or orderAmount",
       });
     }
-
-    const updatedOrder = await Order.query().patchAndFetchById(orderId, {
+    await Order.query().patchAndFetchById(orderId, {
       status: "PAID",
       method: "CASH",
     });
-
-    console.log("Order updated successfully:", updatedOrder);
 
     if (user.email) {
       try {
