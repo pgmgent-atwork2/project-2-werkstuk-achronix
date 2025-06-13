@@ -171,9 +171,7 @@ export const update = async (req, res) => {
         user.email &&
         user.receive_notifications
       ) {
-        console.log(
-          `Sending attendance confirmation email to ${user.email} for match ${matchIdToUse}`
-        );
+       
         await sendAttendanceConfirmationEmail(user, match);
       }
 
@@ -289,12 +287,6 @@ export const updateSelection = async (req, res) => {
   try {
     const { match_id, user_id, is_selected } = req.body;
 
-    console.log("=== SELECTION UPDATE REQUEST ===");
-    console.log("Request body:", { match_id, user_id, is_selected });
-    console.log("Admin user:", {
-      id: req.user?.id,
-      role_id: req.user?.role_id,
-    });
 
     if (!match_id || !user_id) {
       return res.status(400).json({
@@ -352,7 +344,6 @@ export const updateSelection = async (req, res) => {
           ? "Player selected and marked available"
           : "Player deselected";
     } else {
-      console.log("Creating new attendance record");
 
       attendanceRecord = await Attendance.query().insert({
         match_id,
@@ -373,7 +364,6 @@ export const updateSelection = async (req, res) => {
       await sendSelectionEmail(user, match);
     }
 
-    console.log("=== SELECTION UPDATE COMPLETE ===");
 
     return res.status(200).json({
       success: true,

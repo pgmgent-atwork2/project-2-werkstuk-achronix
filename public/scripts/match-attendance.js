@@ -3,12 +3,8 @@ const attendanceButtons = document.querySelectorAll(".attendance-button");
 let refreshInterval;
 
 const startPeriodicRefresh = () => {
-  console.log(
-    "Starting periodic refresh for attendance and selection status..."
-  );
 
   refreshInterval = setInterval(() => {
-    console.log("Periodic refresh triggered");
     loadAttendanceStatuses();
   }, 30000);
 };
@@ -21,7 +17,6 @@ const stopPeriodicRefresh = () => {
 };
 
 const loadAttendanceStatuses = async () => {
-  console.log("Loading attendance statuses...");
 
   try {
     for (const button of attendanceButtons) {
@@ -30,9 +25,6 @@ const loadAttendanceStatuses = async () => {
 
       if (matchId && userId) {
         try {
-          console.log(
-            `Loading attendance for user ${userId}, match ${matchId}`
-          );
 
           const response = await fetch(
             `/api/attendance/match/${matchId}/user/${userId}`
@@ -42,7 +34,6 @@ const loadAttendanceStatuses = async () => {
             const data = await response.json();
             if (data.success && data.data.length > 0) {
               const attendance = data.data[0];
-              console.log("Attendance data received:", attendance);
 
               updateButtonAppearance(button, attendance.status || "unknown");
 
@@ -69,15 +60,9 @@ const loadAttendanceStatuses = async () => {
                   }
                 }
 
-                console.log(
-                  `Selection status: ${
-                    isSelected ? "selected" : "not selected"
-                  }`
-                );
-                console.log(`Attendance status: ${attendance.status}`);
+          
               }
             } else {
-              console.log("No attendance data found, setting to unknown");
               updateButtonAppearance(button, "unknown");
 
               const selectionTextElement = document.getElementById(
@@ -104,7 +89,6 @@ const loadAttendanceStatuses = async () => {
 };
 
 const updateButtonAppearance = (button, status) => {
-  console.log(`Updating button appearance to: ${status}`);
 
   button.classList.remove(
     "status-unknown",
@@ -135,9 +119,6 @@ const updateButtonAppearance = (button, status) => {
 
   button.setAttribute("data-status", status);
 
-  console.log(
-    `Button updated - Status: ${status}, Classes: ${button.className}, Icon: ${button.innerHTML}`
-  );
 };
 
 const updateAttendanceStatus = async (matchId, userId, status) => {
@@ -145,9 +126,6 @@ const updateAttendanceStatus = async (matchId, userId, status) => {
     const matchIdInt = parseInt(matchId, 10);
     const userIdInt = parseInt(userId, 10);
 
-    console.log(
-      `Updating attendance status to: ${status} for user ${userIdInt}, match ${matchIdInt}`
-    );
 
     const response = await fetch("/api/attendance/update", {
       method: "POST",
@@ -163,7 +141,6 @@ const updateAttendanceStatus = async (matchId, userId, status) => {
 
     if (response.ok) {
       const result = await response.json();
-      console.log("Attendance update successful:", result);
 
       return result;
     } else {
@@ -206,8 +183,6 @@ attendanceButtons.forEach((button) => {
         newStatus = "available";
     }
 
-    console.log(`Changing status from ${currentStatus} to ${newStatus}`);
-
     updateButtonAppearance(button, newStatus);
 
     const result = await updateAttendanceStatus(matchId, userId, newStatus);
@@ -215,14 +190,11 @@ attendanceButtons.forEach((button) => {
     if (!result || !result.success) {
       console.error("Failed to update attendance status");
       updateButtonAppearance(button, currentStatus);
-    } else {
-      console.log("Attendance status updated successfully");
     }
   });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM loaded, initializing attendance...");
 
   setTimeout(() => {
     loadAttendanceStatuses();
@@ -238,7 +210,6 @@ window.addEventListener("beforeunload", () => {
 });
 
 window.addEventListener("focus", () => {
-  console.log("Window gained focus, refreshing attendance status...");
   loadAttendanceStatuses();
 });
 
