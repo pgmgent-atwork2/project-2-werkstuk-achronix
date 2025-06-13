@@ -165,24 +165,6 @@ const updateAttendanceStatus = async (matchId, userId, status) => {
       const result = await response.json();
       console.log("Attendance update successful:", result);
 
-      const selectionTextElement = document.getElementById(
-        `selection-text-${matchId}`
-      );
-
-      if (selectionTextElement) {
-       
-        if (status === "available") {
-          selectionTextElement.textContent = "Geselecteerd";
-          selectionTextElement.classList.add("attendence--green");
-        } else if (status === "reserve") {
-          selectionTextElement.textContent = "Reserve";
-          selectionTextElement.classList.remove("attendence--green");
-        } else {
-          selectionTextElement.textContent = "Niet geselecteerd";
-          selectionTextElement.classList.remove("attendence--green");
-        }
-      }
-
       return result;
     } else {
       console.error("Failed to update attendance status", response.status);
