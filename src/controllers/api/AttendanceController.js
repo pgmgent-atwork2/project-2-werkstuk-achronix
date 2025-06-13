@@ -289,12 +289,6 @@ export const updateSelection = async (req, res) => {
   try {
     const { match_id, user_id, is_selected } = req.body;
 
-    console.log("=== SELECTION UPDATE REQUEST ===");
-    console.log("Request body:", { match_id, user_id, is_selected });
-    console.log("Admin user:", {
-      id: req.user?.id,
-      role_id: req.user?.role_id,
-    });
 
     if (!match_id || !user_id) {
       return res.status(400).json({
@@ -373,7 +367,6 @@ export const updateSelection = async (req, res) => {
       await sendSelectionEmail(user, match);
     }
 
-    console.log("=== SELECTION UPDATE COMPLETE ===");
 
     return res.status(200).json({
       success: true,

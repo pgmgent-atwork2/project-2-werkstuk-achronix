@@ -80,7 +80,6 @@ const updateLoggedInUserSelection = (matchId, userId, isSelected) => {
   });
 
   setTimeout(() => {
-    console.log("Triggering attendance refresh after selection update...");
     if (window.refreshAttendanceStatus) {
       window.refreshAttendanceStatus();
     }
@@ -143,7 +142,6 @@ const loadUserSelectionStatus = async () => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Selection data received:", data);
 
           if (data.success && data.data && data.data.length > 0) {
             const attendance = data.data[0];
@@ -159,11 +157,6 @@ const loadUserSelectionStatus = async () => {
               textElement.classList.remove("attendence--green");
             }
 
-            console.log(
-              `Updated selection status: ${
-                isSelected ? "selected" : "not selected"
-              }`
-            );
           } else {
             textElement.textContent = "Niet geselecteerd";
             textElement.classList.remove("attendence--green");
