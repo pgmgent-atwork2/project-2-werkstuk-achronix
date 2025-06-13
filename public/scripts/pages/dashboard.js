@@ -44,7 +44,6 @@ async function dismissAdminNotification(notificationId) {
     );
 
     if (response.ok) {
-      console.log("Successfully dismissed notification");
 
       const notificationElement = document.querySelector(
         `[data-admin-notification-id="${notificationId}"]`
@@ -52,7 +51,6 @@ async function dismissAdminNotification(notificationId) {
 
       if (notificationElement) {
         notificationElement.remove();
-        console.log("Removed notification element from DOM");
       }
 
       const remainingNotifications = document.querySelectorAll(
@@ -91,7 +89,6 @@ async function dismissAdminNotification(notificationId) {
 
 async function dismissAllAdminNotifications() {
   try {
-    console.log("Dismissing all admin notifications");
 
     const response = await fetch(
       "/api/notifications/admin-message/dismiss-all",
@@ -101,7 +98,6 @@ async function dismissAllAdminNotifications() {
     );
 
     if (response.ok) {
-      console.log("Successfully dismissed all admin notifications");
       location.reload();
     } else {
       console.error("Failed to dismiss all notifications:", response.status);
@@ -111,16 +107,9 @@ async function dismissAllAdminNotifications() {
   }
 }
 
-// Make functions globally available
+// maakt functie globaal beschikbaar
 window.dismissNotification = dismissNotification;
 window.dismissAllNotifications = dismissAllNotifications;
 window.dismissAdminNotification = dismissAdminNotification;
 window.dismissAllAdminNotifications = dismissAllAdminNotifications;
 
-// Debug info
-console.log("Dashboard.js loaded, functions available:", {
-  dismissNotification: typeof window.dismissNotification,
-  dismissAllNotifications: typeof window.dismissAllNotifications,
-  dismissAdminNotification: typeof window.dismissAdminNotification,
-  dismissAllAdminNotifications: typeof window.dismissAllAdminNotifications,
-});
