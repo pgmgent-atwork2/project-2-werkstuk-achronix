@@ -325,18 +325,12 @@ export const updateSelection = async (req, res) => {
     if (attendanceRecord) {
       console.log("Updating existing attendance record:", attendanceRecord.id);
 
-      const newStatus =
-        is_selected === "selected"
-          ? "available"
-          : attendanceRecord.status || "unknown";
-
       attendanceRecord = await Attendance.query().updateAndFetchById(
         attendanceRecord.id,
         {
           match_id,
           user_id,
           is_selected,
-          status: newStatus,
         }
       );
       message =
@@ -346,12 +340,9 @@ export const updateSelection = async (req, res) => {
     } else {
       console.log("Creating new attendance record");
 
-      const newStatus = is_selected === "selected" ? "available" : "unknown";
-
       attendanceRecord = await Attendance.query().insert({
         match_id,
         user_id,
-        status: newStatus,
         is_selected,
       });
       message =
@@ -359,14 +350,6 @@ export const updateSelection = async (req, res) => {
           ? "Player selected and marked available"
           : "Player deselected";
     }
-
-    console.log("Selection update completed:", {
-      id: attendanceRecord.id,
-      match_id: attendanceRecord.match_id,
-      user_id: attendanceRecord.user_id,
-      is_selected: attendanceRecord.is_selected,
-      status: attendanceRecord.status,
-    });
 
     if (
       is_selected === "selected" &&
