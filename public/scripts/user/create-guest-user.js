@@ -1,9 +1,10 @@
 import { getShowNotification } from "../utils/notifications.js";
 
-import getAllGuestUsers from "./getAllGuestUsers.js";
+import getAllUsers from "./getAllUsers.js";
 import renderGuestUserRow from "./user-table.js";
-import { deleteGuestUser } from "./delete-user.js";
-import { editGuestUser } from "./edit-user.js";
+import { createUser } from "./create-user.js";
+import { deleteUser } from "./delete-user.js";
+import { editUser } from "./edit-user.js";
 
 export function createGuestUser() {
   let newGuestUserModalContainer = document.createElement("div");
@@ -90,15 +91,16 @@ export function createGuestUser() {
             "success"
           );
 
-          const users = await getAllGuestUsers();
+          const users = await getAllUsers();
           const $tableBody = document.querySelector("#userTableBody");
           $tableBody.innerHTML = "";
           users.forEach((user) => {
             renderGuestUserRow(user, $tableBody);
           });
+          createUser();
           createGuestUser();
-          editGuestUser();
-          deleteGuestUser();
+          editUser();
+          deleteUser();
         } else {
           const errorData = await response.json();
           getShowNotification()(
