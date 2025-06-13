@@ -171,9 +171,7 @@ export const update = async (req, res) => {
         user.email &&
         user.receive_notifications
       ) {
-        console.log(
-          `Sending attendance confirmation email to ${user.email} for match ${matchIdToUse}`
-        );
+       
         await sendAttendanceConfirmationEmail(user, match);
       }
 
