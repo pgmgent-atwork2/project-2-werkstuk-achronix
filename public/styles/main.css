@@ -41,6 +41,9 @@
 
 @import url("layouts/table-controls.css");
 
+/* 404 error page */
+@import url("pages/error-404.css");
+
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-VariableFont_opsz,wght.ttf")
