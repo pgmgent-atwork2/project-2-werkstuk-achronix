@@ -128,14 +128,28 @@ export const update = async (req, res) => {
 
       if (attendanceRecord) {
         const oldStatus = attendanceRecord.status;
-        attendanceRecord = await Attendance.query().updateAndFetchById(
-          attendanceRecord.id,
-          {
-            match_id: matchIdToUse,
-            user_id: userIdToUse,
-            status: statusToUse,
-          }
-        );
+
+        if (user.role_id === 1 && statusToUse === "available") {
+          attendanceRecord = await Attendance.query().updateAndFetchById(
+            attendanceRecord.id,
+            {
+              match_id: matchIdToUse,
+              user_id: userIdToUse,
+              status: statusToUse,
+              is_selected: "selected",
+            }
+          );
+        } else {
+          attendanceRecord = await Attendance.query().updateAndFetchById(
+            attendanceRecord.id,
+            {
+              match_id: matchIdToUse,
+              user_id: userIdToUse,
+              status: statusToUse,
+              is_selected: "not_selected",
+            }
+          );
+        }
         message = "Attendance status updated";
 
         // Check if status changed to 'available'
