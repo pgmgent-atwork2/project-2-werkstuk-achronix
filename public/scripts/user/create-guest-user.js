@@ -56,8 +56,8 @@ export function createGuestUser() {
   }
 
   window.addEventListener("click", function (event) {
-    if (event.target === newGuestUserModal) {
-      newGuestUserModal.classList.add("hidden");
+    if (event.target === $newGuestUserModal) {
+      $newGuestUserModal.classList.add("hidden");
     }
   });
 
@@ -67,9 +67,9 @@ export function createGuestUser() {
 
       const userData = {
         firstname: document.getElementById("new_guest_firstname").value,
-        lastname: document.getElementById("new__guest_lastname").value,
-        email: "",
-        password: "",
+        lastname: document.getElementById("new_guest_lastname").value,
+        email: null,
+        password: null,
         role_id: 3,
         receive_notifications: false,
       };

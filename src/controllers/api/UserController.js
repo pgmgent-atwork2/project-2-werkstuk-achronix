@@ -99,7 +99,7 @@ export const store = async (req, res) => {
   } = req.body;
 
   try {
-    if (role_id === 3) {
+    if (role_id === 3 || (email === null && password === null)) {
       const guestEmail = generateGuestEmail(firstname, lastname);
 
       await User.query().insert({
@@ -110,7 +110,13 @@ export const store = async (req, res) => {
         role_id: 3,
         receive_notifications: receive_notifications !== false,
       });
+
+      return res.status(201).json({
+        success: true,
+        message: "Gastgebruiker succesvol aangemaakt",
+      });
     }
+
     const existingUser = await User.query().where("email", email).first();
     if (existingUser) {
       return res
