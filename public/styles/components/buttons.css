@@ -8,10 +8,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  margin-bottom: 0.5rem;
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  @media screen and (min-width: 768px) {
+    margin-bottom: 0;
   }
 }
 
