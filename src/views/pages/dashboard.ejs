@@ -161,22 +161,20 @@
       Komende wedstrijden
     </h2>
     <div class="dashboard-empty-state">
-      <% if (upcomingMatches.length === 0) { %> Hier komen binnenkort je
-      aankomende wedstrijden te staan. <% } else { %> <%
-      upcomingMatches.forEach(match => { %>
+      <% if (attendances.length === 0) { %> Hier komen binnenkort je aankomende
+      wedstrijden te staan. <% } else { %> <% attendances.forEach(attendence =>
+      { %>
+
       <div class="match-card">
-        <div class="match-header">
-          <span class="match-date"
-            ><%= new Date(match.date).toLocaleDateString('nl-BE', {weekday:
-            'long', day: 'numeric', month: 'long', year: 'numeric'}) %></span
-          >
-          <span class="match-time"
-            ><%= new Date(match.date).toLocaleTimeString('nl-BE', {hour:
-            '2-digit', minute:'2-digit'}) %></span
+        <div class="match-card__header">
+          <span class="match-card__date"
+            ><%= new Date(attendence.match.date).toLocaleDateString('nl-BE',
+            {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'})
+            %></span
           >
         </div>
-        <div class="match-content">
-          <p class="match-location">
+        <div class="match-card__content">
+          <p class="match-card__location">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -196,12 +194,14 @@
                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
               />
             </svg>
-            <%= match.location %>
+
+            <%= attendence.match.location %>,
+            <span class="team home-team"
+              ><%= attendence.match.home_away %></span
+            >
           </p>
-          <div class="match-teams">
-            <span class="team home-team"><%= match.home_away %></span>
-          </div>
-          <div class="match-date-range">
+
+          <div class="match-card__date-range">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -216,19 +216,17 @@
                 d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
               />
             </svg>
-            <span><%= new Date(match.date).toLocaleDateString('nl-BE')  %></span>
-            <span class="start-date"
-              ><%= match.start_time %></span
+            <span
+              ><%= new Date(attendence.match.date).toLocaleDateString('nl-BE')
+              %>,</span
             >
+            <span class="start-date"><%= attendence.match.start_time %></span>
             <span class="date-separator">-</span>
-            <span class="end-time"
-              ><%= match.end_time %></span
-            >
+            <span class="end-time"><%= attendence.match.end_time %></span>
           </div>
         </div>
       </div>
-
-      <% }); }%>
+      <% }) %> <% }%>
     </div>
   </div>
 
