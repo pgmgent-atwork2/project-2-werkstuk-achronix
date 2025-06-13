@@ -17,41 +17,40 @@
 >
 <h1 class="title">Rekeningen beheren</h1>
 
-
-
-  <table>
-    <div class="table-controls">
-  <div class="search-container">
-    <input
-      type="text"
-      id="searchInput-user"
-      placeholder="Zoeken op naam"
-      class="search-input"
-    />
+<table>
+  <div class="table-controls">
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput-user"
+        placeholder="Zoeken op naam"
+        class="search-input"
+      />
+    </div>
   </div>
-    <thead>
-      <tr>
-        <th>Naam</th>
-        <th>Te betalen bedrag</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% users.forEach(user=> { %>
-      <tr>
-        <td>
-          <a href="/beheerderspaneel/rekeningen/<%= user.id %>">
-            <%= user.firstname %> <%= user.lastname %>
-          </a>
-        </td>
-        <td>
-          €<%= orders.filter(order=> user.id === order.user_id) .reduce((total,
-          order) => total + order.orderItems.reduce((itemTotal, item) =>
-          itemTotal + item.price, 0), 0) .toFixed(2) %>
-        </td>
-      </tr>
-      <% }); %>
-    </tbody>
-  </table>
 
-  <script type="module" src="/scripts/search-rekeningen.js"></script>
-</div>
+  <thead>
+    <tr>
+      <th>Naam</th>
+      <th>Te betalen bedrag</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user=> { %>
+    <tr>
+      <td>
+        <a href="/beheerderspaneel/rekeningen/<%= user.id %>">
+          <%= user.firstname %> <%= user.lastname %>
+        </a>
+      </td>
+      <td>
+        €<%= orders.filter(order=> user.id === order.user_id) .reduce((total,
+        order) => total + order.orderItems.reduce((itemTotal, item) => itemTotal
+        + item.price, 0), 0) .toFixed(2) %>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+<script type="module" src="/scripts/search-rekeningen.js"></script>
