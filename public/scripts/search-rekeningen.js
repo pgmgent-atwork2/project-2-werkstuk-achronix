@@ -9,7 +9,6 @@ if (
 
   async function performRekeningenSearch(searchTerm) {
     try {
-      console.log("Performing rekeningen search with term:", searchTerm);
 
       const response = await fetch(
         `/api/users/rekeningen/search/${searchTerm || "all"}`
@@ -33,7 +32,6 @@ if (
         renderRekeningRow(user, $tableBody);
       });
 
-      console.log(`Rendered ${users.length} users`);
     } catch (error) {
       console.error("Fout bij het ophalen van gebruikers:", error);
       $tableBody.innerHTML =
@@ -62,7 +60,5 @@ if (
       const searchTerm = event.target.value.toLowerCase().trim();
       await performRekeningenSearch(searchTerm);
     });
-
-    console.log("Rekeningen search functionality initialized");
   }
 }
