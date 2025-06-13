@@ -441,7 +441,7 @@ export const pageNotFound = async (req, res) => {
   res.status(404).render("errors/404", {
     pageTitle: "Pagina niet gevonden | Ping Pong Tool",
     user,
-    layout: user ? "layouts/main" : "layouts/authentication",
+    layout: "layouts/main",
   });
 };
 
