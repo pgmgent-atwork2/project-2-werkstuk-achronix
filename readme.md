@@ -22,7 +22,6 @@ Dit project is ontwikkeld door:
 
 ### Frontend
 - **EJS/CSS/JavaScript** - Client-side development
-- **Handlebars** - Templating engine
 - **Vanilla JavaScript** - DOM manipulation en API calls
 
 ### Development Tools
