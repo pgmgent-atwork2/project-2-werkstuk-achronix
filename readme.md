@@ -83,10 +83,10 @@ Dit project is ontwikkeld door:
 4. **Database setup**
    ```bash
    # Run migrations
-   npm run migrate:latest
+   npx knex migrate:latest
    
    # Run seeds (optioneel)
-   npm run seed:run
+   npx knex seed:run
    ```
 
 5. **Start de applicatie**
