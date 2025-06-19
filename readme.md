@@ -102,6 +102,23 @@ Docker moet worden gestart zodat de mailing functies werken ( Mailhog)
 docker compose up
 ```
 
+## Logins
+
+Voor het testen van de applicatie zijn er standaard accounts beschikbaar:
+
+### Administrator Account
+- **Email**: admin@admin.com
+- **Password**: secret
+
+### Gebruiker Account  
+- **Email**: user@user.com
+- **Password**: secret
+
+### Gastgebruiker
+- Gastgebruikers kunnen worden aangemaakt door administrators zonder email/wachtwoord
+- Deze accounts zijn bedoeld voor tijdelijke toegang
+
+
 ## Functionaliteiten
 
 - **Gebruikersbeheer**: Beheer van gebruikers, rollen en authenticatie
